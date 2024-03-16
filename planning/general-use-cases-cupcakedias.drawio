@@ -1,18 +1,9 @@
-<mxfile host="app.diagrams.net" modified="2024-03-16T19:38:21.914Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="Z8RmqwytSOWLoIRtGQXd" version="24.0.7" type="github">
+<mxfile host="app.diagrams.net" modified="2024-03-16T19:43:49.974Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="lEG0xRjPqUznUlnk8TJu" version="24.0.7" type="github">
   <diagram name="Page-1" id="uHBj0UiJIh_l4re9Nql1">
     <mxGraphModel dx="1434" dy="718" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="iurfLe9XNf4w9FvrxSP4-26" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#457B9D;fontColor=#1D3557;fillColor=#A8DADC;" edge="1" parent="1" source="iurfLe9XNf4w9FvrxSP4-1" target="iurfLe9XNf4w9FvrxSP4-25">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="iurfLe9XNf4w9FvrxSP4-32" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.75;exitY=0.1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#457B9D;fontColor=#1D3557;fillColor=#A8DADC;" edge="1" parent="1" source="iurfLe9XNf4w9FvrxSP4-1" target="iurfLe9XNf4w9FvrxSP4-31">
-          <mxGeometry relative="1" as="geometry" />
-        </mxCell>
-        <mxCell id="iurfLe9XNf4w9FvrxSP4-1" value="Funcionário" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;fillColor=#A8DADC;strokeColor=#457B9D;labelBackgroundColor=none;fontColor=#1D3557;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="90" y="220" width="30" height="60" as="geometry" />
-        </mxCell>
         <mxCell id="iurfLe9XNf4w9FvrxSP4-10" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.3333333333333333;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;strokeColor=#457B9D;fontColor=#1D3557;fillColor=#A8DADC;" edge="1" parent="1" source="iurfLe9XNf4w9FvrxSP4-3" target="iurfLe9XNf4w9FvrxSP4-9">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
@@ -20,7 +11,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="iurfLe9XNf4w9FvrxSP4-3" value="Cliente" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;outlineConnect=0;strokeColor=#457B9D;fontColor=#1D3557;fillColor=#A8DADC;labelBackgroundColor=none;fontStyle=1" vertex="1" parent="1">
-          <mxGeometry x="630" y="370" width="30" height="60" as="geometry" />
+          <mxGeometry x="630" y="445" width="30" height="60" as="geometry" />
         </mxCell>
         <mxCell id="iurfLe9XNf4w9FvrxSP4-17" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=1;entryDx=0;entryDy=0;strokeColor=#457B9D;fontColor=#1D3557;fillColor=#A8DADC;" edge="1" parent="1" source="iurfLe9XNf4w9FvrxSP4-4" target="iurfLe9XNf4w9FvrxSP4-12">
           <mxGeometry relative="1" as="geometry" />
@@ -32,7 +23,7 @@
           <mxGeometry x="210" y="480" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="iurfLe9XNf4w9FvrxSP4-9" value="Relizar pedidos" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#457B9D;fontColor=#1D3557;fillColor=#A8DADC;fontStyle=1;fontFamily=Helvetica;fontSize=12;" vertex="1" parent="1">
-          <mxGeometry x="460" y="300" width="120" height="60" as="geometry" />
+          <mxGeometry x="460" y="375" width="120" height="60" as="geometry" />
         </mxCell>
         <mxCell id="iurfLe9XNf4w9FvrxSP4-12" value="Verificar relatórios de vendas mensais" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#457B9D;fontColor=#1D3557;fillColor=#A8DADC;fontStyle=1;fontFamily=Helvetica;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="210" y="670" width="120" height="60" as="geometry" />
@@ -61,17 +52,11 @@
         <mxCell id="iurfLe9XNf4w9FvrxSP4-22" value="Gerenciar promoções e descontos" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#457B9D;fontColor=#1D3557;fillColor=#A8DADC;fontStyle=1;fontFamily=Helvetica;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="210" y="390" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="iurfLe9XNf4w9FvrxSP4-25" value="Recuperar senha esquecida" style="whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#A8DADC;strokeColor=#457B9D;fontColor=#1D3557;labelBackgroundColor=none;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="210" y="220" width="120" height="60" as="geometry" />
-        </mxCell>
         <mxCell id="iurfLe9XNf4w9FvrxSP4-27" value="Notificar clientes sobre novidades e promoções" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=#457B9D;fontColor=#1D3557;fillColor=#A8DADC;fontStyle=1;fontFamily=Helvetica;fontSize=12;" vertex="1" parent="1">
           <mxGeometry x="210" y="320" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="iurfLe9XNf4w9FvrxSP4-29" value="Manter dados atualizados" style="whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#A8DADC;strokeColor=#457B9D;fontColor=#1D3557;labelBackgroundColor=none;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="460" y="370" width="120" height="60" as="geometry" />
-        </mxCell>
-        <mxCell id="iurfLe9XNf4w9FvrxSP4-31" value="&lt;span style=&quot;white-space: pre-wrap&quot;&gt;Auxiliar clientes com possíveis dificuldades.&lt;/span&gt;" style="whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#A8DADC;strokeColor=#457B9D;fontColor=#1D3557;labelBackgroundColor=none;fontStyle=1;" vertex="1" parent="1">
-          <mxGeometry x="210" y="150" width="120" height="60" as="geometry" />
+        <mxCell id="iurfLe9XNf4w9FvrxSP4-29" value="Recuperar senha esquecida" style="whiteSpace=wrap;html=1;verticalAlign=top;fillColor=#A8DADC;strokeColor=#457B9D;fontColor=#1D3557;labelBackgroundColor=none;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="460" y="445" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
