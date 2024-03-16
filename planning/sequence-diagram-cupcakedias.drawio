@@ -1,72 +1,123 @@
-<mxfile host="app.diagrams.net" modified="2024-03-16T20:58:34.563Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0" version="24.0.7" etag="Lbs1xstJ7SA7nUrcJO9w" type="github">
+<mxfile host="app.diagrams.net" modified="2024-03-16T21:13:24.445Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0" etag="J0cfiT3d68KpqB82EFWB" version="24.0.7" type="github">
   <diagram name="Page-1" id="3XY_rF-9u9N-PX3iDrYa">
-    <mxGraphModel>
+    <mxGraphModel dx="1434" dy="718" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="2" value="User" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
-          <mxGeometry width="150" height="576" as="geometry" />
+        <mxCell id="2" value="Cliente" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;labelBackgroundColor=none;fillColor=#A8DADC;strokeColor=#457B9D;fontColor=#1D3557;" parent="1" vertex="1">
+          <mxGeometry width="150" height="840" as="geometry" />
         </mxCell>
-        <mxCell id="3" value="Website" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
-          <mxGeometry x="241" width="150" height="576" as="geometry" />
+        <mxCell id="3" value="Sistema de Pedidos" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;labelBackgroundColor=none;fillColor=#A8DADC;strokeColor=#457B9D;fontColor=#1D3557;" parent="1" vertex="1">
+          <mxGeometry x="241" width="150" height="840" as="geometry" />
         </mxCell>
-        <mxCell id="4" value="PaymentGateway" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;" vertex="1" parent="1">
-          <mxGeometry x="466" width="150" height="576" as="geometry" />
+        <mxCell id="4" value="Estoque de ingredientes" style="shape=umlLifeline;perimeter=lifelinePerimeter;whiteSpace=wrap;container=1;dropTarget=0;collapsible=0;recursiveResize=0;outlineConnect=0;portConstraint=eastwest;newEdgeStyle={&quot;edgeStyle&quot;:&quot;elbowEdgeStyle&quot;,&quot;elbow&quot;:&quot;vertical&quot;,&quot;curved&quot;:0,&quot;rounded&quot;:0};size=65;labelBackgroundColor=none;fillColor=#A8DADC;strokeColor=#457B9D;fontColor=#1D3557;" parent="1" vertex="1">
+          <mxGeometry x="466" width="150" height="850" as="geometry" />
         </mxCell>
-        <mxCell id="5" value="Select cupcakes" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1" source="2" target="3">
+        <mxCell id="5" value="Visualiza catálogo de cupcakes" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=horizontal;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#457B9D;fontColor=default;" parent="1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="206" y="107" />
+              <mxPoint x="207" y="107" />
             </Array>
+            <mxPoint x="75.5" y="107" as="sourcePoint" />
+            <mxPoint x="316.5" y="107" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="6" value="Display cupcake options" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1" source="3" target="2">
+        <mxCell id="6" value="Seleciona cupcakes e adiciona ao carrinho" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=horizontal;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#457B9D;fontColor=default;" parent="1" source="2" target="3" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="206" y="159" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="7" value="Add cupcakes to cart" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1" source="2" target="3">
+        <mxCell id="7" value="&lt;div&gt;Confirma cupcakes no carrinho e&lt;br&gt;&lt;/div&gt;&lt;div&gt;seleciona &quot;personalizar&quot;&lt;/div&gt;" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=horizontal;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#457B9D;fontColor=default;html=1;" parent="1" source="2" target="3" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="206" y="211" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="8" value="Cart updated" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1" source="3" target="2">
+        <mxCell id="8" value="Retorna ao carrinho e &#xa;verifica cupcakes personalizados" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=horizontal;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#457B9D;fontColor=default;" parent="1" source="2" target="3" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="206" y="263" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="9" value="Proceed to checkout" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1" source="2" target="3">
+        <mxCell id="9" value="Confirma e prossegue para o pagamento" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=horizontal;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#457B9D;fontColor=default;" parent="1" source="2" target="3" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="206" y="315" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="10" value="Process payment" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;" edge="1" parent="1" source="3" target="4">
+        <mxCell id="10" value="Verifica disponibilidade&#xa; dos cupcakes no estqoue" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#457B9D;fontColor=default;" parent="1" source="3" target="4" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
               <mxPoint x="439" y="367" />
             </Array>
           </mxGeometry>
         </mxCell>
-        <mxCell id="11" value="Payment confirmation" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;" edge="1" parent="1" source="4" target="3">
+        <mxCell id="12" value="Confirmação do cliente" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;labelBackgroundColor=none;strokeColor=#457B9D;fontColor=default;entryX=0.473;entryY=0.612;entryDx=0;entryDy=0;entryPerimeter=0;" parent="1" edge="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="439" y="419" />
+              <mxPoint x="580" y="520" />
             </Array>
+            <mxPoint x="320" y="520" as="sourcePoint" />
+            <mxPoint x="536.95" y="520.2" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="12" value="Order confirmed" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;" edge="1" parent="1" source="3" target="2">
+        <mxCell id="zA4pzCfLv_Aw1owQNe7s-13" value="Calcula valor total" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#457B9D;fontColor=default;" edge="1" parent="1">
           <mxGeometry relative="1" as="geometry">
             <Array as="points">
-              <mxPoint x="206" y="471" />
+              <mxPoint x="439" y="420" />
             </Array>
+            <mxPoint x="316" y="420" as="sourcePoint" />
+            <mxPoint x="541" y="420" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zA4pzCfLv_Aw1owQNe7s-15" value="Confirma pedido" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#457B9D;fontColor=default;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="437" y="560" />
+            </Array>
+            <mxPoint x="314" y="560" as="sourcePoint" />
+            <mxPoint x="539" y="560" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zA4pzCfLv_Aw1owQNe7s-16" value="Registra pedido no sistema" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#457B9D;fontColor=default;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="436" y="600" />
+            </Array>
+            <mxPoint x="313" y="600" as="sourcePoint" />
+            <mxPoint x="538" y="600" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zA4pzCfLv_Aw1owQNe7s-17" value="Atualiza estoque de ingredientes" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;labelBackgroundColor=none;strokeColor=#457B9D;fontColor=default;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="437" y="640" />
+            </Array>
+            <mxPoint x="314" y="640" as="sourcePoint" />
+            <mxPoint x="539" y="640" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zA4pzCfLv_Aw1owQNe7s-18" value="Solicita confirmação do cliente" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;labelBackgroundColor=none;strokeColor=#457B9D;fontColor=default;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="439" y="470" />
+            </Array>
+            <mxPoint x="537.5" y="470" as="sourcePoint" />
+            <mxPoint x="317" y="470" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="zA4pzCfLv_Aw1owQNe7s-19" value="Pedido confirmado" style="verticalAlign=bottom;endArrow=block;edgeStyle=elbowEdgeStyle;elbow=vertical;curved=0;rounded=0;dashed=1;dashPattern=2 3;labelBackgroundColor=none;strokeColor=#457B9D;fontColor=default;" edge="1" parent="1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="211" y="680" />
+            </Array>
+            <mxPoint x="321" y="680" as="sourcePoint" />
+            <mxPoint x="80" y="680" as="targetPoint" />
           </mxGeometry>
         </mxCell>
       </root>
