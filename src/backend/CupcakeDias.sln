@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CupcakeDias.API", "CupcakeDias.API\CupcakeDias.API.csproj", "{9F71F59B-7642-4FFB-A2D3-37CD973DE692}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CupcakeDias.Shared", "CupcakeDias.Shared\CupcakeDias.Shared.csproj", "{0F77BD7C-5DDA-4A6D-92A2-98FBE414A851}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CupcakeDias.Data", "CupcakeDias.Data\CupcakeDias.Data.csproj", "{9F9F73E5-FB8D-4B3B-B453-3D69BA87504F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9F71F59B-7642-4FFB-A2D3-37CD973DE692}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F71F59B-7642-4FFB-A2D3-37CD973DE692}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F71F59B-7642-4FFB-A2D3-37CD973DE692}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F71F59B-7642-4FFB-A2D3-37CD973DE692}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F77BD7C-5DDA-4A6D-92A2-98FBE414A851}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F77BD7C-5DDA-4A6D-92A2-98FBE414A851}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F77BD7C-5DDA-4A6D-92A2-98FBE414A851}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F77BD7C-5DDA-4A6D-92A2-98FBE414A851}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9F9F73E5-FB8D-4B3B-B453-3D69BA87504F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9F9F73E5-FB8D-4B3B-B453-3D69BA87504F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9F9F73E5-FB8D-4B3B-B453-3D69BA87504F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9F9F73E5-FB8D-4B3B-B453-3D69BA87504F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

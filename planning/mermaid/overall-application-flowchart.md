@@ -1,0 +1,12 @@
+graph TD
+    A[User visits Cupcake Store] --> B[Home Page]
+    B --> C[View Cupcakes]
+    B --> D[Navigate to Customize]
+    D --> E[Customize Cupcake]
+    E --> F[Add to Cart]
+    F --> G[View Cart]
+    G --> H[Proceed to Checkout]
+    H --> I[Enter Details]
+    I --> J[Confirm Order]
+    J --> K[Order Confirmation]
+    B --> L[View Order History]
