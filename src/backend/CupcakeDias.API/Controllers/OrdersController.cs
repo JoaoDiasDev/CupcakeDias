@@ -13,7 +13,7 @@ public class OrdersController(IOrderService orderService) : ControllerBase
     public async Task<IActionResult> CreateOrder([FromBody] Order order)
     {
         var createdOrder = await orderService.CreateOrderAsync(order);
-        return CreatedAtAction(nameof(GetOrderById), new { id = createdOrder.OrderID }, createdOrder);
+        return CreatedAtAction(nameof(GetOrderById), new { id = createdOrder.OrderId }, createdOrder);
     }
 
     [HttpGet("{id}")]

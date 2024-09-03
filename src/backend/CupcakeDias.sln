@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CupcakeDias.Shared", "Cupca
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CupcakeDias.Data", "CupcakeDias.Data\CupcakeDias.Data.csproj", "{9F9F73E5-FB8D-4B3B-B453-3D69BA87504F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CupcakeDias.Test", "CupcakeDias.Test\CupcakeDias.Test.csproj", "{675B702D-DAFF-4FD4-9F8A-3A77476FCA23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{9F9F73E5-FB8D-4B3B-B453-3D69BA87504F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9F9F73E5-FB8D-4B3B-B453-3D69BA87504F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9F9F73E5-FB8D-4B3B-B453-3D69BA87504F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{675B702D-DAFF-4FD4-9F8A-3A77476FCA23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{675B702D-DAFF-4FD4-9F8A-3A77476FCA23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{675B702D-DAFF-4FD4-9F8A-3A77476FCA23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{675B702D-DAFF-4FD4-9F8A-3A77476FCA23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
