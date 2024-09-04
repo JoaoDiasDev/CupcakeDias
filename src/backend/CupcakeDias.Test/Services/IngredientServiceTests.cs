@@ -50,7 +50,7 @@ public class IngredientServiceTests
             Availability = true,
             CupcakeIngredients = new List<CupcakeIngredient>
             {
-                new CupcakeIngredient { CupcakeId = 1 }
+                new() { CupcakeId = Guid.NewGuid() }
             }
         };
         _context.Ingredients.Add(ingredient);
@@ -61,7 +61,7 @@ public class IngredientServiceTests
 
         // Assert
         Assert.NotNull(retrievedIngredient);
-        Assert.Single(retrievedIngredient?.CupcakeIngredients!);
+        Assert.Single(retrievedIngredient.CupcakeIngredients!);
     }
 
     [Fact]
@@ -71,8 +71,8 @@ public class IngredientServiceTests
         // Arrange
         var ingredients = new List<Ingredient>
         {
-            new Ingredient { Name = "Sugar", Type = "Sweetener", Availability = true },
-            new Ingredient { Name = "Butter", Type = "Fat", Availability = true }
+            new() { Name = "Sugar", Type = "Sweetener", Availability = true },
+            new() { Name = "Butter", Type = "Fat", Availability = true }
         };
         _context.Ingredients.AddRange(ingredients);
         await _context.SaveChangesAsync();
@@ -98,7 +98,9 @@ public class IngredientServiceTests
         await _ingredientService.UpdateIngredientAsync(ingredient);
 
         // Assert
-        var updatedIngredient = await _context.Ingredients.FirstOrDefaultAsync(i => i.IngredientId == ingredient.IngredientId);
+        var updatedIngredient = await _context.Ingredients
+            .FirstOrDefaultAsync(i => i.IngredientId == ingredient.IngredientId);
+
         Assert.NotNull(updatedIngredient);
         Assert.False(updatedIngredient.Availability);
     }

@@ -1,7 +1,7 @@
-using System;
 using CupcakeDias.Data;
 using CupcakeDias.Data.Entities;
 using CupcakeDias.Shared.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace CupcakeDias.Shared.Services.Implementations;
 
@@ -18,7 +18,7 @@ public class OrderService(CupcakeDiasContext cupcakeDiasContext, IEmailService e
     {
         return await cupcakeDiasContext.Orders
             .Where(o => o.UserId == userId)
-            .Include(o => o.OrderDetails)
+            .Include(o => o.OrderDetails)!
             .ThenInclude(od => od.Cupcake)
             .ToListAsync();
     }
@@ -27,8 +27,8 @@ public class OrderService(CupcakeDiasContext cupcakeDiasContext, IEmailService e
     {
         if (order is null || Guid.Empty.Equals(order.UserId) || order?.OrderDetails?.Count == 0) return;
 
-        string subject = $"Your order {order?.OrderId} is being processed!";
-        string message = $"Dear {order?.User?.Name},\nYour order with ID {order?.OrderId} is now being processed. Your order will be delivered soon.";
+        var subject = $"Your order {order?.OrderId} is being processed!";
+        var message = $"Dear {order?.User?.Name},\nYour order with ID {order?.OrderId} is now being processed. Your order will be delivered soon.";
 
         var orderTotal = default(decimal);
         foreach (var orderDetail in order?.OrderDetails ?? [])

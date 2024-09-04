@@ -1,22 +1,21 @@
-using MailKit.Net.Smtp;
-using MimeKit;
-using System.Threading.Tasks;
 using CupcakeDias.Shared.Services.Interfaces;
 using dotenv.net;
+using MailKit.Net.Smtp;
+using MimeKit;
 
 namespace CupcakeDias.Shared.Services.Implementations;
 
 public class EmailService : IEmailService
 {
-    private readonly string smtpServer = "smtp.gmail.com";
-    private readonly int smtpPort = 587;
-    private readonly string senderEmail = "joaodiasworking@gmail.com";
-    private readonly string senderPassword = DotEnv.Read()["SMTP_PASSWORD"] ?? string.Empty;
+    private const string SmtpServer = "smtp.gmail.com";
+    private const int SmtpPort = 587;
+    private const string SenderEmail = "joaodiasworking@gmail.com";
+    private readonly string _senderPassword = DotEnv.Read()["SMTP_PASSWORD"];
 
     public async Task SendEmailAsync(string userEmail, string subject, string message)
     {
         var emailMessage = new MimeMessage();
-        emailMessage.From.Add(new MailboxAddress("CupcakeDias", senderEmail));
+        emailMessage.From.Add(new MailboxAddress("CupcakeDias", SenderEmail));
         emailMessage.To.Add(new MailboxAddress("", userEmail));
         emailMessage.Subject = subject;
 
@@ -28,9 +27,9 @@ public class EmailService : IEmailService
         using var client = new SmtpClient();
         try
         {
-            await client.ConnectAsync(smtpServer, smtpPort, MailKit.Security.SecureSocketOptions.StartTls);
+            await client.ConnectAsync(SmtpServer, SmtpPort, MailKit.Security.SecureSocketOptions.StartTls);
 
-            await client.AuthenticateAsync(senderEmail, senderPassword);
+            await client.AuthenticateAsync(SenderEmail, _senderPassword);
 
             await client.SendAsync(emailMessage);
         }
@@ -42,7 +41,6 @@ public class EmailService : IEmailService
         finally
         {
             await client.DisconnectAsync(true);
-            client.Dispose();
         }
     }
 }

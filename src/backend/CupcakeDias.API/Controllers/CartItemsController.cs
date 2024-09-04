@@ -1,11 +1,12 @@
 using CupcakeDias.Data.Entities;
 using CupcakeDias.Shared.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CupcakeDias.API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class CartItemsController(ICartItemService cartItemService) : ControllerBase
 {
@@ -16,8 +17,8 @@ public class CartItemsController(ICartItemService cartItemService) : ControllerB
         return CreatedAtAction(nameof(GetCartItemById), new { id = cartItem.CartItemId }, cartItem);
     }
 
-    [HttpGet("user/{userId:int}")]
-    public async Task<IActionResult> GetCartItemsByUser(int userId)
+    [HttpGet("user/{userId:guid}")]
+    public async Task<IActionResult> GetCartItemsByUser(Guid userId)
     {
         var cartItems = await cartItemService.GetCartItemsByUserIdAsync(userId);
         if (!cartItems.Any())
@@ -27,8 +28,8 @@ public class CartItemsController(ICartItemService cartItemService) : ControllerB
         return Ok(cartItems);
     }
 
-    [HttpGet("cart/{cartId:int}")]
-    public async Task<IActionResult> GetCartItemsByCartId(int cartId)
+    [HttpGet("cart/{cartId:guid}")]
+    public async Task<IActionResult> GetCartItemsByCartId(Guid cartId)
     {
         var cartItems = await cartItemService.GetCartItemsByCartIdAsync(cartId);
         if (!cartItems.Any())
@@ -38,8 +39,8 @@ public class CartItemsController(ICartItemService cartItemService) : ControllerB
         return Ok(cartItems);
     }
 
-    [HttpGet("{cartItemId:int}")]
-    public async Task<IActionResult> GetCartItemById(int cartItemId)
+    [HttpGet("{cartItemId:guid}")]
+    public async Task<IActionResult> GetCartItemById(Guid cartItemId)
     {
         var cartItem = await cartItemService.GetCartItemByIdAsync(cartItemId);
         if (cartItem == null)

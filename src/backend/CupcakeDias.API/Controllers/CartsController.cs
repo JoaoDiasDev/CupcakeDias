@@ -1,12 +1,13 @@
 using CupcakeDias.Data.Entities;
+using CupcakeDias.Shared.Consts;
 using CupcakeDias.Shared.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace CupcakeDias.API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class CartsController(ICartService cartService) : ControllerBase
 {
@@ -22,10 +23,10 @@ public class CartsController(ICartService cartService) : ControllerBase
         return CreatedAtAction(nameof(GetCartById), new { id = createdCart.CartId }, createdCart);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetCartById(int id)
+    [HttpGet("{cartId:guid}")]
+    public async Task<IActionResult> GetCartById(Guid cartId)
     {
-        var cart = await cartService.GetCartByIdAsync(id);
+        var cart = await cartService.GetCartByIdAsync(cartId);
         if (cart == null)
         {
             return NotFound();
@@ -33,26 +34,31 @@ public class CartsController(ICartService cartService) : ControllerBase
         return Ok(cart);
     }
 
-    [HttpGet("user/{userId}")]
-    public async Task<IActionResult> GetCartsByUserId(int userId)
+    [HttpGet("user/{userId:guid}")]
+    public async Task<IActionResult> GetCartsByUserId(Guid userId)
     {
         var carts = await cartService.GetCartsByUserIdAsync(userId);
-        if (carts == null || !carts.Any())
+        var cartsList = carts.ToList();
+        if (cartsList is null || !cartsList.Any())
         {
             return NotFound();
         }
-        return Ok(carts);
+
+        return Ok(cartsList.FirstOrDefault(c =>
+            !c.Status.Equals(CartStatus.Canceled)
+            && !c.Status.Equals(CartStatus.Completed)
+        ));
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateCart(int id, [FromBody] Cart cart)
+    [HttpPut("{cartId:guid}")]
+    public async Task<IActionResult> UpdateCart(Guid cartId, [FromBody] Cart cart)
     {
-        if (cart == null || cart.CartId != id)
+        if (cart is not null || !(cart!.CartId.Equals(cartId)))
         {
             return BadRequest("Cart is null or ID mismatch.");
         }
 
-        var existingCart = await cartService.GetCartByIdAsync(id);
+        var existingCart = await cartService.GetCartByIdAsync(cartId);
         if (existingCart == null)
         {
             return NotFound();
@@ -62,16 +68,16 @@ public class CartsController(ICartService cartService) : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCart(int id)
+    [HttpDelete("{cartId:guid}")]
+    public async Task<IActionResult> DeleteCart(Guid cartId)
     {
-        var cart = await cartService.GetCartByIdAsync(id);
+        var cart = await cartService.GetCartByIdAsync(cartId);
         if (cart == null)
         {
             return NotFound();
         }
 
-        await cartService.DeleteCartAsync(id);
+        await cartService.DeleteCartAsync(cartId);
         return NoContent();
     }
 }

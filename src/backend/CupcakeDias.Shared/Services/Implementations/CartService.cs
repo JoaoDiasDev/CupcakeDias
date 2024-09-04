@@ -1,34 +1,31 @@
 using CupcakeDias.Data;
 using CupcakeDias.Data.Entities;
+using CupcakeDias.Shared.Consts;
 using CupcakeDias.Shared.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace CupcakeDias.Shared.Services.Implementations;
 
 public class CartService(CupcakeDiasContext context) : ICartService
 {
-    private readonly CupcakeDiasContext _context = context;
-
     public async Task<Cart> CreateCartAsync(Cart cart)
     {
-        _context.Carts.Add(cart);
-        await _context.SaveChangesAsync();
+        context.Carts.Add(cart);
+        await context.SaveChangesAsync();
         return cart;
     }
 
-    public async Task<Cart> GetCartByIdAsync(int cartId)
+    public async Task<Cart> GetCartByIdAsync(Guid cartId)
     {
-        return await _context.Carts
-                             .Include(c => c.User)
-                             .Include(c => c.CartItems)
-                             .FirstOrDefaultAsync(c => c.CartId == cartId);
+        return await context.Carts
+            .Include(c => c.User)
+            .Include(c => c.CartItems)
+            .FirstOrDefaultAsync(c => c.CartId == cartId) ?? new Cart { Status = CartStatus.Canceled };
     }
 
-    public async Task<IEnumerable<Cart>> GetCartsByUserIdAsync(int userId)
+    public async Task<IEnumerable<Cart>> GetCartsByUserIdAsync(Guid userId)
     {
-        return await _context.Carts
+        return await context.Carts
                              .Include(c => c.CartItems)
                              .Where(c => c.UserId == userId)
                              .ToListAsync();
@@ -36,17 +33,17 @@ public class CartService(CupcakeDiasContext context) : ICartService
 
     public async Task UpdateCartAsync(Cart cart)
     {
-        _context.Carts.Update(cart);
-        await _context.SaveChangesAsync();
+        context.Carts.Update(cart);
+        await context.SaveChangesAsync();
     }
 
-    public async Task DeleteCartAsync(int cartId)
+    public async Task DeleteCartAsync(Guid cartId)
     {
-        var cart = await _context.Carts.FindAsync(cartId);
-        if (cart != null)
+        var cart = await context.Carts.FindAsync(cartId);
+        if (cart is not null)
         {
-            _context.Carts.Remove(cart);
-            await _context.SaveChangesAsync();
+            context.Carts.Remove(cart);
+            await context.SaveChangesAsync();
         }
     }
 }

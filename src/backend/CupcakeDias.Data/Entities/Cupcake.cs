@@ -1,5 +1,5 @@
-using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace CupcakeDias.Data.Entities;
 
@@ -17,7 +17,10 @@ public class Cupcake
     public decimal Price { get; set; }
     public string Description { get; set; } = string.Empty;
     public required string ImageUrl { get; set; }
+    [JsonIgnore]
     public ICollection<OrderDetail>? OrderDetails { get; set; }
+    [JsonIgnore]
     public ICollection<CupcakeIngredient>? CupcakeIngredients { get; set; }
+    [JsonIgnore]
     public ICollection<CartItem>? CartItems { get; set; }
 }

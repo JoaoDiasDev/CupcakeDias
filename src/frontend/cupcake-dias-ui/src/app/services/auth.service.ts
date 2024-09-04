@@ -60,7 +60,7 @@ export class AuthService {
     }
     try {
       const decodedToken: JwtToken = jwtDecode<JwtToken>(token);
-      return decodedToken.name; // Access the 'name' field (UserId)
+      return decodedToken.userId; // Access the 'userId' field (UserId)
     } catch (error) {
       console.error('Error decoding token', error);
       return null;

@@ -1,12 +1,12 @@
 using CupcakeDias.Data.Entities;
 using CupcakeDias.Shared.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace CupcakeDias.API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class OrderDetailsController(IOrderDetailService orderDetailService) : ControllerBase
 {
@@ -19,13 +19,14 @@ public class OrderDetailsController(IOrderDetailService orderDetailService) : Co
         }
 
         var createdOrderDetail = await orderDetailService.CreateOrderDetailAsync(orderDetail);
-        return CreatedAtAction(nameof(GetOrderDetailById), new { id = createdOrderDetail.OrderDetailId }, createdOrderDetail);
+        return CreatedAtAction(nameof(GetOrderDetailById),
+            new { orderDetailsId = createdOrderDetail.OrderDetailId }, createdOrderDetail);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetOrderDetailById(int id)
+    [HttpGet("{orderDetailsId:guid}")]
+    public async Task<IActionResult> GetOrderDetailById(Guid orderDetailsId)
     {
-        var orderDetail = await orderDetailService.GetOrderDetailByIdAsync(id);
+        var orderDetail = await orderDetailService.GetOrderDetailByIdAsync(orderDetailsId);
         if (orderDetail == null)
         {
             return NotFound();
@@ -33,8 +34,8 @@ public class OrderDetailsController(IOrderDetailService orderDetailService) : Co
         return Ok(orderDetail);
     }
 
-    [HttpGet("order/{orderId}")]
-    public async Task<IActionResult> GetOrderDetailsByOrderId(int orderId)
+    [HttpGet("order/{orderId:guid}")]
+    public async Task<IActionResult> GetOrderDetailsByOrderId(Guid orderId)
     {
         var orderDetails = await orderDetailService.GetOrderDetailsByOrderIdAsync(orderId);
         if (orderDetails == null || !orderDetails.Any())

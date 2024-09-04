@@ -5,13 +5,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { MatCard, MatCardTitle } from '@angular/material/card';
 import { MatList, MatListItem } from '@angular/material/list';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-ingredient-list',
   templateUrl: './ingredient-list.component.html',
   styleUrls: ['./ingredient-list.component.css'],
   standalone: true,
-  imports: [MatCard, MatCardTitle, MatList, MatListItem],
+  imports: [MatCard, MatCardTitle, MatList, MatListItem, CommonModule],
 })
 export class IngredientListComponent implements OnInit {
   ingredients: Ingredient[] = [];

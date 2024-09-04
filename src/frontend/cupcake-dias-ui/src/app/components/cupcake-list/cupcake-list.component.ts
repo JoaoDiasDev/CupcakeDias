@@ -16,6 +16,7 @@ import {
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { CartService } from '../../services/cart.service';
 import { Cart } from '../../models/cart.model';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   standalone: true,
@@ -37,13 +38,16 @@ import { Cart } from '../../models/cart.model';
 export class CupcakeListComponent implements OnInit {
   cupcakes: Cupcake[] = [];
   activeCart: Cart = {} as Cart;
-  userId = '1'; // TODO Replace with actual logic for getting the logged-in user ID
+  userId = '';
 
   constructor(
     private cupcakeService: CupcakeService,
     private snackBar: MatSnackBar,
-    private cartService: CartService
+    private cartService: CartService,
+    private authService: AuthService
   ) {
+    this.userId = this.authService.getUserId() ?? '';
+
     this.cartService.getActiveCart(this.userId).subscribe({
       next: (cart) => {
         this.activeCart = cart;

@@ -5,13 +5,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { MatCard, MatCardTitle } from '@angular/material/card';
 import { MatList, MatListItem } from '@angular/material/list';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-user-list',
   templateUrl: './user-list.component.html',
   styleUrls: ['./user-list.component.css'],
   standalone: true,
-  imports: [MatCard, MatCardTitle, MatList, MatListItem],
+  imports: [MatCard, MatCardTitle, MatList, MatListItem, CommonModule],
 })
 export class UserListComponent implements OnInit {
   users: User[] = [];

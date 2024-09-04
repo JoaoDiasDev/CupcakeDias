@@ -5,6 +5,7 @@ import { Cart } from '../models/cart.model';
 import { CartItem } from '../models/cart-item.model';
 import { environment } from '../../environments/environment';
 import { Order } from '../models/order.model';
+import { CartStatus } from '../consts/cart-status';
 
 @Injectable({
   providedIn: 'root',
@@ -62,8 +63,6 @@ export class CartService {
 
   // Get the user's active cart (newest cart with status 'Open')
   getActiveCart(userId: string): Observable<Cart> {
-    return this.http.get<Cart>(
-      `${this.apiUrl}/carts/user/${userId}?status=Open`
-    );
+    return this.http.get<Cart>(`${this.apiUrl}/carts/user/${userId}`);
   }
 }
