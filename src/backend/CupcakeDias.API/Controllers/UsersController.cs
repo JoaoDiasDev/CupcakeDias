@@ -1,4 +1,5 @@
 using CupcakeDias.Data.Entities;
+using CupcakeDias.Shared.Dtos;
 using CupcakeDias.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ public class UsersController(IUserService userService) : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetUserById(int id)
+    public async Task<IActionResult> GetUserById(Guid id)
     {
         var user = await userService.GetUserByIdAsync(id);
         if (user == null)
@@ -36,5 +37,18 @@ public class UsersController(IUserService userService) : ControllerBase
             return NotFound();
         }
         return Ok(user);
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login([FromBody] LoginRequestDto request)
+    {
+        var token = await userService.AuthenticateAsync(request.Email, request.Password);
+
+        if (token == null)
+        {
+            return Unauthorized("Invalid email or password.");
+        }
+
+        return Ok(new { Token = token });
     }
 }

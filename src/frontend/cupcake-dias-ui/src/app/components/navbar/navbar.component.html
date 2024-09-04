@@ -1,0 +1,12 @@
+<mat-toolbar color="primary">
+  <span class="logo">Cupcake Dias</span>
+  <span class="spacer"></span>
+
+  <ng-container *ngIf="isLoggedIn(); else showLogin">
+    <button mat-button (click)="logout()">Logout</button>
+  </ng-container>
+
+  <ng-template #showLogin>
+    <button mat-button routerLink="/login">Login</button>
+  </ng-template>
+</mat-toolbar>

@@ -1,0 +1,14 @@
+.cupcake-list-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.cupcake-item {
+  width: 300px;
+}
+
+mat-card {
+  margin: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}

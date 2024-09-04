@@ -6,7 +6,7 @@ namespace CupcakeDias.Data.Entities;
 public class Ingredient
 {
     [Key]
-    public int IngredientId { get; set; }
+    public Guid IngredientId { get; set; }
     [StringLength(100)]
     public required string Name { get; set; }
     [StringLength(50)]

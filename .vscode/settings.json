@@ -3,6 +3,9 @@
     "Consts",
     "Dtos",
     "Matheus",
-    "skipcq"
+    "nosecret",
+    "orderdetails",
+    "skipcq",
+    "uuidv"
   ]
 }

@@ -6,9 +6,9 @@ namespace CupcakeDias.Data.Entities;
 public class CupcakeIngredient
 {
     [Key]
-    public int CupcakeIngredientId { get; set; }
-    public int CupcakeId { get; set; }
-    public int IngredientId { get; set; }
+    public Guid CupcakeIngredientId { get; set; }
+    public Guid CupcakeId { get; set; }
+    public Guid IngredientId { get; set; }
     public Cupcake? Cupcake { get; set; }
     public Ingredient? Ingredient { get; set; }
 }

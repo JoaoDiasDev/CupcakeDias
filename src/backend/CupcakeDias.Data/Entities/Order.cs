@@ -6,8 +6,8 @@ namespace CupcakeDias.Data.Entities;
 public class Order
 {
     [Key]
-    public int OrderId { get; set; }
-    public int UserId { get; set; }
+    public Guid OrderId { get; set; }
+    public Guid UserId { get; set; }
     public DateTime OrderDate { get; set; }
     [StringLength(50)]
     public required string Status { get; set; }

@@ -13,11 +13,14 @@ public class OrdersController(IOrderService orderService) : ControllerBase
     public async Task<IActionResult> CreateOrder([FromBody] Order order)
     {
         var createdOrder = await orderService.CreateOrderAsync(order);
+
+        await Task.Run(()  => orderService.SendOrderConfirmationEmailAsync(createdOrder));
+
         return CreatedAtAction(nameof(GetOrderById), new { id = createdOrder.OrderId }, createdOrder);
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetOrderById(int id)
+    public async Task<IActionResult> GetOrderById(Guid id)
     {
         var order = await orderService.GetOrdersByUserAsync(id);
         if (order == null)
