@@ -18,6 +18,7 @@ public class UserService(CupcakeDiasContext context) : IUserService
     {
         // Ensure the role exists
         var role = await context.Roles.FindAsync(user.RoleId) ?? throw new Exception("Invalid role specified");
+        user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
 
         context.Users.Add(user);
         await context.SaveChangesAsync();
@@ -50,10 +51,9 @@ public class UserService(CupcakeDiasContext context) : IUserService
     }
 
     // Verify the password hash
-    private bool VerifyPasswordHash(string password, string storedHash)
+    private bool VerifyPasswordHash(string password, string passwordHash)
     {
-        // For simplicity, use direct comparison in this example
-        return password.Equals(storedHash);
+        return BCrypt.Net.BCrypt.Verify(password, passwordHash);
     }
 
     // Generate JWT token

@@ -21,7 +21,7 @@ public class UsersController(IUserService userService) : ControllerBase
     public async Task<IActionResult> GetUserById(Guid id)
     {
         var user = await userService.GetUserByIdAsync(id);
-        if (user == null)
+        if (user is null)
         {
             return NotFound();
         }
@@ -32,7 +32,7 @@ public class UsersController(IUserService userService) : ControllerBase
     public async Task<IActionResult> GetUserByEmail(string email)
     {
         var user = await userService.GetUserByEmailAsync(email);
-        if (user == null)
+        if (user is null)
         {
             return NotFound();
         }
@@ -44,7 +44,7 @@ public class UsersController(IUserService userService) : ControllerBase
     {
         var token = await userService.AuthenticateAsync(request.Email, request.Password);
 
-        if (token == null)
+        if (string.IsNullOrEmpty(token))
         {
             return Unauthorized("Invalid email or password.");
         }
