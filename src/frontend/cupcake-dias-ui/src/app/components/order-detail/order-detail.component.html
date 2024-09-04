@@ -1,0 +1,6 @@
+<div class="order-detail-list">
+  <div *ngFor="let detail of orderDetails" class="order-detail-item">
+    <p>{{ detail.cupcake?.name }} x{{ detail.quantity }}</p>
+    <p>Price: {{ detail.price | currency }}</p>
+  </div>
+</div>

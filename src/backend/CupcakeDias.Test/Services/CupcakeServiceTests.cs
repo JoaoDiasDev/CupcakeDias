@@ -25,7 +25,7 @@ public class CupcakeServiceTests
     public async Task CreateCupcakeAsync_ShouldAddCupcakeToDatabase()
     {
         // Arrange
-        var cupcake = new Cupcake { Name = "Vanilla", BaseFlavor = "Vanilla", Price = 3.50m };
+        var cupcake = new Cupcake { Name = "Vanilla", BaseFlavor = "Vanilla", Price = 3.50m, ImageUrl = "https://jaoao.com" };
 
         // Act
         await _cupcakeService.CreateCupcakeAsync(cupcake);
@@ -48,13 +48,14 @@ public class CupcakeServiceTests
             Name = "Chocolate",
             BaseFlavor = "Chocolate",
             Price = 4.00m,
+            ImageUrl = "https://jaoao.com",
             OrderDetails =
             [
-                new() { Quantity = 2, Price = 4.00m }
+                new OrderDetail { Quantity = 2, Price = 4.00m }
             ],
             CupcakeIngredients =
             [
-                new() { IngredientId = 1 }
+                new CupcakeIngredient { IngredientId = Guid.NewGuid()}
             ]
         };
         _context.Cupcakes.Add(cupcake);
@@ -76,8 +77,10 @@ public class CupcakeServiceTests
         // Arrange
         var cupcakes = new List<Cupcake>
         {
-            new() { Name = "Strawberry", BaseFlavor = "Strawberry", Price = 3.75m },
-            new() { Name = "Lemon", BaseFlavor = "Lemon", Price = 3.25m }
+            new() { Name = "Strawberry", BaseFlavor = "Strawberry",
+                Price = 3.75m, ImageUrl = "https://jaoao.com" },
+            new() { Name = "Lemon", BaseFlavor = "Lemon",
+                Price = 3.25m, ImageUrl = "https://jaoao.com" }
         };
         _context.Cupcakes.AddRange(cupcakes);
         await _context.SaveChangesAsync();
@@ -94,7 +97,13 @@ public class CupcakeServiceTests
     public async Task UpdateCupcakeAsync_ShouldUpdateCupcakeInDatabase()
     {
         // Arrange
-        var cupcake = new Cupcake { Name = "Red Velvet", BaseFlavor = "Red Velvet", Price = 4.50m };
+        var cupcake = new Cupcake
+        {
+            Name = "Red Velvet",
+            BaseFlavor = "Red Velvet",
+            Price = 4.50m,
+            ImageUrl = "https://jaoao.com"
+        };
         _context.Cupcakes.Add(cupcake);
         await _context.SaveChangesAsync();
 
@@ -113,7 +122,13 @@ public class CupcakeServiceTests
     public async Task DeleteCupcakeAsync_ShouldRemoveCupcakeFromDatabase()
     {
         // Arrange
-        var cupcake = new Cupcake { Name = "Blueberry", BaseFlavor = "Blueberry", Price = 4.00m };
+        var cupcake = new Cupcake
+        {
+            Name = "Blueberry",
+            BaseFlavor = "Blueberry",
+            Price = 4.00m,
+            ImageUrl = "https://jaoao.com"
+        };
         _context.Cupcakes.Add(cupcake);
         await _context.SaveChangesAsync();
 
@@ -130,7 +145,13 @@ public class CupcakeServiceTests
     public async Task AddIngredientsToCupcakeAsync_ShouldAddIngredientsToCupcake()
     {
         // Arrange
-        var cupcake = new Cupcake { Name = "Coconut", BaseFlavor = "Coconut", Price = 3.75m };
+        var cupcake = new Cupcake
+        {
+            Name = "Coconut",
+            BaseFlavor = "Coconut",
+            Price = 3.75m,
+            ImageUrl = "https://jaoao.com"
+        };
         var ingredient1 = new Ingredient { Name = "Coconut Flakes", Type = "Topping", Availability = true };
         var ingredient2 = new Ingredient { Name = "Vanilla", Type = "Flavoring", Availability = true };
         _context.Cupcakes.Add(cupcake);
@@ -138,7 +159,8 @@ public class CupcakeServiceTests
         await _context.SaveChangesAsync();
 
         // Act
-        await _cupcakeService.AddIngredientsToCupcakeAsync(cupcake.CupcakeId, [ingredient1.IngredientId, ingredient2.IngredientId]);
+        await _cupcakeService.AddIngredientsToCupcakeAsync(cupcake.CupcakeId,
+            [ingredient1.IngredientId, ingredient2.IngredientId]);
 
         // Assert
         var cupcakeWithIngredients = await _cupcakeService.GetCupcakeByIdAsync(cupcake.CupcakeId);
@@ -150,7 +172,7 @@ public class CupcakeServiceTests
     public async Task RemoveIngredientFromCupcakeAsync_ShouldRemoveIngredientFromCupcake()
     {
         // Arrange
-        var cupcake = new Cupcake { Name = "Almond", BaseFlavor = "Almond", Price = 4.25m };
+        var cupcake = new Cupcake { Name = "Almond", BaseFlavor = "Almond", Price = 4.25m, ImageUrl = "https://jaoao.com" };
         var ingredient = new Ingredient { Name = "Almond Extract", Type = "Flavoring", Availability = true };
         var cupcakeIngredient = new CupcakeIngredient { Cupcake = cupcake, Ingredient = ingredient };
         _context.Cupcakes.Add(cupcake);

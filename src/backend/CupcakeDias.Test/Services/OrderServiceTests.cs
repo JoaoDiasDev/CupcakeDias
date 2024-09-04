@@ -1,10 +1,6 @@
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using CupcakeDias.Data;
 using CupcakeDias.Data.Entities;
 using CupcakeDias.Shared.Consts;
-using CupcakeDias.Shared.Dtos;
 using CupcakeDias.Shared.Services.Implementations;
 using CupcakeDias.Shared.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -15,8 +11,8 @@ namespace CupcakeDias.Test.Services;
 public class OrderServiceTests
 {
     private readonly OrderService _orderService;
-    private readonly Mock<IWhatsAppService> _mockWhatsAppService;
     private readonly CupcakeDiasContext _context;
+    private readonly Mock<IEmailService> _emailServiceMock;
 
     public OrderServiceTests()
     {
@@ -24,9 +20,9 @@ public class OrderServiceTests
         .UseInMemoryDatabase(databaseName: "TestDatabase")
         .Options;
 
+        _emailServiceMock = new Mock<IEmailService>();
         _context = new CupcakeDiasContext(options);
-        _mockWhatsAppService = new Mock<IWhatsAppService>();
-        _orderService = new OrderService(_context, _mockWhatsAppService.Object);
+        _orderService = new OrderService(_context, _emailServiceMock.Object);
     }
 
     [Fact]
@@ -43,12 +39,13 @@ public class OrderServiceTests
                 Name = "John Doe",
                 Address = "123 Main St",
                 PasswordHash = "passwordHash",
-                PhoneNumber = "+1234567890"
+                PhoneNumber = "+1234567890",
+                RoleId = Guid.NewGuid(),
             },
 
             OrderDetails =
             [
-                new() { CupcakeId = 1, Quantity = 2, Price = 5.00m }
+                new OrderDetail { CupcakeId = Guid.NewGuid(), Quantity = 2, Price = 5.00m }
             ]
         };
 
@@ -58,13 +55,10 @@ public class OrderServiceTests
         // Assert
         var savedOrder = await _context.Orders.Include(o => o.OrderDetails).FirstOrDefaultAsync();
         Assert.NotNull(savedOrder);
-        Assert.Equal(order.OrderDetails.Count, actual: savedOrder?.OrderDetails?.Count);
-        var whatsAppMessageDto = new WhatsAppMessageDto
-        {
-            Message = $"Thank you for your order! Your order ID is {createdOrder.OrderId}.",
-            PhoneNumber = "+1234567890"
-        };
-        _mockWhatsAppService.Verify(ws => ws.SendMessageAsync(whatsAppMessageDto), Times.Once);
+        Assert.Equal(order.OrderDetails.Count, actual: savedOrder.OrderDetails?.Count);
+
+        _emailServiceMock.Verify(ws => ws
+            .SendEmailAsync(order.User.Email, "Test", "testing"), Times.Once);
     }
 
     [Fact]
@@ -72,7 +66,7 @@ public class OrderServiceTests
     public async Task GetOrdersByUserAsync_ShouldReturnUserOrders()
     {
         // Arrange
-        var userId = 1;
+        var userId = Guid.NewGuid();
         var orders = new List<Order>
         {
             new() {Status = OrderStatus.Pending, UserId = userId, OrderDetails = [] },

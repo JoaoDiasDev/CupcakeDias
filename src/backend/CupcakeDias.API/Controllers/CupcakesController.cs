@@ -1,16 +1,17 @@
 using CupcakeDias.Data.Entities;
 using CupcakeDias.Shared.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace CupcakeDias.API.Controllers;
 
 [ApiController]
+[Authorize]
 [Route("api/[controller]")]
 public class CupcakesController(ICupcakeService cupcakeService) : ControllerBase
 {
     [HttpPost]
+    [Authorize(Roles = "Admin,Manager")]
     public async Task<IActionResult> CreateCupcake([FromBody] Cupcake cupcake)
     {
         if (cupcake == null)
@@ -22,10 +23,10 @@ public class CupcakesController(ICupcakeService cupcakeService) : ControllerBase
         return CreatedAtAction(nameof(GetCupcakeById), new { id = createdCupcake.CupcakeId }, createdCupcake);
     }
 
-    [HttpGet("{id}")]
-    public async Task<IActionResult> GetCupcakeById(int id)
+    [HttpGet("{cupcakeId:guid}")]
+    public async Task<IActionResult> GetCupcakeById(Guid cupcakeId)
     {
-        var cupcake = await cupcakeService.GetCupcakeByIdAsync(id);
+        var cupcake = await cupcakeService.GetCupcakeByIdAsync(cupcakeId);
         if (cupcake == null)
         {
             return NotFound();
@@ -34,21 +35,23 @@ public class CupcakesController(ICupcakeService cupcakeService) : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> GetAllCupcakes()
     {
         var cupcakes = await cupcakeService.GetAllCupcakesAsync();
         return Ok(cupcakes);
     }
 
-    [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateCupcake(int id, [FromBody] Cupcake cupcake)
+    [HttpPut("{cupcakeId:guid}")]
+    [Authorize(Roles = "Admin,Manager")]
+    public async Task<IActionResult> UpdateCupcake(Guid cupcakeId, [FromBody] Cupcake cupcake)
     {
-        if (cupcake == null || cupcake.CupcakeId != id)
+        if (cupcake == null || cupcake.CupcakeId != cupcakeId)
         {
             return BadRequest("Cupcake is null or ID mismatch.");
         }
 
-        var existingCupcake = await cupcakeService.GetCupcakeByIdAsync(id);
+        var existingCupcake = await cupcakeService.GetCupcakeByIdAsync(cupcakeId);
         if (existingCupcake == null)
         {
             return NotFound();
@@ -58,25 +61,26 @@ public class CupcakesController(ICupcakeService cupcakeService) : ControllerBase
         return NoContent();
     }
 
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteCupcake(int id)
+    [HttpDelete("{cupcakeId:guid}")]
+    [Authorize(Roles = "Admin,Manager")]
+    public async Task<IActionResult> DeleteCupcake(Guid cupcakeId)
     {
-        var cupcake = await cupcakeService.GetCupcakeByIdAsync(id);
+        var cupcake = await cupcakeService.GetCupcakeByIdAsync(cupcakeId);
         if (cupcake == null)
         {
             return NotFound();
         }
 
-        await cupcakeService.DeleteCupcakeAsync(id);
+        await cupcakeService.DeleteCupcakeAsync(cupcakeId);
         return NoContent();
     }
 
-    [HttpPost("{id}/ingredients")]
-    public async Task<IActionResult> AddIngredientsToCupcake(int id, [FromBody] List<int> ingredientIds)
+    [HttpPost("{cupcakeId:guid}/ingredients")]
+    public async Task<IActionResult> AddIngredientsToCupcake(Guid cupcakeId, [FromBody] List<Guid> ingredientIds)
     {
         try
         {
-            await cupcakeService.AddIngredientsToCupcakeAsync(id, ingredientIds);
+            await cupcakeService.AddIngredientsToCupcakeAsync(cupcakeId, ingredientIds);
             return NoContent();
         }
         catch (KeyNotFoundException)
@@ -85,10 +89,10 @@ public class CupcakesController(ICupcakeService cupcakeService) : ControllerBase
         }
     }
 
-    [HttpDelete("{id}/ingredients/{ingredientId}")]
-    public async Task<IActionResult> RemoveIngredientFromCupcake(int id, int ingredientId)
+    [HttpDelete("{cupcakeId:guid}/ingredients/{ingredientId:guid}")]
+    public async Task<IActionResult> RemoveIngredientFromCupcake(Guid cupcakeId, Guid ingredientId)
     {
-        await cupcakeService.RemoveIngredientFromCupcakeAsync(id, ingredientId);
+        await cupcakeService.RemoveIngredientFromCupcakeAsync(cupcakeId, ingredientId);
         return NoContent();
     }
 

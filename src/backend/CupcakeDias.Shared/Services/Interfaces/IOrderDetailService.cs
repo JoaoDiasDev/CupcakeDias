@@ -5,6 +5,6 @@ namespace CupcakeDias.Shared.Services.Interfaces;
 public interface IOrderDetailService
 {
     Task<OrderDetail> CreateOrderDetailAsync(OrderDetail orderDetail);
-    Task<OrderDetail> GetOrderDetailByIdAsync(int orderDetailId);
-    Task<IEnumerable<OrderDetail>> GetOrderDetailsByOrderIdAsync(int orderId);
+    Task<OrderDetail> GetOrderDetailByIdAsync(Guid orderDetailId);
+    Task<IEnumerable<OrderDetail>> GetOrderDetailsByOrderIdAsync(Guid orderId);
 }

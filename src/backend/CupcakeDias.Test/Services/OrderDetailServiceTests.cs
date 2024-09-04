@@ -26,7 +26,13 @@ public class OrderDetailServiceTests
     public async Task CreateOrderDetailAsync_ShouldAddOrderDetailToDatabase()
     {
         // Arrange
-        var orderDetail = new OrderDetail { OrderId = 1, CupcakeId = 1, Quantity = 2, Price = 5.00m };
+        var orderDetail = new OrderDetail
+        {
+            OrderId = Guid.NewGuid(),
+            CupcakeId = Guid.NewGuid(),
+            Quantity = 2,
+            Price = 5.00m
+        };
 
         // Act
         var createdOrderDetail = await _orderDetailService.CreateOrderDetailAsync(orderDetail);
@@ -45,8 +51,14 @@ public class OrderDetailServiceTests
     public async Task GetOrderDetailByIdAsync_ShouldReturnOrderDetailWithDetails()
     {
         // Arrange
-        var order = new Order { Status = OrderStatus.Pending, UserId = 1 };
-        var cupcake = new Cupcake { Name = "Chocolate", BaseFlavor = "Chocolate", Price = 4.00m };
+        var order = new Order { Status = OrderStatus.Pending, UserId = Guid.NewGuid() };
+        var cupcake = new Cupcake
+        {
+            Name = "Chocolate",
+            BaseFlavor = "Chocolate",
+            Price = 4.00m,
+            ImageUrl = "https://jaodias.com"
+        };
         var orderDetail = new OrderDetail { Order = order, Cupcake = cupcake, Quantity = 2, Price = 4.00m };
         _context.Orders.Add(order);
         _context.Cupcakes.Add(cupcake);
@@ -68,22 +80,24 @@ public class OrderDetailServiceTests
     public async Task GetOrderDetailsByOrderIdAsync_ShouldReturnAllOrderDetailsForOrder()
     {
         // Arrange
-        var order = new Order { Status = OrderStatus.Pending, UserId = 1 };
+        var order = new Order { Status = OrderStatus.Pending, UserId = Guid.NewGuid() };
         var orderDetails = new List<OrderDetail>
         {
-            new() { Order = order, CupcakeId = 1, Quantity = 2, Price = 4.00m },
-            new() { Order = order, CupcakeId = 2, Quantity = 1, Price = 7.50m }
+            new() { Order = order, CupcakeId = Guid.NewGuid(), Quantity = 2, Price = 4.00m },
+            new() { Order = order, CupcakeId = Guid.NewGuid(), Quantity = 1, Price = 7.50m }
         };
         _context.Orders.Add(order);
         _context.OrderDetails.AddRange(orderDetails);
         await _context.SaveChangesAsync();
 
         // Act
-        var retrievedOrderDetails = await _orderDetailService.GetOrderDetailsByOrderIdAsync(order.OrderId);
+        var retrievedOrderDetails = await _orderDetailService
+            .GetOrderDetailsByOrderIdAsync(order.OrderId);
 
         // Assert
-        Assert.Equal(2, retrievedOrderDetails.Count());
-        Assert.Equal(4.00m, retrievedOrderDetails.First().Price);
-        Assert.Equal(7.50m, retrievedOrderDetails.Last().Price);
+        var enumerable = retrievedOrderDetails.ToList();
+        Assert.Equal(2, enumerable.Count());
+        Assert.Equal(4.00m, enumerable.First().Price);
+        Assert.Equal(7.50m, enumerable.Last().Price);
     }
 }

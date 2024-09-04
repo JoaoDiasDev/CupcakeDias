@@ -1,4 +1,3 @@
-using System;
 using CupcakeDias.Data;
 using CupcakeDias.Data.Entities;
 using CupcakeDias.Shared.Services.Implementations;
@@ -32,11 +31,12 @@ public class UserServiceTests
             Name = "John Doe",
             Address = "123 Main St",
             PasswordHash = "passwordHash",
-            PhoneNumber = "+1234567890"
+            PhoneNumber = "+1234567890",
+            RoleId = Guid.NewGuid()
         };
 
         // Act
-        var createdUser = await _userService.CreateUserAsync(user);
+        await _userService.CreateUserAsync(user);
 
         // Assert
         var savedUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == "pP7rF@example.com");
@@ -55,7 +55,8 @@ public class UserServiceTests
             Name = "John Doe",
             Address = "123 Main St",
             PasswordHash = "passwordHash",
-            PhoneNumber = "+1234567890"
+            PhoneNumber = "+1234567890",
+            RoleId = Guid.NewGuid()
         };
         _context.Users.Add(user);
         await _context.SaveChangesAsync();
@@ -79,7 +80,8 @@ public class UserServiceTests
             Name = "John Doe",
             Address = "123 Main St",
             PasswordHash = "passwordHash",
-            PhoneNumber = "+1234567890"
+            PhoneNumber = "+1234567890",
+            RoleId = Guid.NewGuid()
         };
         _context.Users.Add(user);
         await _context.SaveChangesAsync();

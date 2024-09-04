@@ -1,0 +1,14 @@
+<div class="order-list">
+  <div *ngFor="let order of orders" class="order-item">
+    <h3>Order #{{ order.orderId }}</h3>
+    <p>Status: {{ order.status }}</p>
+    <p>Order Date: {{ order.orderDate | date }}</p>
+    <button
+      mat-raised-button
+      color="primary"
+      (click)="viewOrder(order.orderId)"
+    >
+      View Details
+    </button>
+  </div>
+</div>

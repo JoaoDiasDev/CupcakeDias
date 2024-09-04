@@ -5,6 +5,7 @@ namespace CupcakeDias.Shared.Services.Interfaces;
 
 public interface IOrderService
 {
-    Task<IEnumerable<Order>> GetOrdersByUserAsync(int userId);
+    Task<IEnumerable<Order>> GetOrdersByUserAsync(Guid userId);
     Task<Order> CreateOrderAsync(Order order);
+    Task SendOrderConfirmationEmailAsync(Order order);
 }

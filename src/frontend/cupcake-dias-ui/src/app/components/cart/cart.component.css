@@ -1,0 +1,12 @@
+.cart-container {
+  margin: 20px;
+}
+
+.cart-summary {
+  margin-top: 20px;
+  text-align: right;
+}
+
+button {
+  margin-top: 10px;
+}

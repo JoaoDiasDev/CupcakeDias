@@ -1,4 +1,5 @@
 using CupcakeDias.Data.Entities;
+using CupcakeDias.Data.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace CupcakeDias.Data;
@@ -6,6 +7,7 @@ namespace CupcakeDias.Data;
 public class CupcakeDiasContext(DbContextOptions<CupcakeDiasContext> options) : DbContext(options)
 {
     public DbSet<User> Users { get; set; }
+    public DbSet<Role> Roles { get; set; }
     public DbSet<Cupcake> Cupcakes { get; set; }
     public DbSet<Ingredient> Ingredients { get; set; }
     public DbSet<Order> Orders { get; set; }
@@ -22,8 +24,9 @@ public class CupcakeDiasContext(DbContextOptions<CupcakeDiasContext> options) : 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Seed();
         base.OnModelCreating(modelBuilder);
-
+        
         modelBuilder.Entity<Cart>()
             .HasOne(c => c.User)
             .WithMany(u => u.Carts)

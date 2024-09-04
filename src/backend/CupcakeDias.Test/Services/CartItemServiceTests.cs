@@ -1,8 +1,6 @@
-using System;
 using CupcakeDias.Data;
 using CupcakeDias.Data.Entities;
 using CupcakeDias.Shared.Services.Implementations;
-using CupcakeDias.Shared.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace CupcakeDias.Test.Services;
@@ -27,7 +25,7 @@ public class CartItemServiceTests
     public async Task AddItemAsync_ShouldAddItemToCart()
     {
         // Arrange
-        var item = new CartItem { CartId = 1, CupcakeId = 1, Quantity = 2, Price = 5.00m };
+        var item = new CartItem { CartId = Guid.NewGuid(), CupcakeId = Guid.NewGuid(), Quantity = 2, Price = 5.00m };
 
         // Act
         await _cartItemService.AddItemAsync(item);
@@ -43,11 +41,11 @@ public class CartItemServiceTests
     public async Task GetCartItemsAsync_ShouldReturnItemsForUser()
     {
         // Arrange
-        var cartId = 1;
+        var cartId = Guid.NewGuid();
         var items = new List<CartItem>
         {
-            new CartItem { CartId = cartId, CupcakeId = 1, Quantity = 2, Price = 5.00m },
-            new CartItem { CartId = cartId, CupcakeId = 2, Quantity = 1, Price = 7.50m }
+            new CartItem { CartId = cartId, CupcakeId = Guid.NewGuid(), Quantity = 2, Price = 5.00m },
+            new CartItem { CartId = cartId, CupcakeId = Guid.NewGuid(), Quantity = 1, Price = 7.50m }
         };
         _context.CartItems.AddRange(items);
         await _context.SaveChangesAsync();
@@ -56,7 +54,8 @@ public class CartItemServiceTests
         var cartItems = await _cartItemService.GetCartItemsByCartIdAsync(cartId);
 
         // Assert
-        Assert.Equal(2, cartItems.Count());
-        Assert.Equal(5.00m, cartItems.First().Price);
+        var enumerable = cartItems.ToList();
+        Assert.Equal(2, enumerable.Count());
+        Assert.Equal(5.00m, enumerable.First().Price);
     }
 }

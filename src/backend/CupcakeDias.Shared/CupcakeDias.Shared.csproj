@@ -10,4 +10,12 @@
     <ProjectReference Include="..\CupcakeDias.Data\CupcakeDias.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+    <PackageReference Include="dotenv.net" Version="3.2.0" />
+    <PackageReference Include="MailKit" Version="4.7.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.2" />
+  </ItemGroup>
+
 </Project>

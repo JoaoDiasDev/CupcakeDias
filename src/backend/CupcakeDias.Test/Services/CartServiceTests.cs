@@ -25,7 +25,7 @@ public class CartServiceTests
     public async Task CreateCartAsync_ShouldAddCartToDatabase()
     {
         // Arrange
-        var cart = new Cart { UserId = 1, Status = "Active" };
+        var cart = new Cart { UserId = Guid.NewGuid(), Status = "Active" };
 
         // Act
         await _cartService.CreateCartAsync(cart);
@@ -44,12 +44,12 @@ public class CartServiceTests
         // Arrange
         var cart = new Cart
         {
-            UserId = 1,
+            UserId = Guid.NewGuid(),
             Status = "Active",
             CartItems =
             [
-                new() { CupcakeId = 1, Quantity = 2, Price = 5.00m },
-                new() { CupcakeId = 2, Quantity = 1, Price = 7.50m }
+                new CartItem { CupcakeId = Guid.NewGuid(), Quantity = 2, Price = 5.00m },
+                new CartItem { CupcakeId = Guid.NewGuid(), Quantity = 1, Price = 7.50m }
             ]
         };
         _context.Carts.Add(cart);
@@ -69,7 +69,7 @@ public class CartServiceTests
     public async Task GetCartsByUserIdAsync_ShouldReturnCartsForUser()
     {
         // Arrange
-        var userId = 1;
+        var userId = Guid.NewGuid();
         var carts = new List<Cart>
         {
             new() { UserId = userId, Status = "Active" },
@@ -82,8 +82,9 @@ public class CartServiceTests
         var userCarts = await _cartService.GetCartsByUserIdAsync(userId);
 
         // Assert
-        Assert.Equal(2, userCarts.Count());
-        Assert.Equal("Active", userCarts.First().Status);
+        var enumerable = userCarts.ToList();
+        Assert.Equal(2, enumerable.Count());
+        Assert.Equal("Active", enumerable.First().Status);
     }
 
     [Fact]
@@ -91,7 +92,7 @@ public class CartServiceTests
     public async Task UpdateCartAsync_ShouldUpdateCartInDatabase()
     {
         // Arrange
-        var cart = new Cart { UserId = 1, Status = "Active" };
+        var cart = new Cart { UserId = Guid.NewGuid(), Status = "Active" };
         _context.Carts.Add(cart);
         await _context.SaveChangesAsync();
 
@@ -100,7 +101,7 @@ public class CartServiceTests
         await _cartService.UpdateCartAsync(cart);
 
         // Assert
-        var updatedCart = await _context.Carts.FirstOrDefaultAsync(c => c.CartId == cart.CartId);
+        var updatedCart = await _context.Carts.FirstOrDefaultAsync(c => c.CartId.Equals(cart.CartId));
         Assert.NotNull(updatedCart);
         Assert.Equal("Pending", updatedCart.Status);
     }
@@ -110,7 +111,7 @@ public class CartServiceTests
     public async Task DeleteCartAsync_ShouldRemoveCartFromDatabase()
     {
         // Arrange
-        var cart = new Cart { UserId = 1, Status = "Active" };
+        var cart = new Cart { UserId = Guid.NewGuid(), Status = "Active" };
         _context.Carts.Add(cart);
         await _context.SaveChangesAsync();
 
