@@ -9,17 +9,14 @@ export class AuthGuard implements CanActivate {
   constructor(private authService: AuthService, private router: Router) {}
 
   /**
-   * If the user has a valid JWT token, allow the route to load.
-   * Otherwise, redirect to the login page.
-   * @returns {boolean} true if the route is allowed, false if not
+   * Guard route access, allowing only authenticated users
+   * @returns True if authenticated, otherwise redirects to login
    */
   canActivate(): boolean {
-    const token = this.authService.getToken(); // Get the JWT token from localStorage
-    if (!token) {
-      // If no token, redirect to login
+    if (!this.authService.isAuthenticated()) {
       this.router.navigate(['/login']);
       return false;
     }
-    return true; // Allow access if token exists
+    return true;
   }
 }

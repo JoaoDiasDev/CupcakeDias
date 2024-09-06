@@ -1,115 +1,173 @@
 import { Component, OnInit } from '@angular/core';
-import { CartService } from '../../services/cart.service';
-import { Cart } from '../../models/cart.model';
+import { HttpClient } from '@angular/common/http';
 import { CartItem } from '../../models/cart-item.model';
-import { MatTableModule } from '@angular/material/table';
+import { Cart } from '../../models/cart.model';
+import { environment } from '../../environments/environment';
+import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { CommonModule } from '@angular/common';
-import { Order } from '../../models/order.model';
-import { OrderStatus } from '../../consts/order-status';
-import { CartStatus } from '../../consts/cart-status';
-import { v4 as uuidv4 } from 'uuid';
+import { FormsModule } from '@angular/forms';
+import { AuthService } from '../../services/auth.service';
+import { JwtToken } from '../../models/jwt-token.model';
 import { Router } from '@angular/router';
+import { CartStatus } from '../../enums/cart-status.enum';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.css'],
   standalone: true,
-  imports: [MatTableModule, MatButtonModule, CommonModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    FormsModule,
+  ],
 })
 export class CartComponent implements OnInit {
-  cartId = uuidv4(); // Replace with logic to get the user's active cart
   cart: Cart | undefined;
   cartItems: CartItem[] = [];
-  userId = uuidv4(); // TODO Replace with logic to get user active
+  userId: string | null = null;
 
-  constructor(private cartService: CartService, private router: Router) {}
+  constructor(private http: HttpClient, private authService: AuthService, private router: Router) {}
 
   /**
-   * Initializes the component and loads the cart.
+   * OnInit lifecycle hook to fetch the user's cart
    */
   ngOnInit(): void {
-    this.loadActiveCart();
+    this.userId = this.getUserIdFromToken();
+
+    if (this.userId) {
+      console.log('User logged in with ID:', this.userId);
+      this.fetchCart();
+    } else {
+      console.error('User not logged in or invalid token');
+    }
   }
 
-  // Load the active cart for the user
-  loadActiveCart(): void {
-    this.cartService.getActiveCart(this.userId).subscribe({
-      next: (cart) => {
-        this.cart = cart;
-        this.cartId = cart.cartId;
-        this.cartItems = cart.cartItems || [];
+  /**
+   * Get the logged-in user's ID from the JWT token stored in localStorage
+   * @returns The user ID (unique_name) or null if the token is invalid
+   */
+  getUserIdFromToken(): string | null {
+    const token = this.authService.getToken();
+    if (!token) {
+      console.error('No token found in localStorage');
+      return null;
+    }
+
+    const decodedToken = this.decodeToken(token);
+    if (!decodedToken) {
+      console.error('Failed to decode token or token is invalid');
+      return null;
+    }
+
+    return decodedToken.unique_name || null;
+  }
+
+  /**
+   * Decode JWT token using the JwtToken model
+   * @param token The JWT token
+   * @returns Decoded JwtToken object or null if decoding fails
+   */
+  decodeToken(token: string): JwtToken | null {
+    try {
+      const parts = token.split('.');
+      if (parts.length !== 3) {
+        throw new Error('Invalid token format');
+      }
+
+      const decodedPayload = atob(parts[1]);
+      const jwtToken: JwtToken = JSON.parse(decodedPayload) as JwtToken;
+
+      if (!jwtToken.unique_name || !jwtToken.role) {
+        throw new Error('Token is missing required fields');
+      }
+
+      return jwtToken;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return null;
+    }
+  }
+
+  /**
+   * Fetch the user's cart based on the logged-in user's ID
+   * @returns void
+   */
+  fetchCart(): void {
+    if (!this.userId) {
+      console.error('User ID not available');
+      return;
+    }
+
+    const apiUrl = `${environment.apiUrl}/carts/user/${this.userId}`;
+    this.http.get<Cart>(apiUrl).subscribe({
+      next: (data: Cart) => {
+        this.cart = data;
+        this.cartItems = data.cartItems || [];
       },
-      error: (err) => {
-        console.error('Error loading cart:', err);
+      error: (error) => {
+        console.error('Failed to fetch cart', error);
       },
     });
   }
 
   /**
-   * Remove item from the cart
+   * Remove a cart item by ID
+   * @param cartItemId The ID of the cart item to remove
    */
   removeItem(cartItemId: string): void {
-    this.cartService.removeCartItem(cartItemId).subscribe(() => {
-      this.cartItems = this.cartItems.filter(
-        (item) => item.cartItemId !== cartItemId
-      );
+    const apiUrl = `${environment.apiUrl}/cartItems/${cartItemId}`;
+    this.http.delete(apiUrl).subscribe({
+      next: () => {
+        this.cartItems = this.cartItems.filter(
+          (item) => item.cartItemId !== cartItemId
+        );
+      },
+      error: (error) => {
+        console.error('Failed to remove item', error);
+      },
     });
   }
 
   /**
-   * Proceed to checkout
+   * Update the quantity of a cart item
+   * @param cartItem The cart item to update
+   * @param quantity The new quantity value
+   */
+  updateQuantity(cartItem: CartItem, quantity: number): void {
+    cartItem.quantity = quantity;
+    const apiUrl = `${environment.apiUrl}/cartItems`; // Update cart item quantity
+    this.http.put(apiUrl, cartItem).subscribe({
+      next: () => {
+        console.log('Quantity updated successfully');
+      },
+      error: (error) => {
+        console.error('Failed to update quantity', error);
+      },
+    });
+  }
+
+  /**
+   * Proceed to checkout, submitting the cart to the backend and changing its status to Completed
    */
   proceedToCheckout(): void {
-    if (!this.cart || !this.cart.user) return;
+    const apiUrl = `${environment.apiUrl}/carts/${this.cart?.cartId}/status`;
+    const statusPayload = { status: CartStatus.Completed };
 
-    const orderGuid = uuidv4();
-    // Step 1: Prepare order object
-    const newOrder: Order = {
-      orderId: orderGuid,
-      userId: this.cart.userId,
-      orderDate: new Date(),
-      status: OrderStatus.Processing,
-      orderDetails: this.cartItems.map((item) => ({
-        orderDetailId: uuidv4(),
-        orderId: orderGuid,
-        cupcakeId: item.cupcakeId ?? '',
-        quantity: item.quantity,
-        price: item.price,
-      })),
-    };
-
-    // Step 2: Create order and handle responses
-    this.cartService.createOrder(newOrder).subscribe({
+    this.http.put(apiUrl, statusPayload).subscribe({
       next: () => {
-        // Step 3: Once the order is created, update cart status to 'Completed'
-        this.cartService
-          .updateCartStatus(this.cartId, CartStatus.Completed)
-          .subscribe({
-            next: () => {
-              // Step 4: Navigate to the success page after checkout
-              this.router.navigate(['/checkout-success']);
-            },
-            error: (err) => {
-              console.error('Error updating cart status:', err);
-            },
-          });
+        console.log('Checkout completed, cart status updated to Completed');
+        this.router.navigate(['/checkout-success']); // Redirect after successful checkout
       },
-      error: (err) => {
-        console.error('Error creating order:', err);
-        // Handle error, show message to the user if necessary
+      error: (error) => {
+        console.error('Failed to proceed to checkout', error);
       },
     });
-  }
-
-  /**
-   * Calculate total price
-   */
-  getTotalPrice(): number {
-    return this.cartItems.reduce(
-      (total, item) => total + item.price * item.quantity,
-      0
-    );
   }
 }

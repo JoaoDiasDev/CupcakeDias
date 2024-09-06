@@ -1,4 +1,87 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --primary-color: #4a90e2; /* Blue Primary */
+  --accent-color: #f5a623; /* Warm Orange Accent */
+  --background-color: #f9fafc; /* Light Neutral Background */
+  --text-color: #333333; /* Dark Gray Text */
+  --footer-bg-color: #1f2937; /* Dark Footer Background */
+  --footer-text-color: #ffffff; /* Light Footer Text */
+  --font-size: 1.15rem; /* Base Font Size */
+  --font-size-large: 1.25rem; /* Large Font Size */
+  --font-size-small: 1rem; /* Small Font Size */
+  --line-height: 1.7; /* Line Height for Readability */
+  --card-padding: 20px; /* Padding for cards and containers */
+  --card-border-radius: 8px; /* Rounded corners for cards */
+  --box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+  margin: 0;
+  font-family: "Roboto", sans-serif;
+  background-color: var(--background-color);
+  font-size: var(--font-size);
+  line-height: var(--line-height);
+  color: var(--text-color);
+}
+
+.navbar {
+  background-color: var(--primary-color);
+  color: var(--footer-text-color);
+  font-size: var(--font-size-large);
+  padding: var(--card-padding);
+}
+
+.content {
+  padding: var(--card-padding);
+  margin-bottom: 50px; /* Adjusting for footer space */
+}
+
+footer {
+  background-color: var(--footer-bg-color);
+  color: var(--footer-text-color);
+  text-align: center;
+  padding: 20px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  font-size: var(--font-size-small);
+  z-index: 1000;
+}
+
+footer img {
+  margin-left: 10px;
+  vertical-align: middle;
+  width: 30px;
+}
+
+.mat-card {
+  background-color: #ffffff; /* White background for cards */
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--box-shadow);
+  padding: var(--card-padding);
+}
+
+.mat-form-field {
+  width: 100px;
+  margin-right: 10px;
+}
+
+button {
+  font-weight: bold;
+}
+
+h2 {
+  color: var(--primary-color);
+  font-size: var(--font-size-large);
+}
+
+p {
+  font-size: var(--font-size);
+}
+
+img {
+  max-width: 100%;
+  border-radius: var(--card-border-radius);
+  object-fit: cover;
+}

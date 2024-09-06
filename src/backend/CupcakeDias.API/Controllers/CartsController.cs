@@ -41,10 +41,20 @@ public class CartsController(ICartService cartService) : ControllerBase
         var cartsList = carts.ToList();
         if (cartsList is null || !cartsList.Any())
         {
-            return NotFound();
+            var cart = new Cart
+            {
+                UserId = userId,
+                Status = CartStatus.Open,
+            };
+
+            var cartCreated = await cartService.CreateCartAsync(cart);
+            if (cartCreated is null) return BadRequest();
+
+            cartsList?.Add(cartCreated);
+
         }
 
-        return Ok(cartsList.FirstOrDefault(c =>
+        return Ok(cartsList?.OrderByDescending(c => c.CreatedAt).FirstOrDefault(c =>
             !c.Status.Equals(CartStatus.Canceled)
             && !c.Status.Equals(CartStatus.Completed)
         ));
@@ -53,7 +63,7 @@ public class CartsController(ICartService cartService) : ControllerBase
     [HttpPut("{cartId:guid}")]
     public async Task<IActionResult> UpdateCart(Guid cartId, [FromBody] Cart cart)
     {
-        if (cart is not null || !(cart!.CartId.Equals(cartId)))
+        if (cart is null || !(cart.CartId.Equals(cartId)))
         {
             return BadRequest("Cart is null or ID mismatch.");
         }

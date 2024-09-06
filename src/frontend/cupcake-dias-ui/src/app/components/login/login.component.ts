@@ -1,32 +1,49 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { MatFormField } from '@angular/material/form-field';
-import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import {
+  MatFormField,
+  MatInputModule,
+  MatLabel,
+} from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  standalone: true,
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
-  imports: [MatFormField, FormsModule],
+  standalone: true,
+  imports: [
+    FormsModule,
+    MatInputModule,
+    MatButtonModule,
+    CommonModule,
+    MatFormField,
+    MatLabel,
+  ],
 })
 export class LoginComponent {
   email = '';
   password = '';
+  errorMessage: string | null = null;
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  /**
+   * Log in the user by sending credentials to the server
+   */
   login(): void {
     this.authService.login(this.email, this.password).subscribe({
       next: (response) => {
-        this.authService.storeToken(response.token); // Store the token
-        this.router.navigate(['/']); // Navigate to the home page
+        const token = response.token;
+        this.authService.setToken(token);
+        this.router.navigate(['/']); // Navigate to home or dashboard after login
       },
       error: (err) => {
-        console.error('Login failed:', err);
-        // Display an error message to the user
+        this.errorMessage = 'Invalid email or password';
+        console.error('Login failed', err);
       },
     });
   }

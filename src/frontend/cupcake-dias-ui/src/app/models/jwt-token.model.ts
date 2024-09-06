@@ -1,5 +1,7 @@
 export interface JwtToken {
-  userId: string; // User Id
-  role: string; // User role (e.g., 'Admin', 'Manager')
-  exp: number; // Token expiration time (Unix timestamp)
+  unique_name: string; // Maps to the user's unique identifier (userId)
+  role: string; // Maps to the user's role (e.g., Admin)
+  nbf: number; // "Not before" - timestamp
+  exp: number; // Expiration time (Unix timestamp)
+  iat: number; // Issued at time (Unix timestamp)
 }

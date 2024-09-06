@@ -1,6 +1,5 @@
-.logo {
-  font-size: 1.5rem;
-  font-weight: bold;
+.navbar {
+  justify-content: space-between;
 }
 
 .spacer {
@@ -8,5 +7,6 @@
 }
 
 mat-toolbar {
-  padding: 0 1rem;
+  background-color: var(--primary-color);
+  color: white;
 }

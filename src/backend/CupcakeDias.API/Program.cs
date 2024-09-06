@@ -84,16 +84,17 @@ using (var scope = app.Services.CreateScope())
     dbContext.Database.Migrate();
 }
 
-app.UseAuthentication();
-app.UseAuthorization();
-
-app.MapControllers();
-
 app.UseCors(policyBuilder =>
 {
     policyBuilder.AllowAnyHeader();
     policyBuilder.AllowAnyMethod();
     policyBuilder.AllowAnyOrigin();
 });
+
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.MapControllers();
+
 
 app.Run();

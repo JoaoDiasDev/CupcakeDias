@@ -1,14 +1,51 @@
 .cupcake-list-container {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
+  justify-content: space-around;
+  margin: 20px 0;
 }
 
 .cupcake-item {
   width: 300px;
+  margin-bottom: 20px;
 }
 
 mat-card {
-  margin: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #ffffff; /* Set white background to avoid dark colors */
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+mat-card-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+mat-card-subtitle {
+  font-size: 1rem;
+  color: #757575;
+}
+
+mat-card-content {
+  margin-top: 10px;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+}
+
+.mat-form-field {
+  width: 100px; /* Better width for form field */
+}
+
+button {
+  font-weight: bold;
+}
+
+img {
+  max-height: 150px;
+  object-fit: cover;
+  border-radius: 8px;
 }

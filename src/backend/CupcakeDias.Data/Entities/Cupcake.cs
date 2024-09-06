@@ -15,7 +15,9 @@ public class Cupcake
     /// Base Price for cupcake
     /// </summary>
     public decimal Price { get; set; }
+    [StringLength(155)]
     public string Description { get; set; } = string.Empty;
+    [StringLength(500)]
     public required string ImageUrl { get; set; }
     [JsonIgnore]
     public ICollection<OrderDetail>? OrderDetails { get; set; }

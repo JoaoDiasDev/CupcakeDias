@@ -1,28 +1,33 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
 import { Cupcake } from '../models/cupcake.model';
-import { CartItem } from '../models/cart-item.model';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CupcakeService {
-  private readonly apiUrl = `${environment.apiUrl}`;
+  private apiUrl = `${environment.apiUrl}/cupcakes`;
 
   constructor(private http: HttpClient) {}
 
   /**
-   * Fetches a list of cupcakes from the backend.
-   * @returns Observable containing cupcake data.
+   * Fetches the list of available cupcakes from the backend.
+   * @returns Observable of the cupcake list.
    */
-  getAllCupcakes(): Observable<Cupcake[]> {
-    return this.http.get<Cupcake[]>(`${this.apiUrl}/cupcakes`);
+  getCupcakes(): Observable<Cupcake[]> {
+    return this.http.get<Cupcake[]>(this.apiUrl);
   }
 
-  // Add Cupcake to Cart as CartItem
-  addToCart(cartItem: CartItem): Observable<CartItem> {
-    return this.http.post<CartItem>(`${environment.apiUrl}/cartitems`, cartItem);
+  /**
+   * Adds a selected cupcake to the cart.
+   * @param cupcake The cupcake to add.
+   * @param quantity The quantity to add to the cart.
+   * @returns Observable indicating the success of the request.
+   */
+  addCupcakeToCart(cupcake: Cupcake, quantity: number): Observable<any> {
+    const cartItem = { cupcakeId: cupcake.cupcakeId, quantity };
+    return this.http.post(`${environment.apiUrl}/cartItems`, cartItem);
   }
 }

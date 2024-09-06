@@ -1,7 +1,4 @@
-import { User } from './user.model';
-
 export interface Role {
-  roleId: string;
-  roleName: string;
-  users?: User[];
+  roleId: string; // Maps to RoleId (Guid -> string)
+  roleName: string; // Maps to RoleName
 }

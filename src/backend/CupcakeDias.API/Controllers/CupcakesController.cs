@@ -20,7 +20,7 @@ public class CupcakesController(ICupcakeService cupcakeService) : ControllerBase
         }
 
         var createdCupcake = await cupcakeService.CreateCupcakeAsync(cupcake);
-        return CreatedAtAction(nameof(GetCupcakeById), new { id = createdCupcake.CupcakeId }, createdCupcake);
+        return CreatedAtAction(nameof(GetCupcakeById), new { cupcakeId = createdCupcake.CupcakeId }, createdCupcake);
     }
 
     [HttpGet("{cupcakeId:guid}")]

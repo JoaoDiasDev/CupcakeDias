@@ -29,4 +29,11 @@ public class CartItemService(CupcakeDiasContext context) : ICartItemService
     {
         return await context.CartItems.FirstOrDefaultAsync(ci => ci.CartItemId == cartItemId) ?? new CartItem();
     }
+
+    public async Task<CartItem> UpdateCartItemAsync(CartItem cartItem)
+    {
+        context.CartItems.Update(cartItem);
+        await context.SaveChangesAsync();
+        return cartItem;
+    }
 }

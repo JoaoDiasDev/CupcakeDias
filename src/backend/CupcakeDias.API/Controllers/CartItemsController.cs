@@ -49,5 +49,16 @@ public class CartItemsController(ICartItemService cartItemService) : ControllerB
         }
         return Ok(cartItem);
     }
+
+    [HttpPut]
+    public async Task<IActionResult> UpdateCartItemById([FromBody] CartItem cartItem)
+    {
+        var cartItemUpdated = await cartItemService.UpdateCartItemAsync(cartItem);
+        if (cartItemUpdated is null)
+        {
+            return NotFound();
+        }
+        return Ok(cartItemUpdated);
+    }
 }
 

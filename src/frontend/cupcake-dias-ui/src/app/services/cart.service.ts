@@ -2,67 +2,38 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Cart } from '../models/cart.model';
+import { environment } from '../environments/environment';
 import { CartItem } from '../models/cart-item.model';
-import { environment } from '../../environments/environment';
-import { Order } from '../models/order.model';
-import { CartStatus } from '../consts/cart-status';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CartService {
-  private apiUrl = `${environment.apiUrl}`;
+  private apiUrl = `${environment.apiUrl}/carts`;
 
   constructor(private http: HttpClient) {}
 
-  // Fetch a cart by its ID
-  getCartById(cartId: string): Observable<Cart> {
-    return this.http.get<Cart>(`${this.apiUrl}/${cartId}`);
+  getCart(): Observable<Cart> {
+    return this.http.get<Cart>(`${this.apiUrl}/user/current`);
   }
 
-  // Fetch cart items by Cart ID
-  getCartItemsByCartId(cartId: string): Observable<CartItem[]> {
-    return this.http.get<CartItem[]>(`${this.apiUrl}/cartitems/cart/${cartId}`);
+  addCartItem(cupcake: any, quantity: number): Observable<any> {
+    const cartItem = { cupcakeId: cupcake.cupcakeId, quantity };
+    return this.http.post(`${this.apiUrl}/items`, cartItem);
   }
 
-  // Add a cart item
-  addCartItem(cartItem: CartItem): Observable<CartItem> {
-    return this.http.post<CartItem>(`${this.apiUrl}/cartitems`, cartItem);
-  }
-
-  // Update the cart
-  updateCart(cartId: string, cart: Cart): Observable<undefined> {
-    return this.http.put<undefined>(`${this.apiUrl}/carts/${cartId}`, cart);
-  }
-
-  // Remove an item from the cart
-  removeCartItem(cartItemId: string): Observable<undefined> {
-    return this.http.delete<undefined>(
-      `${this.apiUrl}/cartitems/${cartItemId}`
+  updateCartItem(cartItem: CartItem): Observable<any> {
+    return this.http.put(
+      `${this.apiUrl}/items/${cartItem.cartItemId}`,
+      cartItem
     );
   }
 
-  // Delete the entire cart
-  deleteCart(cartId: string): Observable<undefined> {
-    return this.http.delete<undefined>(`${this.apiUrl}/carts/${cartId}`);
+  completeCart(cartId: string, status: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/${cartId}/status`, { status });
   }
 
-  // Update the cart status
-  updateCartStatus(cartId: string, status: string): Observable<undefined> {
-    const updateData = { status };
-    return this.http.put<undefined>(
-      `${this.apiUrl}/carts/${cartId}`,
-      updateData
-    );
-  }
-
-  // Create order and add order details
-  createOrder(order: Order): Observable<Order> {
-    return this.http.post<Order>(`${this.apiUrl}/orders`, order);
-  }
-
-  // Get the user's active cart (newest cart with status 'Open')
-  getActiveCart(userId: string): Observable<Cart> {
-    return this.http.get<Cart>(`${this.apiUrl}/carts/user/${userId}`);
+  completeOrder(status: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/orders/complete`, { status });
   }
 }
