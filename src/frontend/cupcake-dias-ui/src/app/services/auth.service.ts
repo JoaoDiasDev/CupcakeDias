@@ -5,6 +5,7 @@ import { environment } from '../environments/environment'; // Use this import pa
 import { BehaviorSubject, Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { JwtToken } from '../models/jwt-token.model';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -123,5 +124,19 @@ export class AuthService {
     this.userRole.next(null);
     localStorage.removeItem(this.tokenKey);
     this.router.navigate(['/login']);
+  }
+
+  /**
+   * Refresh token by making a request to the backend.
+   * @param refreshToken The refresh token to be used for getting a new token.
+   */
+  refreshToken(refreshToken: string): Observable<string> {
+    return this.http.post<string>(`${environment.apiUrl}/users/refresh-token`, {
+      refreshToken,
+    });
+  }
+
+  getUserById(userId: string): Observable<User> {
+    return this.http.get<User>(`${environment.apiUrl}/users/${userId}`);
   }
 }

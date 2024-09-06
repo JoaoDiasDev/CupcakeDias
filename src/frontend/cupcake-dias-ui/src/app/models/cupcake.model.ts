@@ -1,3 +1,6 @@
+import { CupcakeIngredient } from './cupcake-ingredient.model';
+
+
 export interface Cupcake {
   cupcakeId?: string; // Maps to CupcakeId (Guid in C# -> string in TypeScript)
   name: string; // Maps to Name
@@ -5,4 +8,5 @@ export interface Cupcake {
   price: number; // Maps to Price (decimal in C# -> number in TypeScript)
   description: string; // Maps to Description
   imageUrl: string; // Maps to ImageUrl
+  cupcakeIngredients?: CupcakeIngredient[];
 }

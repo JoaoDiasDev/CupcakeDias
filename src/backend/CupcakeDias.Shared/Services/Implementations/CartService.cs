@@ -18,6 +18,7 @@ public class CartService(CupcakeDiasContext context) : ICartService
     public async Task<Cart> GetCartByIdAsync(Guid cartId)
     {
         return await context.Carts
+                .AsNoTracking()
             .Include(c => c.User)
             .Include(c => c.CartItems)
             .FirstOrDefaultAsync(c => c.CartId == cartId) ?? new Cart { Status = CartStatus.Canceled };
@@ -26,6 +27,7 @@ public class CartService(CupcakeDiasContext context) : ICartService
     public async Task<IEnumerable<Cart>> GetCartsByUserIdAsync(Guid userId)
     {
         return await context.Carts
+                .AsNoTracking()
                              .Include(c => c.CartItems!)
                              .ThenInclude(ci => ci.Cupcake)
                              .Where(c => c.UserId == userId)

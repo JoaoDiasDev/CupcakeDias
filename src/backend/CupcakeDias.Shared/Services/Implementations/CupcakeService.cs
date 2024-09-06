@@ -7,9 +7,21 @@ namespace CupcakeDias.Shared.Services.Implementations;
 
 public class CupcakeService(CupcakeDiasContext context) : ICupcakeService
 {
-    public async Task<Cupcake> CreateCupcakeAsync(Cupcake cupcake)
+    public async Task<Cupcake> CreateCupcakeAsync(Cupcake cupcake, List<Guid> ingredientIds)
     {
         context.Cupcakes.Add(cupcake);
+        foreach (var ingredientId in ingredientIds)
+        {
+            if (await context.Ingredients.FindAsync(ingredientId) != null)
+            {
+                var cupcakeIngredient = new CupcakeIngredient
+                {
+                    CupcakeId = cupcake.CupcakeId,
+                    IngredientId = ingredientId
+                };
+                context.CupcakeIngredients.Add(cupcakeIngredient);
+            }
+        }
         await context.SaveChangesAsync();
         return cupcake;
     }
@@ -17,8 +29,10 @@ public class CupcakeService(CupcakeDiasContext context) : ICupcakeService
     public async Task<Cupcake> GetCupcakeByIdAsync(Guid cupcakeId)
     {
         return await context.Cupcakes
+            .AsNoTracking()
             .Include(c => c.OrderDetails)
-            .Include(c => c.CupcakeIngredients)
+            .Include(c => c.CupcakeIngredients!)
+            .ThenInclude(ci => ci.Ingredient)
             .Include(c => c.CartItems)
             .FirstOrDefaultAsync(c => c.CupcakeId == cupcakeId) ?? new Cupcake { BaseFlavor = "Doe", Name = "John", ImageUrl = "https://jondoen.com" };
     }
@@ -26,17 +40,54 @@ public class CupcakeService(CupcakeDiasContext context) : ICupcakeService
     public async Task<IEnumerable<Cupcake>> GetAllCupcakesAsync()
     {
         return await context.Cupcakes
+                .AsNoTracking()
                              .Include(c => c.OrderDetails)
-                             .Include(c => c.CupcakeIngredients)
+                             .Include(c => c.CupcakeIngredients!)
+                             .ThenInclude(ci => ci.Ingredient)
                              .Include(c => c.CartItems)
                              .ToListAsync();
     }
-
-    public async Task UpdateCupcakeAsync(Cupcake cupcake)
+    public async Task UpdateCupcakeAsync(Cupcake cupcake, List<Guid> ingredientIds)
     {
-        context.Cupcakes.Update(cupcake);
+        // Find the already tracked entity (if any) and modify it
+        var existingCupcake = await context.Cupcakes
+            .Include(c => c.CupcakeIngredients)  // Load related data (ingredients)
+            .FirstOrDefaultAsync(c => c.CupcakeId == cupcake.CupcakeId);
+
+        if (existingCupcake == null)
+        {
+            throw new KeyNotFoundException("Cupcake not found");
+        }
+
+        // Remove existing ingredients
+        context.CupcakeIngredients.RemoveRange(existingCupcake.CupcakeIngredients!);
+
+        // Add new ingredients
+        foreach (var ingredientId in ingredientIds)
+        {
+            var ingredient = await context.Ingredients.FindAsync(ingredientId);
+            if (ingredient != null)
+            {
+                var cupcakeIngredient = new CupcakeIngredient
+                {
+                    CupcakeId = cupcake.CupcakeId,
+                    IngredientId = ingredientId
+                };
+                context.CupcakeIngredients.Add(cupcakeIngredient);
+            }
+        }
+
+        // Update the existing entity's properties (no need to attach)
+        existingCupcake.Name = cupcake.Name;
+        existingCupcake.Price = cupcake.Price;
+        existingCupcake.Description = cupcake.Description;
+        existingCupcake.ImageUrl = cupcake.ImageUrl;
+        existingCupcake.BaseFlavor = cupcake.BaseFlavor;
+
+        // Save changes to the database
         await context.SaveChangesAsync();
     }
+
 
     public async Task DeleteCupcakeAsync(Guid cupcakeId)
     {
@@ -50,7 +101,8 @@ public class CupcakeService(CupcakeDiasContext context) : ICupcakeService
 
     public async Task AddIngredientsToCupcakeAsync(Guid cupcakeId, List<Guid> ingredientIds)
     {
-        var cupcake = await context.Cupcakes.FindAsync(cupcakeId) ?? throw new KeyNotFoundException("Cupcake not found");
+        var cupcake = await context.Cupcakes.FirstOrDefaultAsync(c => c.CupcakeId.Equals(cupcakeId));
+        if (cupcake is null) throw new ArgumentNullException();
 
         foreach (var ingredientId in ingredientIds)
         {

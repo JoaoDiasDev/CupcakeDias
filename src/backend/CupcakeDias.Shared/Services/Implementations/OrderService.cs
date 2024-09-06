@@ -18,6 +18,7 @@ public class OrderService(CupcakeDiasContext cupcakeDiasContext, IEmailService e
     public async Task<IEnumerable<Order>> GetOrdersByUserAsync(Guid userId)
     {
         return await cupcakeDiasContext.Orders
+                .AsNoTracking()
             .Where(o => o.UserId == userId)
             .Include(o => o.OrderDetails)!
             .ThenInclude(od => od.Cupcake)
@@ -57,6 +58,7 @@ public class OrderService(CupcakeDiasContext cupcakeDiasContext, IEmailService e
     public async Task<Order> GetOrderByIdAsync(Guid orderId)
     {
         return (await cupcakeDiasContext.Orders
+                .AsNoTracking()
             .Where(o => o.OrderId == orderId)
             .Include(o => o.OrderDetails)!
             .ThenInclude(od => od.Cupcake)

@@ -4,6 +4,7 @@ using CupcakeDias.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CupcakeDias.Data.Migrations
 {
     [DbContext(typeof(CupcakeDiasContext))]
-    partial class CupcakeDiasContextModelSnapshot : ModelSnapshot
+    [Migration("20240906225513_Adding_RefreshTOken")]
+    partial class Adding_RefreshTOken
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

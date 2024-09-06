@@ -24,7 +24,6 @@ public class Cupcake
     public required string ImageUrl { get; set; }
     [JsonIgnore]
     public ICollection<OrderDetail>? OrderDetails { get; set; }
-    [JsonIgnore]
     public ICollection<CupcakeIngredient>? CupcakeIngredients { get; set; }
     [JsonIgnore]
     public ICollection<CartItem>? CartItems { get; set; }

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace CupcakeDias.Shared.Services.Implementations;
@@ -28,13 +29,13 @@ public class UserService(CupcakeDiasContext context) : IUserService
     // Get user by ID
     public async Task<User> GetUserByIdAsync(Guid userId)
     {
-        return (await context.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.UserId == userId))!;
+        return (await context.Users.AsNoTracking().Include(u => u.Role).FirstOrDefaultAsync(u => u.UserId == userId))!;
     }
 
     // Get user by email
     public async Task<User> GetUserByEmailAsync(string email)
     {
-        return (await context.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == email))!;
+        return (await context.Users.AsNoTracking().Include(u => u.Role).FirstOrDefaultAsync(u => u.Email == email))!;
     }
 
     public async Task<string> AuthenticateAsync(string email, string password)
@@ -42,11 +43,11 @@ public class UserService(CupcakeDiasContext context) : IUserService
         var user = await context.Users.FirstOrDefaultAsync(u => u.Email == email);
         if (user == null || !VerifyPasswordHash(password, user.PasswordHash))
         {
-            return string.Empty;  // Invalid email or password
+            return string.Empty;
         }
 
         // Generate JWT
-        var token = await GenerateJwtToken(user);
+        var (token, _) = await GenerateJwtAndRefreshTokens(user);
         return token;
     }
 
@@ -56,8 +57,8 @@ public class UserService(CupcakeDiasContext context) : IUserService
         return BCrypt.Net.BCrypt.Verify(password, passwordHash);
     }
 
-    // Generate JWT token
-    private async Task<string> GenerateJwtToken(User user)
+    // Generate JWT token and refresh token
+    public async Task<(string jwtToken, string refreshToken)> GenerateJwtAndRefreshTokens(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(DotEnv.Read()["JWT_SECRET_KEY"]);
@@ -69,18 +70,49 @@ public class UserService(CupcakeDiasContext context) : IUserService
             Subject = new ClaimsIdentity(
             [
                 new Claim(ClaimTypes.Name, user.UserId.ToString()),
-                new Claim(ClaimTypes.Role, user.Role?.RoleName!),
-            ]),
-            Expires = DateTime.UtcNow.AddMinutes(30),
+            new Claim(ClaimTypes.Role, user.Role?.RoleName!),
+        ]),
+            Expires = DateTime.UtcNow.AddDays(2),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
+        var jwtToken = tokenHandler.CreateToken(tokenDescriptor);
+        var tokenString = tokenHandler.WriteToken(jwtToken);
+
+        // Generate a refresh token
+        var refreshToken = await GenerateRefreshTokenAsync(user);
+
+        return (tokenString, refreshToken);
     }
+
+
+    public async Task<User?> GetUserByRefreshTokenAsync(string refreshToken)
+    {
+        return await context.Users.FirstOrDefaultAsync(u => u.RefreshToken == refreshToken);
+    }
+
+    public async Task<string> GenerateRefreshTokenAsync(User user)
+    {
+        var randomNumber = new byte[32];
+        using (var rng = RandomNumberGenerator.Create())
+        {
+            rng.GetBytes(randomNumber);
+        }
+
+        var refreshToken = Convert.ToBase64String(randomNumber); // Create a Base64 encoded string
+
+        user.RefreshToken = refreshToken;
+
+        await context.SaveChangesAsync(); // Save the user object with the refresh token and expiry to the database
+
+        return refreshToken;
+    }
+
 
     private async Task<Role> GetRoleAsync(Guid roleId)
     {
         return await context.Roles.FindAsync(roleId) ?? new Role { RoleName = RoleNames.User };
     }
+
+
 }

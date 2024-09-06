@@ -11,6 +11,7 @@ export interface User {
   name: string; // Maps to Name
   passwordHash: string; // Maps to PasswordHash
   address: string; // Maps to Address
+  refreshToken: string; // Maps to RefreshToken
   token?: string; // JWT Token for authentication (optional)
   orders?: Order[]; // Array of Orders (optional)
   carts?: Cart[]; // Array of Carts (optional)

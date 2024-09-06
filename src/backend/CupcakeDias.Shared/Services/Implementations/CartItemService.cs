@@ -17,12 +17,13 @@ public class CartItemService(CupcakeDiasContext context) : ICartItemService
     {
         return await context
             .Carts
+                .AsNoTracking()
             .Where(c => c.UserId == userId).SelectMany(c => c.CartItems ?? new List<CartItem>()).ToListAsync();
     }
 
     public async Task<IEnumerable<CartItem>> GetCartItemsByCartIdAsync(Guid cartId)
     {
-        return await context.CartItems.Where(ci => ci.CartId == cartId).ToListAsync();
+        return await context.CartItems.AsNoTracking().Where(ci => ci.CartId == cartId).ToListAsync();
     }
 
     public async Task<CartItem> GetCartItemByIdAsync(Guid cartItemId)

@@ -1,0 +1,146 @@
+<div class="cupcake-container">
+  <h2>Cupcake Management</h2>
+
+  <!-- Error and Success Messages -->
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+  <!-- Form for Creating/Updating Cupcakes -->
+  <div class="cupcake-form">
+    <h3>{{ editingCupcake ? "Edit Cupcake" : "Create Cupcake" }}</h3>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Cupcake Name</mat-label>
+      <input
+        matInput
+        [(ngModel)]="cupcakeForm.name"
+        placeholder="Enter cupcake name"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Base Flavor</mat-label>
+      <input
+        matInput
+        [(ngModel)]="cupcakeForm.baseFlavor"
+        placeholder="Enter base flavor"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Price</mat-label>
+      <input
+        matInput
+        type="text"
+        [(ngModel)]="cupcakeForm.price"
+        placeholder="Enter price"
+        [currencyMask]="{
+          prefix: 'R$ ',
+          thousands: '.',
+          decimal: ',',
+          align: 'left'
+        }"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        [(ngModel)]="cupcakeForm.description"
+        placeholder="Enter description"
+      ></textarea>
+    </mat-form-field>
+
+    <!-- Multi-select for Ingredients -->
+    <mat-form-field appearance="outline">
+      <mat-label>Ingredients</mat-label>
+      <mat-select [(ngModel)]="selectedIngredients" multiple>
+        <mat-option
+          *ngFor="let ingredient of ingredients"
+          [value]="ingredient.ingredientId"
+        >
+          {{ ingredient.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Image URL</mat-label>
+      <input
+        matInput
+        [(ngModel)]="cupcakeForm.imageUrl"
+        placeholder="Enter image URL"
+      />
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="saveCupcake()">
+      {{ editingCupcake ? "Update Cupcake" : "Create Cupcake" }}
+    </button>
+
+    <button
+      *ngIf="editingCupcake"
+      mat-raised-button
+      color="warn"
+      (click)="cancelEdit()"
+    >
+      Cancel Edit
+    </button>
+  </div>
+
+  <!-- Cupcake List -->
+  <div class="cupcake-list">
+    <h3>Existing Cupcakes</h3>
+
+    <div class="cupcake-items-grid">
+      <div *ngFor="let cupcake of cupcakes" class="cupcake-item">
+        <img
+          [src]="cupcake.imageUrl"
+          alt="{{ cupcake.name }}"
+          class="cupcake-image"
+        />
+        <div class="cupcake-info">
+          <h4>{{ cupcake.name }}</h4>
+          <p><strong>Flavor:</strong> {{ cupcake.baseFlavor }}</p>
+          <p>
+            <strong>Price:</strong>
+            {{
+              cupcake.price | currency : "BRL" : "symbol" : "1.2-2" : "pt-BR"
+            }}
+          </p>
+          <p><strong>Description:</strong> {{ cupcake.description }}</p>
+          <p *ngIf="cupcake.cupcakeIngredients?.length">
+            <strong>Ingredients:</strong>
+            <span
+              *ngFor="
+                let cupcakeIngredient of cupcake.cupcakeIngredients;
+                let i = index
+              "
+            >
+              {{ cupcakeIngredient.ingredient?.name
+              }}<span
+                *ngIf="
+                  cupcake.cupcakeIngredients !== undefined &&
+                  i !== cupcake.cupcakeIngredients.length - 1
+                "
+                >,
+              </span>
+            </span>
+          </p>
+          <div class="cupcake-actions">
+            <button mat-button color="primary" (click)="editCupcake(cupcake)">
+              Edit
+            </button>
+            <button
+              mat-button
+              color="warn"
+              (click)="deleteCupcake(cupcake.cupcakeId)"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

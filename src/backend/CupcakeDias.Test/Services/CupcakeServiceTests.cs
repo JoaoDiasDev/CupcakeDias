@@ -28,7 +28,7 @@ public class CupcakeServiceTests
         var cupcake = new Cupcake { Name = "Vanilla", BaseFlavor = "Vanilla", Price = 3.50m, ImageUrl = "https://jaoao.com" };
 
         // Act
-        await _cupcakeService.CreateCupcakeAsync(cupcake);
+        await _cupcakeService.CreateCupcakeAsync(cupcake, []);
 
         // Assert
         var savedCupcake = await _context.Cupcakes.FirstOrDefaultAsync();
@@ -109,7 +109,7 @@ public class CupcakeServiceTests
 
         // Act
         cupcake.Price = 5.00m;
-        await _cupcakeService.UpdateCupcakeAsync(cupcake);
+        await _cupcakeService.UpdateCupcakeAsync(cupcake, []);
 
         // Assert
         var updatedCupcake = await _context.Cupcakes.FirstOrDefaultAsync(c => c.CupcakeId == cupcake.CupcakeId);

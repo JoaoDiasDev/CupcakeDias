@@ -1,0 +1,75 @@
+<div class="ingredient-container">
+  <h2>Ingredient Management</h2>
+
+  <!-- Error and Success Messages -->
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+  <!-- Form for Creating/Updating Ingredients -->
+  <div class="ingredient-form">
+    <h3>{{ editingIngredient ? "Edit Ingredient" : "Create Ingredient" }}</h3>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Ingredient Name</mat-label>
+      <input
+        matInput
+        [(ngModel)]="ingredientForm.name"
+        placeholder="Enter ingredient name"
+      />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Type</mat-label>
+      <input
+        matInput
+        [(ngModel)]="ingredientForm.type"
+        placeholder="Enter ingredient type"
+      />
+    </mat-form-field>
+
+    <button mat-raised-button color="primary" (click)="saveIngredient()">
+      {{ editingIngredient ? "Update Ingredient" : "Create Ingredient" }}
+    </button>
+
+    <button
+      *ngIf="editingIngredient"
+      mat-raised-button
+      color="warn"
+      (click)="cancelEdit()"
+    >
+      Cancel Edit
+    </button>
+  </div>
+
+  <!-- Ingredient List -->
+  <div class="ingredient-list">
+    <h3>Existing Ingredients</h3>
+
+    <div *ngFor="let ingredient of ingredients" class="ingredient-item">
+      <div class="ingredient-info">
+        <h4>{{ ingredient.name }}</h4>
+        <p><strong>Type:</strong> {{ ingredient.type }}</p>
+        <p>
+          <strong>Available:</strong>
+          {{ ingredient.availability ? "Yes" : "No" }}
+        </p>
+        <div class="ingredient-actions">
+          <button
+            mat-button
+            color="primary"
+            (click)="editIngredient(ingredient)"
+          >
+            Edit
+          </button>
+          <button
+            mat-button
+            color="warn"
+            (click)="deleteIngredient(ingredient.ingredientId)"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

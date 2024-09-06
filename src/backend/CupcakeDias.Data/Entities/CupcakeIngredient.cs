@@ -11,6 +11,5 @@ public class CupcakeIngredient
     [JsonIgnore]
     public Cupcake? Cupcake { get; set; }
     public Guid IngredientId { get; set; }
-    [JsonIgnore]
     public Ingredient? Ingredient { get; set; }
 }
