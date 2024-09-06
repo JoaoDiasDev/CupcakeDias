@@ -54,10 +54,12 @@ public class CartsController(ICartService cartService) : ControllerBase
 
         }
 
-        return Ok(cartsList?.OrderByDescending(c => c.CreatedAt).FirstOrDefault(c =>
+        var cartResponse = cartsList?.OrderByDescending(c => c.CreatedAt).FirstOrDefault(c =>
             !c.Status.Equals(CartStatus.Canceled)
-            && !c.Status.Equals(CartStatus.Completed)
-        ));
+            && !c.Status.Equals(CartStatus.Completed)) ?? new Cart { Status = CartStatus.Canceled };
+
+
+        return Ok(cartResponse);
     }
 
     [HttpPut("{cartId:guid}")]
@@ -88,6 +90,22 @@ public class CartsController(ICartService cartService) : ControllerBase
         }
 
         await cartService.DeleteCartAsync(cartId);
+        return NoContent();
+    }
+
+
+    [HttpPut("{cartId:guid}/status")]
+    public async Task<IActionResult> UpdateCart(Guid cartId, [FromBody] CartStatus status)
+    {
+        if (Guid.Empty.Equals(cartId)) return BadRequest("Cart is null or ID mismatch.");
+
+        var existingCart = await cartService.GetCartByIdAsync(cartId);
+        if (existingCart == null)
+        {
+            return NotFound($"No cart found with id {cartId}");
+        }
+
+        await cartService.UpdateCartStatusAsync(existingCart, status);
         return NoContent();
     }
 }

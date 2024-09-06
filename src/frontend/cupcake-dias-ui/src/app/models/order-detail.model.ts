@@ -2,7 +2,7 @@ import { Cupcake } from './cupcake.model';
 import { Order } from './order.model';
 
 export interface OrderDetail {
-  orderDetailId: string; // Maps to OrderDetailId (Guid)
+  orderDetailId?: string; // Maps to OrderDetailId (Guid)
   orderId: string; // Maps to OrderId
   cupcakeId: string; // Maps to CupcakeId
   quantity: number; // Maps to Quantity

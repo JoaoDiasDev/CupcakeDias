@@ -1,6 +1,6 @@
 ﻿namespace CupcakeDias.Shared.Consts;
 
-public static class RoleNames
+public class RoleNames
 {
     public const string Admin = "Admin";
     public const string Manager = "Manager";

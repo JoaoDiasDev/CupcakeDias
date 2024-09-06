@@ -6,4 +6,21 @@ mat-toolbar {
   justify-content: end;
   position: fixed;
   bottom: 0;
+  font-size: var(--font-size-small);
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  font-size: var(--font-size-small);
+  z-index: 1000;
+}
+
+footer img {
+  margin-left: 10px;
+  vertical-align: middle;
+  width: 30px;
 }

@@ -5,7 +5,8 @@
   <!-- Navigation Links -->
   <button mat-button routerLink="/home">Home</button>
   <button mat-button routerLink="/cart">Cart</button>
-  <button mat-button *ngIf="isLoggedIn" routerLink="/admin">Admin</button>
+  <!-- Show Admin button only if the user is an admin or manager -->
+  <button mat-button *ngIf="isAdminOrManager" routerLink="/admin">Admin</button>
   <button mat-button *ngIf="!isLoggedIn" routerLink="/login">Login</button>
   <button mat-button *ngIf="isLoggedIn" (click)="logout()">Logout</button>
 </mat-toolbar>

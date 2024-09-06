@@ -36,4 +36,17 @@ public class CartItemService(CupcakeDiasContext context) : ICartItemService
         await context.SaveChangesAsync();
         return cartItem;
     }
+
+    public async Task<bool> DeleteCartItemAsync(Guid cartItemId)
+    {
+        var cartItem = await context.CartItems.FindAsync(cartItemId);
+        if (cartItem is not null)
+        {
+            context.CartItems.Remove(cartItem);
+            await context.SaveChangesAsync();
+            return true;
+        }
+
+        return false;
+    }
 }

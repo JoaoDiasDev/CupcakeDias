@@ -38,6 +38,7 @@ export class LoginComponent {
     this.authService.login(this.email, this.password).subscribe({
       next: (response) => {
         const token = response.token;
+        this.authService.decodeAndSetUserRole(token);
         this.authService.setToken(token);
         this.router.navigate(['/']); // Navigate to home or dashboard after login
       },

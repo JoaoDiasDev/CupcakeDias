@@ -3,7 +3,7 @@ import { Order } from './order.model';
 import { Role } from './role.model';
 
 export interface User {
-  userId: string; // Maps to UserId
+  userId?: string; // Maps to UserId
   roleId: string; // Maps to RoleId
   role: Role; // Maps to Role (reference to the Role model)
   email: string; // Maps to Email

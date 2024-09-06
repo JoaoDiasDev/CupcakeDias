@@ -26,7 +26,8 @@ public class CartService(CupcakeDiasContext context) : ICartService
     public async Task<IEnumerable<Cart>> GetCartsByUserIdAsync(Guid userId)
     {
         return await context.Carts
-                             .Include(c => c.CartItems)
+                             .Include(c => c.CartItems!)
+                             .ThenInclude(ci => ci.Cupcake)
                              .Where(c => c.UserId == userId)
                              .ToListAsync();
     }
@@ -45,5 +46,12 @@ public class CartService(CupcakeDiasContext context) : ICartService
             context.Carts.Remove(cart);
             await context.SaveChangesAsync();
         }
+    }
+
+    public async Task UpdateCartStatusAsync(Cart cart, CartStatus status)
+    {
+        cart.Status = status.ToString()!;
+        context.Carts.Update(cart);
+        await context.SaveChangesAsync();
     }
 }

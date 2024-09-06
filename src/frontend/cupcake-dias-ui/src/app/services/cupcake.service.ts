@@ -23,11 +23,21 @@ export class CupcakeService {
   /**
    * Adds a selected cupcake to the cart.
    * @param cupcake The cupcake to add.
+   * @param cartId The cart ID to associate the item with.
    * @param quantity The quantity to add to the cart.
    * @returns Observable indicating the success of the request.
    */
-  addCupcakeToCart(cupcake: Cupcake, quantity: number): Observable<any> {
-    const cartItem = { cupcakeId: cupcake.cupcakeId, quantity };
+  addCupcakeToCart(
+    cartId: string,
+    cupcake: Cupcake,
+    quantity: number
+  ): Observable<any> {
+    const cartItem = {
+      cartId,
+      cupcakeId: cupcake.cupcakeId,
+      quantity,
+      price: cupcake.price,
+    };
     return this.http.post(`${environment.apiUrl}/cartItems`, cartItem);
   }
 }

@@ -1,5 +1,6 @@
 using CupcakeDias.Data;
 using CupcakeDias.Data.Entities;
+using CupcakeDias.Shared.Consts;
 using CupcakeDias.Shared.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -44,5 +45,23 @@ public class OrderService(CupcakeDiasContext cupcakeDiasContext, IEmailService e
 
         await emailService.SendEmailAsync(order?.User?.Email ?? string.Empty, subject, message);
     }
+
+    public async Task<Order> UpdateOrderStatusAsync(Order order, OrderStatus status)
+    {
+        order.Status = status.ToString()!;
+        cupcakeDiasContext.Orders.Update(order);
+        await cupcakeDiasContext.SaveChangesAsync();
+        return order;
+    }
+
+    public async Task<Order> GetOrderByIdAsync(Guid orderId)
+    {
+        return (await cupcakeDiasContext.Orders
+            .Where(o => o.OrderId == orderId)
+            .Include(o => o.OrderDetails)!
+            .ThenInclude(od => od.Cupcake)
+            .FirstOrDefaultAsync())!;
+    }
+
 
 }

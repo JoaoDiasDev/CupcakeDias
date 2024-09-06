@@ -9,12 +9,7 @@ import { FooterComponent } from './components/footer/footer.component';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   standalone: true,
-  imports: [
-    MatButtonModule,
-    RouterOutlet,
-    NavbarComponent,
-    FooterComponent,
-  ],
+  imports: [MatButtonModule, RouterOutlet, NavbarComponent, FooterComponent],
 })
 export class AppComponent {
   title = 'cupcake-dias-ui';

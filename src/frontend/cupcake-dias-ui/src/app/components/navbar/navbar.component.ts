@@ -9,6 +9,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -26,7 +27,24 @@ import { RouterModule } from '@angular/router';
   ],
 })
 export class NavbarComponent {
+  isAdminOrManager = false;
+  private roleSubscription: Subscription | undefined;
+
   constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.roleSubscription = this.authService
+      .getRoleNameFromToken()
+      .subscribe((role) => {
+        this.isAdminOrManager = role === 'Admin' || role === 'Manager';
+      });
+  }
+
+  ngOnDestroy(): void {
+    if (this.roleSubscription) {
+      this.roleSubscription.unsubscribe();
+    }
+  }
 
   get isLoggedIn(): boolean {
     return Boolean(this.authService.getToken());

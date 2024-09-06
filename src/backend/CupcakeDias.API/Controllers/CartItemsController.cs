@@ -14,7 +14,7 @@ public class CartItemsController(ICartItemService cartItemService) : ControllerB
     public async Task<IActionResult> AddCartItem([FromBody] CartItem cartItem)
     {
         await cartItemService.AddItemAsync(cartItem);
-        return CreatedAtAction(nameof(GetCartItemById), new { id = cartItem.CartItemId }, cartItem);
+        return CreatedAtAction(nameof(GetCartItemById), new { cartItemid = cartItem.CartItemId }, cartItem);
     }
 
     [HttpGet("user/{userId:guid}")]
@@ -59,6 +59,15 @@ public class CartItemsController(ICartItemService cartItemService) : ControllerB
             return NotFound();
         }
         return Ok(cartItemUpdated);
+    }
+
+    [HttpDelete("{cartItemId:guid}")]
+    public async Task<IActionResult> DeleteCartItemById(Guid cartItemId)
+    {
+        var result = await cartItemService.DeleteCartItemAsync(cartItemId);
+        if (!result) return BadRequest();
+
+        return Ok(cartItemId);
     }
 }
 

@@ -1,4 +1,5 @@
 using CupcakeDias.Data.Entities;
+using CupcakeDias.Shared.Consts;
 using CupcakeDias.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -29,5 +30,18 @@ public class OrdersController(IOrderService orderService) : ControllerBase
             return NotFound();
         }
         return Ok(order);
+    }
+
+    [HttpPut("{orderId:guid}/status")]
+    public async Task<IActionResult> GetOrderById(Guid orderId, [FromBody] OrderStatus status)
+    {
+        var order = await orderService.GetOrderByIdAsync(orderId);
+        if (order == null) return NotFound();
+
+        var updatedOrder = await orderService.UpdateOrderStatusAsync(order, status);
+
+        if (updatedOrder is null) return BadRequest();
+
+        return Ok(updatedOrder);
     }
 }

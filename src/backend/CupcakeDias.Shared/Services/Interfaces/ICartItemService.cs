@@ -9,4 +9,5 @@ public interface ICartItemService
     Task<IEnumerable<CartItem>> GetCartItemsByCartIdAsync(Guid cartId);
     Task<CartItem> GetCartItemByIdAsync(Guid cartItemId);
     Task<CartItem> UpdateCartItemAsync(CartItem cartItem);
+    Task<bool> DeleteCartItemAsync(Guid cartItemId);
 }

@@ -14,9 +14,9 @@ export class AuthService {
   private userRole = new BehaviorSubject<string | null>(null);
 
   constructor(private http: HttpClient, private router: Router) {
-    const storedToken = this.getToken();
-    if (storedToken) {
-      this.decodeAndSetUserRole(storedToken);
+    const token = this.getToken();
+    if (token) {
+      this.decodeAndSetUserRole(token);
     }
   }
 
@@ -39,7 +39,6 @@ export class AuthService {
    */
   setToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
-    this.decodeAndSetUserRole(token);
   }
 
   /**
@@ -51,12 +50,23 @@ export class AuthService {
   }
 
   /**
-   * Decode the token and set the user's role
+   * Return role name as an Observable
+   */
+  getRoleNameFromToken(): Observable<string | null> {
+    const token = this.getToken();
+    if (token) {
+      this.decodeAndSetUserRole(token);
+    }
+    return this.userRole.asObservable(); // Return the user role as an observable
+  }
+
+  /**
+   * Decode the token and set the role in the BehaviorSubject
    * @param token JWT token
    */
-  private decodeAndSetUserRole(token: string): void {
+  decodeAndSetUserRole(token: string): void {
     try {
-      const decodedToken: JwtToken = JSON.parse(atob(token.split('.')[1])); // Decode JWT
+      const decodedToken: any = this.decodeToken(token);
       const role = decodedToken?.role || null;
       this.userRole.next(role);
     } catch (error) {
@@ -64,15 +74,6 @@ export class AuthService {
       this.userRole.next(null);
     }
   }
-
-  /**
-   * Get the current user's role
-   * @returns Observable of the user's role
-   */
-  getUserRole(): Observable<string | null> {
-    return this.userRole.asObservable();
-  }
-
   /**
    * Check if the user is authenticated (token exists)
    * @returns True if the user is authenticated
@@ -91,11 +92,36 @@ export class AuthService {
   }
 
   /**
+   * Get the logged-in user's ID from the JWT token
+   * @returns The user ID or null if the token is invalid
+   */
+  getUserIdFromToken(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+
+    const decodedToken = this.decodeToken(token);
+    return decodedToken?.unique_name || null;
+  }
+
+  /**
+   * Decode token
+   * @returns Return valid jwt token to be manipulated
+   */
+  private decodeToken(token: string): JwtToken | undefined {
+    try {
+      return jwtDecode(token);
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return undefined;
+    }
+  }
+
+  /**
    * Log out the user and remove the token
    */
   logout(): void {
-    localStorage.removeItem(this.tokenKey);
     this.userRole.next(null);
+    localStorage.removeItem(this.tokenKey);
     this.router.navigate(['/login']);
   }
 }

@@ -1,0 +1,98 @@
+.cart-container {
+  padding: 20px;
+  max-width: 100%;
+  margin: 0 auto;
+  border-radius: 8px;
+
+  h2 {
+    font-size: 2.4em;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .cart-items-grid {
+    display: flex;
+    flex-wrap: wrap; /* This will make the items wrap if there's not enough space */
+    justify-content: space-around;
+    gap: 20px; /* Spacing between the items */
+  }
+
+  .cart-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 2px;
+    width: 250px; /* Set a fixed width for the items */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+  }
+
+  .cart-item-image {
+    width: 100%;
+    height: 100px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    object-fit: cover;
+  }
+
+  .cart-item-details {
+    flex-grow: 1;
+    margin-left: 10px;
+    text-align: center;
+
+    mat-card-title {
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    mat-card-subtitle {
+      font-size: 1em;
+    }
+
+    p {
+      margin: 10px 0;
+      font-weight: bold;
+    }
+
+    .quantity-field {
+      width: 100px; /* Set a smaller width for the input field */
+      margin: 10px auto; /* Center align the input field */
+    }
+  }
+
+  mat-card-actions {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+
+    button {
+      mat-icon {
+        font-size: 24px;
+      }
+    }
+  }
+}
+
+.checkout-button-container {
+  text-align: center;
+  margin-top: 20px;
+
+  .checkout-button {
+    padding: 15px 40px;
+    font-size: 1.2em;
+    border-radius: 50px;
+  }
+}
+
+.empty-cart-message {
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.go-back-button {
+  font-size: var(--font-size);
+}
