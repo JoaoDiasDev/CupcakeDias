@@ -25,6 +25,7 @@ import { AuthService } from '../../services/auth.service';
 })
 export class OrderManagementComponent implements OnInit {
   orders: Order[] = [];
+  orderStatuses = Object.values(OrderStatus); // Enum values for the dropdown
 
   constructor(
     private orderService: OrderService,
@@ -42,7 +43,11 @@ export class OrderManagementComponent implements OnInit {
   fetchOrders(): void {
     this.orderService.getAllOrders().subscribe({
       next: (data) => {
-        this.orders = data;
+        this.orders = data.filter(
+          (order) =>
+            order.status !== OrderStatus.Completed &&
+            order.status !== OrderStatus.Cancelled
+        );
       },
       error: (err) => {
         console.error('Error fetching orders', err);

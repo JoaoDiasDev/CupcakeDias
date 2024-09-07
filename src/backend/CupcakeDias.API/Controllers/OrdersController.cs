@@ -1,5 +1,6 @@
 using CupcakeDias.Data.Entities;
 using CupcakeDias.Shared.Consts;
+using CupcakeDias.Shared.Dtos;
 using CupcakeDias.Shared.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -37,17 +38,19 @@ public class OrdersController(ICartService cartService,
     }
 
     [HttpPut("{orderId:guid}/status")]
-    public async Task<IActionResult> UpdateOrderStatus(Guid orderId, [FromBody] string status)
+    public async Task<IActionResult> UpdateOrderStatus(Guid orderId,
+        [FromBody] UpdateOrderStatusDto updateOrderStatusDto)
     {
-        var order = await orderService.GetOrderByIdAsync(orderId);
+        var order = await orderService.GetOrderByIdToUpdateStatusAsync(orderId);
+
         if (order == null) return NotFound();
 
-        if (OrderStatus.Canceled != status
-            && OrderStatus.Pending != status
-            && OrderStatus.Completed != status
-            && OrderStatus.Processing != status) return BadRequest();
+        if (OrderStatus.Cancelled != updateOrderStatusDto.Status
+            && OrderStatus.Pending != updateOrderStatusDto.Status
+            && OrderStatus.Completed != updateOrderStatusDto.Status
+            && OrderStatus.Processing != updateOrderStatusDto.Status) return BadRequest();
 
-        var updatedOrder = await orderService.UpdateOrderStatusAsync(order, status);
+        var updatedOrder = await orderService.UpdateOrderStatusAsync(order, updateOrderStatusDto.Status);
 
         if (updatedOrder is null) return BadRequest();
 

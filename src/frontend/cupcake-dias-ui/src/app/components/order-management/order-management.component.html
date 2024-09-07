@@ -1,33 +1,40 @@
 <div class="order-management-container">
-  <mat-card *ngFor="let order of orders" class="order-card">
-    <div class="order-details">
-      <h3>Order #{{ order.orderId }}</h3>
-      <p><strong>Date:</strong> {{ order.orderDate | date }}</p>
-      <p>
-        <strong>Total Price:</strong>
-        {{ order.total | currency : "BRL" : "symbol" }}
-      </p>
-    </div>
+  <ng-container *ngIf="orders.length > 0; else noOrdersTemplate">
+    <mat-card *ngFor="let order of orders" class="order-card">
+      <div class="order-details">
+        <h3>Order #{{ order.orderId }}</h3>
+        <p><strong>Date:</strong> {{ order.orderDate | date }}</p>
+        <p>
+          <strong>Total Price:</strong>
+          {{ order.total | currency : "BRL" : "symbol" }}
+        </p>
+      </div>
 
-    <div class="order-status">
-      <mat-form-field appearance="fill">
-        <mat-label>Status</mat-label>
-        <mat-select
-          [(ngModel)]="order.status"
-          (selectionChange)="
-            updateOrderStatus(order.orderId ?? '', $event.value)
-          "
-        >
-          <mat-option
-            *ngFor="
-              let status of ['Pending', 'Shipped', 'Delivered', 'Cancelled']
+      <div class="order-status">
+        <mat-form-field appearance="fill">
+          <mat-label>Status</mat-label>
+          <mat-select
+            [(ngModel)]="order.status"
+            (selectionChange)="
+              updateOrderStatus(order.orderId ?? '', $event.value)
             "
-            [value]="status"
           >
-            {{ status }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-    </div>
-  </mat-card>
+            <mat-option *ngFor="let status of orderStatuses" [value]="status">
+              {{ status }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-card>
+  </ng-container>
+
+  <!-- Template for no orders -->
+  <ng-template #noOrdersTemplate>
+    <mat-card class="no-orders-card">
+      <div class="no-orders">
+        <h2>No Orders Found</h2>
+        <p>There are no orders to manage at the moment.</p>
+      </div>
+    </mat-card>
+  </ng-template>
 </div>

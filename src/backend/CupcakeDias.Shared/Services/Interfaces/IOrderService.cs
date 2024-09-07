@@ -10,4 +10,5 @@ public interface IOrderService
     Task SendOrderConfirmationEmailAsync(Order order, List<CartItem> cartItems);
     Task<Order> UpdateOrderStatusAsync(Order order, string status);
     Task<Order> GetOrderByIdAsync(Guid orderId);
+    Task<Order> GetOrderByIdToUpdateStatusAsync(Guid orderId);
 }

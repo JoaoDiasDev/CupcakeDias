@@ -56,7 +56,7 @@ public class OrderService(CupcakeDiasContext cupcakeDiasContext, IEmailService e
 
     public async Task<Order> UpdateOrderStatusAsync(Order order, string status)
     {
-        order.Status = status.ToString()!;
+        order.Status = status;
         cupcakeDiasContext.Orders.Update(order);
         await cupcakeDiasContext.SaveChangesAsync();
         return order;
@@ -79,6 +79,14 @@ public class OrderService(CupcakeDiasContext cupcakeDiasContext, IEmailService e
             .Include(o => o.OrderDetails)!
             .ThenInclude(od => od.Cupcake)
             .ToListAsync();
+    }
+
+    public async Task<Order> GetOrderByIdToUpdateStatusAsync(Guid orderId)
+    {
+        return (await cupcakeDiasContext.Orders
+              .AsNoTracking()
+              .Where(o => o.OrderId == orderId)
+              .FirstOrDefaultAsync())!;
     }
 
 }
