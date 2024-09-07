@@ -1,0 +1,32 @@
+<div class="order-details-container" *ngIf="orderDetails.length > 0">
+  <!-- Order Summary Section -->
+  <div class="order-summary">
+    <h2>Order Summary</h2>
+    <p><strong>Order ID:</strong> {{ orderId }}</p>
+    <p>
+      <strong>Total Amount:</strong>
+      {{ totalAmount | currency : "BRL" : "symbol" }}
+    </p>
+  </div>
+
+  <!-- Order Details Section -->
+  <div class="order-items">
+    <mat-card *ngFor="let detail of orderDetails" class="order-item-card">
+      <mat-card-header>
+        <mat-card-title>{{ detail.cupcake?.name }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <p><strong>Quantity:</strong> {{ detail.quantity }}</p>
+        <p>
+          <strong>Price:</strong>
+          {{ detail.price | currency : "BRL" : "symbol" }}
+        </p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- Back to Orders Button -->
+  <div class="back-button">
+    <a routerLink="/order" mat-raised-button color="primary">Back to Orders</a>
+  </div>
+</div>

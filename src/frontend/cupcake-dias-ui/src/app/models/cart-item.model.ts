@@ -4,7 +4,7 @@ import { Cupcake } from './cupcake.model';
 export interface CartItem {
   cartItemId?: string; // Maps to CartItemId
   cartId: string; // Maps to CartId
-  cupcakeId: string; 
+  cupcakeId: string;
   quantity: number; // Maps to Quantity
   price: number; // Maps to Price
   cupcake?: Cupcake; // Optional related cupcake

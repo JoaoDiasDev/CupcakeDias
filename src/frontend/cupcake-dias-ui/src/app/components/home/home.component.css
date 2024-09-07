@@ -1,8 +1,99 @@
 .home-container {
+  display: flex;
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
   text-align: center;
-  margin-top: 50px;
 }
 
-button {
-  margin-top: 20px;
+/* Home card with slight transparency */
+.home-card {
+  background: rgba(255, 255, 255, 0.9); /* White with slight transparency */
+  padding: var(--card-padding);
+  border-radius: var(--card-border-radius);
+  box-shadow: var(--box-shadow);
+  max-width: 600px;
+  text-align: center;
+  animation: fadeIn 2s ease-in-out; /* Fade-in animation for the entire card */
+}
+
+/* Animations for individual elements */
+.animated-header {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+  text-transform: uppercase;
+  animation: slideInFromTop 1s ease-in-out; /* Slide-in animation for the header */
+}
+
+.animated-text {
+  font-size: var(--font-size-large);
+  margin-bottom: 30px;
+  color: #555;
+  animation: fadeIn 1.5s ease-in-out; /* Fade-in animation for the text */
+}
+
+.animated-button {
+  font-size: var(--font-size);
+  font-weight: bold;
+  padding: 15px 30px;
+  background-color: #f5a623;
+  color: #3e3e3e;
+  border-radius: var(--button-radius);
+  animation: fadeInUp 2s ease-in-out; /* Fade-in and slide-up for the button */
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.animated-button:hover {
+  background-color: #d48e1e;
+  transform: scale(1.05); /* Scale effect on hover */
+}
+
+/* Keyframes for animations */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive design for smaller screens */
+@media (max-width: 768px) {
+  .animated-header {
+    font-size: 2rem;
+  }
+
+  .animated-text {
+    font-size: var(--font-size-small);
+  }
+
+  .animated-button {
+    font-size: var(--font-size);
+    padding: 12px 20px;
+  }
 }

@@ -38,15 +38,12 @@ export class CupcakeListComponent implements OnInit {
     private authService: AuthService,
     private snackBar: MatSnackBar
   ) {
+    this.userId = this.authService.getUserIdFromToken();
     this.cartId = this.getCartId();
   }
 
   ngOnInit(): void {
     this.fetchCupcakes();
-    let userIdFromToken = this.authService.getUserIdFromToken();
-    if (userIdFromToken) {
-      this.userId = userIdFromToken;
-    }
   }
 
   /**
@@ -72,16 +69,14 @@ export class CupcakeListComponent implements OnInit {
     };
 
     this.cartService.addCartItem(cartItem).subscribe({
-      next: (response) => {
-        console.log('Item added to cart:', response);
+      next: () => {
         this.snackBar.open('Cupcake added to cart!', 'Close', {
           duration: 3000,
           verticalPosition: 'top',
           horizontalPosition: 'center',
         });
       },
-      error: (error) => {
-        console.error('Error adding item to cart:', error);
+      error: () => {
         this.snackBar.open('Failed to add cupcake to cart.', 'Close', {
           duration: 3000,
           verticalPosition: 'top',
@@ -89,7 +84,11 @@ export class CupcakeListComponent implements OnInit {
         });
       },
       complete: () => {
-        console.log('Add to cart process completed.');
+        this.snackBar.open('Cupcake added to cart!', 'Close', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+        });
       },
     });
   }
@@ -98,7 +97,7 @@ export class CupcakeListComponent implements OnInit {
    * Get the cart ID for the current user (this should be implemented to fetch the active cart ID)
    * @returns the cart ID
    */
-  getCartId(): string | null {
-    return this.cartService.getCartIdLocalStorage();
+  getCartId(): string {
+    return this.cartService.getCartIdLocalStorage(this.userId) ?? '';
   }
 }

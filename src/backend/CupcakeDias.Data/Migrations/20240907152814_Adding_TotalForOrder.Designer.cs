@@ -4,6 +4,7 @@ using CupcakeDias.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CupcakeDias.Data.Migrations
 {
     [DbContext(typeof(CupcakeDiasContext))]
-    partial class CupcakeDiasContextModelSnapshot : ModelSnapshot
+    [Migration("20240907152814_Adding_TotalForOrder")]
+    partial class Adding_TotalForOrder
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +46,7 @@ namespace CupcakeDias.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Carts", (string)null);
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("CupcakeDias.Data.Entities.CartItem", b =>
@@ -70,7 +73,7 @@ namespace CupcakeDias.Data.Migrations
 
                     b.HasIndex("CupcakeId");
 
-                    b.ToTable("CartItems", (string)null);
+                    b.ToTable("CartItems");
                 });
 
             modelBuilder.Entity("CupcakeDias.Data.Entities.Cupcake", b =>
@@ -104,7 +107,7 @@ namespace CupcakeDias.Data.Migrations
 
                     b.HasKey("CupcakeId");
 
-                    b.ToTable("Cupcakes", (string)null);
+                    b.ToTable("Cupcakes");
                 });
 
             modelBuilder.Entity("CupcakeDias.Data.Entities.CupcakeIngredient", b =>
@@ -125,7 +128,7 @@ namespace CupcakeDias.Data.Migrations
 
                     b.HasIndex("IngredientId");
 
-                    b.ToTable("CupcakeIngredients", (string)null);
+                    b.ToTable("CupcakeIngredients");
                 });
 
             modelBuilder.Entity("CupcakeDias.Data.Entities.Ingredient", b =>
@@ -149,7 +152,7 @@ namespace CupcakeDias.Data.Migrations
 
                     b.HasKey("IngredientId");
 
-                    b.ToTable("Ingredients", (string)null);
+                    b.ToTable("Ingredients");
                 });
 
             modelBuilder.Entity("CupcakeDias.Data.Entities.Order", b =>
@@ -176,7 +179,7 @@ namespace CupcakeDias.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders", (string)null);
+                    b.ToTable("Orders");
                 });
 
             modelBuilder.Entity("CupcakeDias.Data.Entities.OrderDetail", b =>
@@ -203,7 +206,7 @@ namespace CupcakeDias.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetails", (string)null);
+                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("CupcakeDias.Data.Entities.Role", b =>
@@ -219,7 +222,7 @@ namespace CupcakeDias.Data.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("Roles");
 
                     b.HasData(
                         new
@@ -285,7 +288,7 @@ namespace CupcakeDias.Data.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("CupcakeDias.Data.Entities.Cart", b =>

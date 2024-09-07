@@ -26,6 +26,9 @@ body {
 }
 
 .content {
+  background: url("/assets/images/cupcake-background.png") no-repeat
+    center/cover;
+  height: auto;
   padding: var(--card-padding);
   margin-bottom: 50px; /* Adjusting for footer space */
 }

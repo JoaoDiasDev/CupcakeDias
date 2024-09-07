@@ -1,0 +1,15 @@
+.order-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.order-card {
+  margin-bottom: 20px;
+}
+
+mat-card-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+}

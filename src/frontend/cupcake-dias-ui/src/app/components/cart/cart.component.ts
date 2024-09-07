@@ -4,7 +4,7 @@ import { Cart } from '../../models/cart.model';
 import { AuthService } from '../../services/auth.service';
 import { CartService } from '../../services/cart.service';
 import { JwtToken } from '../../models/jwt-token.model';
-import { Router, RouterModule } from '@angular/router';
+import { NavigationEnd, Router, RouterModule } from '@angular/router';
 import { CartStatus } from '../../enums/cart-status.enum';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
@@ -13,6 +13,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-cart',
@@ -34,20 +36,49 @@ export class CartComponent implements OnInit {
   cart: Cart | undefined;
   cartItems: CartItem[] = [];
   userId: string | null = null;
+  totalItems = 0;
+  totalPrice = 0;
+  private routerSubscription: Subscription | undefined;
 
   constructor(
     private cartService: CartService,
     private authService: AuthService,
+    private snackBar: MatSnackBar,
     private router: Router
   ) {}
 
+  /**
+   * Lifecycle hook that fetches the user's cart when the component is initialized,
+   * given that the user is logged in.
+   */
   ngOnInit(): void {
     this.userId = this.authService.getUserIdFromToken();
     if (this.userId) {
       this.fetchCart();
     }
+
+    this.routerSubscription = this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        this.fetchCart(); // Trigger cart fetch on every navigation
+      }
+    });
   }
 
+  ngOnDestroy(): void {
+    // Clean up the router event subscription
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+  }
+
+  /**
+   * Decode a JWT token into a JSON object. If the token is invalid,
+   * this function will return null.
+   *
+   * @param token The JWT token to decode.
+   *
+   * @returns The decoded JSON object, or null if the token was invalid.
+   */
   decodeToken(token: string): JwtToken | null {
     try {
       const parts = token.split('.');
@@ -70,11 +101,26 @@ export class CartComponent implements OnInit {
         this.cart = data;
         this.cartItems = data.cartItems || [];
         this.cartService.setCartIdLocalStorage(this.cart?.cartId ?? '');
+        this.calculateCartSummary();
       },
       error: (error) => {
         console.error('Failed to fetch cart', error);
       },
     });
+  }
+
+  /**
+   * Calculate the total number of items and the total price.
+   */
+  calculateCartSummary(): void {
+    this.totalItems = this.cartItems.reduce(
+      (total, item) => total + item.quantity,
+      0
+    );
+    this.totalPrice = this.cartItems.reduce(
+      (total, item) => total + item.price * item.quantity,
+      0
+    );
   }
 
   /**
@@ -86,6 +132,7 @@ export class CartComponent implements OnInit {
         this.cartItems = this.cartItems.filter(
           (item) => item.cartItemId !== cartItemId
         );
+        this.calculateCartSummary();
       },
       error: (error) => {
         console.error('Failed to remove item', error);
@@ -103,10 +150,18 @@ export class CartComponent implements OnInit {
     }
     this.cartService.updateCartItem(cartItem).subscribe({
       next: () => {
-        console.log('Quantity updated successfully');
+        this.snackBar.open('Quantity updated successfully', 'Close', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+        });
       },
-      error: (error) => {
-        console.error('Failed to update quantity', error);
+      error: () => {
+        this.snackBar.open('Failed to update quantity', 'Close', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+        });
       },
     });
   }
@@ -115,18 +170,33 @@ export class CartComponent implements OnInit {
    * Proceed to checkout and complete the cart
    */
   proceedToCheckout(): void {
-    if (!this.cart?.cartId) return;
-
-    this.cartService
-      .completeCart(this.cart.cartId, CartStatus.Completed)
-      .subscribe({
+    if (this.cart) {
+      this.cartService.checkout(this.cart).subscribe({
         next: () => {
-          console.log('Checkout completed, cart status updated to Completed');
+          this.snackBar.open(
+            'Order placed successfully! Check your email.',
+            'Close',
+            {
+              duration: 3000,
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
+            }
+          );
+          this.cartService.removeCartIdLocalStorage();
           this.router.navigate(['/checkout-success']);
         },
-        error: (error) => {
-          console.error('Failed to proceed to checkout', error);
+        error: () => {
+          this.snackBar.open(
+            'Failed to place the order. Please try again.',
+            'Close',
+            {
+              duration: 3000,
+              verticalPosition: 'top',
+              horizontalPosition: 'center',
+            }
+          );
         },
       });
+    }
   }
 }

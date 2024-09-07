@@ -1,12 +1,25 @@
 <mat-toolbar color="primary" class="navbar">
-  <span>🧁 Cupcake Dias</span>
+  <a class="nav-title-link" href="/home"
+    ><span class="nav-title">🧁 Cupcake Dias</span></a
+  >
   <span class="spacer"></span>
 
-  <!-- Navigation Links -->
-  <button mat-button routerLink="/home">Home</button>
-  <button mat-button routerLink="/cart">Cart</button>
-  <!-- Show Admin button only if the user is an admin or manager -->
-  <button mat-button *ngIf="isAdminOrManager" routerLink="/admin">Admin</button>
-  <button mat-button *ngIf="!isLoggedIn" routerLink="/login">Login</button>
-  <button mat-button *ngIf="isLoggedIn" (click)="logout()">Logout</button>
+  <div class="nav-links">
+    <!-- Navigation Links -->
+    <button mat-raised-button routerLink="/home">Home</button>
+    <button mat-raised-button routerLink="/cart">Cart</button>
+    <!-- Show Admin button only if the user is an admin or manager -->
+    <button mat-raised-button *ngIf="isAdminOrManager" routerLink="/admin">
+      Admin
+    </button>
+    <button mat-raised-button *ngIf="isLoggedIn" routerLink="/order">
+      Orders
+    </button>
+    <button mat-raised-button *ngIf="!isLoggedIn" routerLink="/login">
+      Login
+    </button>
+    <button mat-raised-button *ngIf="isLoggedIn" (click)="logout()">
+      Logout
+    </button>
+  </div>
 </mat-toolbar>

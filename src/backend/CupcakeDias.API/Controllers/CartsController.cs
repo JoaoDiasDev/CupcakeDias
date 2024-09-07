@@ -39,7 +39,7 @@ public class CartsController(ICartService cartService) : ControllerBase
     {
         var carts = await cartService.GetCartsByUserIdAsync(userId);
         var cartsList = carts.ToList();
-        if (cartsList is null || !cartsList.Any())
+        if (!cartsList.Any())
         {
             var cart = new Cart
             {
@@ -50,13 +50,13 @@ public class CartsController(ICartService cartService) : ControllerBase
             var cartCreated = await cartService.CreateCartAsync(cart);
             if (cartCreated is null) return BadRequest();
 
-            cartsList?.Add(cartCreated);
+            cartsList.Add(cartCreated);
 
         }
 
-        var cartResponse = cartsList?.OrderByDescending(c => c.CreatedAt).FirstOrDefault(c =>
+        var cartResponse = cartsList.OrderByDescending(c => c.CreatedAt).FirstOrDefault(c =>
             !c.Status.Equals(CartStatus.Canceled)
-            && !c.Status.Equals(CartStatus.Completed)) ?? new Cart { Status = CartStatus.Canceled };
+            && !c.Status.Equals(CartStatus.Completed));
 
 
         return Ok(cartResponse);
@@ -105,7 +105,10 @@ public class CartsController(ICartService cartService) : ControllerBase
             return NotFound($"No cart found with id {cartId}");
         }
 
-        await cartService.UpdateCartStatusAsync(existingCart, status);
+        await cartService.UpdateCartStatusAsync(existingCart, status.ToString()!);
         return NoContent();
     }
+
+
+
 }

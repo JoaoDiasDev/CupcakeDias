@@ -1,0 +1,16 @@
+.success-message {
+  text-align: center;
+  padding: 40px;
+}
+
+.action-buttons {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+a[mat-raised-button] {
+  text-decoration: none;
+  padding: 10px 20px;
+}

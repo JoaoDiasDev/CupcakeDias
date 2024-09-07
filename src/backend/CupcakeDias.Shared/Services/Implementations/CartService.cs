@@ -30,7 +30,7 @@ public class CartService(CupcakeDiasContext context) : ICartService
                 .AsNoTracking()
                              .Include(c => c.CartItems!)
                              .ThenInclude(ci => ci.Cupcake)
-                             .Where(c => c.UserId == userId)
+                             .Where(c => c.UserId == userId && c.Status.Equals(CartStatus.Open))
                              .ToListAsync();
     }
 
@@ -50,9 +50,9 @@ public class CartService(CupcakeDiasContext context) : ICartService
         }
     }
 
-    public async Task UpdateCartStatusAsync(Cart cart, CartStatus status)
+    public async Task UpdateCartStatusAsync(Cart cart, string status)
     {
-        cart.Status = status.ToString()!;
+        cart.Status = status;
         context.Carts.Update(cart);
         await context.SaveChangesAsync();
     }

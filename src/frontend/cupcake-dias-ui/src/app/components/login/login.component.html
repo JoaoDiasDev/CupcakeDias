@@ -1,11 +1,12 @@
 <div class="login-container">
   <h2>Login</h2>
-  <form (ngSubmit)="login()">
-    <mat-form-field appearance="fill">
+  <form (ngSubmit)="login()" class="login-form">
+    <mat-form-field appearance="fill" class="full-width">
       <mat-label>Email</mat-label>
       <input matInput type="email" [(ngModel)]="email" name="email" required />
     </mat-form-field>
-    <mat-form-field appearance="fill">
+
+    <mat-form-field appearance="fill" class="full-width">
       <mat-label>Password</mat-label>
       <input
         matInput
@@ -15,7 +16,16 @@
         required
       />
     </mat-form-field>
-    <button mat-raised-button color="primary" type="submit">Login</button>
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      class="login-button"
+    >
+      Login
+    </button>
+
+    <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
   </form>
-  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
 </div>

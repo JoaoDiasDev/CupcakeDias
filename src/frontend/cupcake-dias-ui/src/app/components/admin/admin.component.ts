@@ -1,5 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { MatIcon } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { Router } from '@angular/router';
 
 @Component({
@@ -7,7 +10,7 @@ import { Router } from '@angular/router';
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css'],
   standalone: true,
-  imports: [MatIcon],
+  imports: [MatIconModule, MatButtonModule, CommonModule, MatCardModule],
 })
 export class AdminComponent {
   constructor(private router: Router) {}
@@ -24,5 +27,12 @@ export class AdminComponent {
    */
   manageIngredients(): void {
     this.router.navigate(['/admin/ingredients']);
+  }
+
+   /**
+   * Navigate to the order management page.
+   */
+   manageOrders(): void {
+    this.router.navigate(['/admin/orders']);
   }
 }

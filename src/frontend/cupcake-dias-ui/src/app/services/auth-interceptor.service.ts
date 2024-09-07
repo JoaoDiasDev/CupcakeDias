@@ -1,12 +1,19 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { AuthService } from '../services/auth.service';
-import { catchError, switchMap, throwError } from 'rxjs';
+import { AuthService } from './auth.service';
+import { LoadingService } from './loading.service';
+import { catchError, switchMap, finalize, throwError } from 'rxjs';
 
 // Define the interceptor function
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  const authService = inject(AuthService); // Use inject() to inject AuthService
+  const authService = inject(AuthService);
+  const loadingService = inject(LoadingService);
   const token = localStorage.getItem('authToken');
+
+  // Start a timeout to show the loading spinner after 2 seconds
+  const showSpinnerTimeout = setTimeout(() => {
+    loadingService.show();
+  }, 2000); // Show the spinner after 2 seconds
 
   if (token) {
     // Clone the request and add Authorization header
@@ -61,10 +68,21 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 
         // If it's not a 401 error or there's no refresh token, propagate the error
         return throwError(() => error);
+      }),
+      // Clear the spinner timeout if the request completes before 2 seconds
+      finalize(() => {
+        clearTimeout(showSpinnerTimeout); // Prevent showing the spinner if the request finishes early
+        loadingService.hide(); // Hide the spinner if it was shown
       })
     );
   }
 
   // If there's no token, proceed without modifying the request
-  return next(req);
+  return next(req).pipe(
+    // Clear the spinner timeout if the request completes before 2 seconds
+    finalize(() => {
+      clearTimeout(showSpinnerTimeout); // Prevent showing the spinner if the request finishes early
+      loadingService.hide(); // Hide the spinner if it was shown
+    })
+  );
 };

@@ -59,15 +59,42 @@ export class CartService {
     return this.http.put(`${this.apiUrl}/carts/${cartId}/status`, { status });
   }
 
+  /**
+   * Stores the given cart ID in local storage for later use. This can be used
+   * to identify the cart when adding items to it.
+   * @param cartId The ID of the cart to store
+   */
   setCartIdLocalStorage(cartId: string) {
     localStorage.setItem('cartId', cartId);
   }
 
-  getCartIdLocalStorage() {
-    return localStorage.getItem('cartId');
+  /**
+   * Retrieves the cart ID stored in local storage.
+   * @returns The cart ID stored in local storage, or null if no cart ID is stored.
+   */
+  getCartIdLocalStorage(userId: string): string {
+    let cartId = localStorage.getItem('cartId');
+    if (!cartId) {
+      this.getCart(userId).subscribe((cart) => {
+        cartId = cart?.cartId ?? '';
+        localStorage.setItem('cartId', cartId);
+      });
+    }
+    return cartId ?? '';
   }
 
-  removeCartIdLocalStorage() {
+  /**
+   * Removes the cart ID stored in local storage.
+   * @returns {void}
+   */
+  removeCartIdLocalStorage(): void {
     localStorage.removeItem('cartId');
+  }
+
+  /**
+   * Checkout the current cart and create an order.
+   */
+  checkout(cart: Cart) {
+    return this.http.post(`${this.apiUrl}/orders/checkout`, cart);
   }
 }

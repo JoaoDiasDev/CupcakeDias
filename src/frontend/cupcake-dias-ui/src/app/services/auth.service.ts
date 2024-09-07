@@ -96,12 +96,12 @@ export class AuthService {
    * Get the logged-in user's ID from the JWT token
    * @returns The user ID or null if the token is invalid
    */
-  getUserIdFromToken(): string | null {
+  getUserIdFromToken(): string {
     const token = this.getToken();
-    if (!token) return null;
+    if (!token) return '';
 
     const decodedToken = this.decodeToken(token);
-    return decodedToken?.unique_name || null;
+    return decodedToken?.unique_name ?? '';
   }
 
   /**

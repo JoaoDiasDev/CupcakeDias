@@ -1,52 +1,87 @@
-<div class="cart-container" *ngIf="cart">
-  <div *ngIf="cartItems.length !== 0" class="cart-items-grid">
-    <mat-card *ngFor="let item of cartItems" class="cart-item">
-      <div class="cart-item-image">
-        <img
-          [src]="item.cupcake?.imageUrl"
-          alt="{{ item.cupcake?.name }}"
-          loading="eager"
-        />
-      </div>
-      <div class="cart-item-details">
-        <mat-card-title>{{ item.cupcake?.name?.toUpperCase() }}</mat-card-title>
-        <mat-card-subtitle
-          >Base Flavor:
-          {{ item.cupcake?.baseFlavor?.toUpperCase() }}</mat-card-subtitle
+<div class="cart-wrapper">
+  <div class="cart-container" *ngIf="cart">
+    <!-- Cart Items on the Left -->
+    <div *ngIf="cartItems.length !== 0" class="cart-items-section">
+      <div class="cart-items-grid">
+        <mat-card
+          *ngFor="let item of cartItems"
+          class="cart-item animated-card"
         >
+          <!-- Cupcake Image -->
+          <div class="cart-item-image">
+            <img
+              [src]="item.cupcake?.imageUrl"
+              alt="{{ item.cupcake?.name }}"
+              loading="eager"
+            />
+          </div>
+          <!-- Cupcake Details -->
+          <div class="cart-item-details">
+            <mat-card-title>{{
+              item.cupcake?.name?.toUpperCase()
+            }}</mat-card-title>
+            <mat-card-subtitle>
+              Base Flavor: {{ item.cupcake?.baseFlavor?.toUpperCase() }}
+            </mat-card-subtitle>
+            <p>
+              Price:
+              {{ item.price | currency : "BRL" : "symbol" : "1.2-2" : "pt-BR" }}
+            </p>
+            <mat-form-field appearance="outline" class="quantity-field">
+              <mat-label>Quantity</mat-label>
+              <input
+                matInput
+                type="number"
+                [(ngModel)]="item.quantity"
+                (ngModelChange)="updateQuantity(item, item.quantity)"
+                min="1"
+              />
+            </mat-form-field>
+          </div>
+          <!-- Delete action -->
+          <mat-card-actions>
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="removeItem(item.cartItemId ?? '')"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
+
+    <!-- Cart Summary Panel on the Right -->
+    <div class="cart-summary-panel">
+      <mat-card class="cart-summary-card">
+        <h3>Cart Summary</h3>
+        <p><strong>Total Items:</strong> {{ totalItems }}</p>
         <p>
-          Price:
-          {{ item.price | currency : "BRL" : "symbol" : "1.2-2" : "pt-BR" }}
+          <strong>Total Price:</strong>
+          {{ totalPrice | currency : "BRL" : "symbol" : "1.2-2" : "pt-BR" }}
         </p>
-        <mat-form-field appearance="outline" class="quantity-field">
-          <mat-label>Quantity</mat-label>
-          <input
-            matInput
-            type="number"
-            [(ngModel)]="item.quantity"
-            (ngModelChange)="updateQuantity(item, item.quantity)"
-            min="1"
-          />
-        </mat-form-field>
-      </div>
-      <mat-card-actions>
         <button
-          mat-icon-button
-          color="warn"
-          (click)="removeItem(item.cartItemId ?? '')"
+          mat-raised-button
+          color="primary"
+          class="checkout-button"
+          (click)="proceedToCheckout()"
         >
-          <mat-icon>delete</mat-icon>
+          Checkout
         </button>
-      </mat-card-actions>
-    </mat-card>
+      </mat-card>
+    </div>
   </div>
 
+  <!-- Empty Cart Message -->
   <div class="empty-cart-message" *ngIf="cartItems.length === 0">
-    <h2>Your cart is empty!</h2>
-    <a [routerLink]="['/cupcakes-list']">
-      <button class="go-back-button" mat-raised-button>
-        Go back to the cupcake list to add some!
-      </button>
-    </a>
+    <mat-card class="empty-cart-card">
+      <h2>Your cart is empty!</h2>
+      <a [routerLink]="['/cupcakes-list']">
+        <button class="go-back-button" mat-raised-button>
+          Go to Cupcake list
+        </button>
+      </a>
+    </mat-card>
   </div>
 </div>
