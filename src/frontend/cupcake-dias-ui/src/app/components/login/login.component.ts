@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import {
   MatFormField,
@@ -22,6 +22,7 @@ import { CommonModule } from '@angular/common';
     CommonModule,
     MatFormField,
     MatLabel,
+    RouterModule,
   ],
 })
 export class LoginComponent {

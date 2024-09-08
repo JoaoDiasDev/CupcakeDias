@@ -13,11 +13,15 @@ namespace CupcakeDias.Shared.Services.Implementations;
 
 public class UserService(CupcakeDiasContext context) : IUserService
 {
-
+    /// <summary>
+    /// All new users are created with the User role and password is hashed
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public async Task<User> CreateUserAsync(User user)
     {
-        // Ensure the role exists
-        var role = await context.Roles.FindAsync(user.RoleId) ?? throw new Exception("Invalid role specified");
+        var role = await context.Roles.FirstOrDefaultAsync(r => r.RoleName.Equals(RoleNames.User));
+        user.Role = role;
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
 
         context.Users.Add(user);

@@ -20,7 +20,7 @@ public class User
     public string? Token { get; set; }
     [StringLength(355)]
     public string? RefreshToken { get; set; }
-    public required Guid RoleId { get; set; }
+    public Guid RoleId { get; set; }
     public Role? Role { get; set; }
     public ICollection<Order>? Orders { get; set; }
     public ICollection<Cart>? Carts { get; set; }

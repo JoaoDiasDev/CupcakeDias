@@ -12,6 +12,7 @@ import { CheckoutSuccessComponent } from './components/checkout-success/checkout
 import { OrderComponent } from './components/order/order.component';
 import { OrderDetailsComponent } from './components/order-details/order-details.component';
 import { OrderManagementComponent } from './components/order-management/order-management.component';
+import { RegisterComponent } from './components/register/register.component';
 
 export const routes: Routes = [
   {
@@ -31,6 +32,7 @@ export const routes: Routes = [
     canActivate: [RoleGuard],
   },
   { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
   {
     path: 'cupcakes-list',
     component: CupcakeListComponent,
