@@ -24,7 +24,7 @@ builder.Services.AddDbContext<CupcakeDiasContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 // Get the JWT secret key from the environment or config
-var jwtSecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY");
+var jwtSecretKey = Environment.GetEnvironmentVariable("JWT__SECRET");
 
 if (string.IsNullOrEmpty(jwtSecretKey))
 {
