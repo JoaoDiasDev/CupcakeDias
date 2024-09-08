@@ -12,8 +12,8 @@ using System.Text.Json.Serialization;
 var builder = WebApplication.CreateBuilder(args);
 DotEnv.Load(options: new DotEnvOptions(ignoreExceptions: false, trimValues: true));
 
-var connectionString = DotEnv.Read()["CONNECTIONSTRINGS__DEFAULTCONNECTION"];
-//var connectionString = Environment.GetEnvironmentVariable("CONNECTIONSTRINGS__DEFAULTCONNECTION");
+//var connectionString = DotEnv.Read()["CONNECTIONSTRINGS__DEFAULTCONNECTION"];
+var connectionString = Environment.GetEnvironmentVariable("CONNECTIONSTRINGS__DEFAULTCONNECTION");
 
 if (string.IsNullOrEmpty(connectionString))
 {
@@ -25,8 +25,8 @@ builder.Services.AddDbContext<CupcakeDiasContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 // Get the JWT secret key from the environment or config
-//var jwtSecretKey = Environment.GetEnvironmentVariable("JWT__SECRET");
-var jwtSecretKey = DotEnv.Read()["JWT__SECRET"];
+var jwtSecretKey = Environment.GetEnvironmentVariable("JWT__SECRET");
+//var jwtSecretKey = DotEnv.Read()["JWT__SECRET"];
 
 if (string.IsNullOrEmpty(jwtSecretKey))
 {
