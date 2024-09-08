@@ -108,6 +108,35 @@
           </mat-error>
         </mat-form-field>
 
+        <!-- Description -->
+        <mat-form-field appearance="outline">
+          <mat-label>Description</mat-label>
+          <textarea
+            matInput
+            [(ngModel)]="cupcakeForm.description"
+            placeholder="Enter description"
+            #description="ngModel"
+            name="description"
+          ></textarea>
+        </mat-form-field>
+
+        <!-- Multi-select for Ingredients -->
+        <mat-form-field appearance="outline">
+          <mat-label>Ingredients</mat-label>
+          <mat-select
+            [(ngModel)]="selectedIngredients"
+            name="selectedIngredients"
+            multiple
+          >
+            <mat-option
+              *ngFor="let ingredient of ingredients"
+              [value]="ingredient.ingredientId"
+            >
+              {{ ingredient.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
         <!-- Submit and Cancel Buttons -->
         <button mat-raised-button color="primary" type="submit">
           {{ editingCupcake ? "Update Cupcake" : "Create Cupcake" }}

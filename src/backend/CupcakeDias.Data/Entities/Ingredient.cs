@@ -11,7 +11,8 @@ public class Ingredient
     public required string Name { get; set; }
     [StringLength(50)]
     public required string Type { get; set; }
-    public bool Availability { get; set; }
+
+    public bool Availability { get; set; } = true;
     [JsonIgnore]
     public ICollection<CupcakeIngredient>? CupcakeIngredients { get; set; }
 }
