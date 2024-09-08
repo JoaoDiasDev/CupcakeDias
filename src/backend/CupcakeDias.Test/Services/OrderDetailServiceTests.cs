@@ -51,7 +51,7 @@ public class OrderDetailServiceTests
     public async Task GetOrderDetailByIdAsync_ShouldReturnOrderDetailWithDetails()
     {
         // Arrange
-        var order = new Order { Status = OrderStatus.Pending, UserId = Guid.NewGuid() };
+        var order = new Order { Total = 0, Status = OrderStatus.Pending, UserId = Guid.NewGuid() };
         var cupcake = new Cupcake
         {
             Name = "Chocolate",
@@ -80,7 +80,7 @@ public class OrderDetailServiceTests
     public async Task GetOrderDetailsByOrderIdAsync_ShouldReturnAllOrderDetailsForOrder()
     {
         // Arrange
-        var order = new Order { Status = OrderStatus.Pending, UserId = Guid.NewGuid() };
+        var order = new Order { Status = OrderStatus.Pending, Total = 0, UserId = Guid.NewGuid() };
         var orderDetails = new List<OrderDetail>
         {
             new() { Order = order, CupcakeId = Guid.NewGuid(), Quantity = 2, Price = 4.00m },

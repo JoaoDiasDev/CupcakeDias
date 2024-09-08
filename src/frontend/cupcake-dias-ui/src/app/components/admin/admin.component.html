@@ -1,0 +1,25 @@
+<div class="admin-dashboard-container">
+  <mat-card class="admin-card">
+    <div class="admin-header">
+      <h2>Admin Dashboard</h2>
+      <p>Select a section to manage:</p>
+    </div>
+
+    <div class="admin-options">
+      <!-- Cupcake Management Button -->
+      <button mat-raised-button color="primary" (click)="manageCupcakes()">
+        <mat-icon>cake</mat-icon> Manage Cupcakes
+      </button>
+
+      <!-- Ingredients Management Button -->
+      <button mat-raised-button color="accent" (click)="manageIngredients()">
+        <mat-icon>local_dining</mat-icon> Manage Ingredients
+      </button>
+
+      <!-- Order Management Button -->
+      <button mat-raised-button color="warn" (click)="manageOrders()">
+        <mat-icon>shopping_cart</mat-icon> Manage Orders
+      </button>
+    </div>
+  </mat-card>
+</div>

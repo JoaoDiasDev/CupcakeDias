@@ -17,6 +17,7 @@ public class IngredientService(CupcakeDiasContext context) : IIngredientService
     public async Task<Ingredient> GetIngredientByIdAsync(Guid ingredientId)
     {
         return await context.Ingredients
+                .AsNoTracking()
             .Include(i => i.CupcakeIngredients)
             .FirstOrDefaultAsync(i => i.IngredientId == ingredientId) ?? new Ingredient { Name = "", Availability = true, Type = "" };
     }
@@ -24,6 +25,7 @@ public class IngredientService(CupcakeDiasContext context) : IIngredientService
     public async Task<IEnumerable<Ingredient>> GetAllIngredientsAsync()
     {
         return await context.Ingredients
+                .AsNoTracking()
                              .Include(i => i.CupcakeIngredients)
                              .ToListAsync();
     }

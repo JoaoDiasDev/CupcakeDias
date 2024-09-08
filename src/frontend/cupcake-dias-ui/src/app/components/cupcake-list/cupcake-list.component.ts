@@ -1,101 +1,117 @@
 import { Component, OnInit } from '@angular/core';
-import { CupcakeService } from '../../services/cupcake.service';
 import { Cupcake } from '../../models/cupcake.model';
-import { CartItem } from '../../models/cart-item.model';
-import { MatSnackBar } from '@angular/material/snack-bar'; // Optional for notification
-import { v4 as uuidv4 } from 'uuid'; // Use UUID to generate cartItemId for the cart item
-import { CommonModule } from '@angular/common';
-import {
-  MatCard,
-  MatCardActions,
-  MatCardContent,
-  MatCardHeader,
-  MatCardSubtitle,
-  MatCardTitle,
-} from '@angular/material/card';
-import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { CupcakeService } from '../../services/cupcake.service';
 import { CartService } from '../../services/cart.service';
-import { Cart } from '../../models/cart.model';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatButtonModule } from '@angular/material/button';
+import { FormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../services/auth.service';
+import { CartItem } from '../../models/cart-item.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  standalone: true,
   selector: 'app-cupcake-list',
   templateUrl: './cupcake-list.component.html',
   styleUrls: ['./cupcake-list.component.css'],
+  standalone: true,
   imports: [
-    MatCard,
-    MatCardHeader,
-    MatCardTitle,
-    MatCardSubtitle,
-    MatCardContent,
-    MatCardActions,
-    MatFormField,
-    MatLabel,
     CommonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    FormsModule,
+    MatInputModule,
   ],
 })
 export class CupcakeListComponent implements OnInit {
   cupcakes: Cupcake[] = [];
-  activeCart: Cart = {} as Cart;
+  searchTerm = '';
   userId = '';
+  cartId: string | null;
 
   constructor(
     private cupcakeService: CupcakeService,
-    private snackBar: MatSnackBar,
     private cartService: CartService,
-    private authService: AuthService
+    private authService: AuthService,
+    private snackBar: MatSnackBar
   ) {
-    this.userId = this.authService.getUserId() ?? '';
-
-    this.cartService.getActiveCart(this.userId).subscribe({
-      next: (cart) => {
-        this.activeCart = cart;
-      },
-      error: (err) => {
-        console.error('Error getting active cart:', err);
-      },
-    });
+    this.userId = this.authService.getUserIdFromToken();
+    this.cartId = this.getCartId();
   }
 
   ngOnInit(): void {
-    this.loadCupcakes();
+    this.fetchCupcakes();
   }
 
-  // Load all cupcakes from the service
-  loadCupcakes(): void {
-    this.cupcakeService.getAllCupcakes().subscribe({
-      next: (cupcakes) => {
-        this.cupcakes = cupcakes;
-      },
-      error: (err) => {
-        console.error('Error loading cupcakes:', err);
-      },
+  /**
+   * Fetch the list of available cupcakes from the backend
+   */
+  fetchCupcakes(): void {
+    this.cupcakeService.getCupcakes().subscribe((data: Cupcake[]) => {
+      this.cupcakes = data;
     });
   }
 
-  // Add cupcake to the cart
-  addToCart(cupcake: Cupcake, quantity: number): void {
+    /**
+   * Filters cupcakes based on the search term entered by the user.
+   * @returns Filtered list of cupcakes
+   */
+    filteredCupcakes(): Cupcake[] {
+      if (!this.searchTerm) {
+        return this.cupcakes;
+      }
+      const lowerCaseTerm = this.searchTerm.toLowerCase();
+      return this.cupcakes.filter((cupcake) =>
+        cupcake.name.toLowerCase().includes(lowerCaseTerm)
+      );
+    }
+
+  /**
+   * Add selected cupcake and quantity to the cart
+   * @param cupcake The selected cupcake
+   * @param quantity The quantity to be added
+   */
+  addToCart(cupcake: Cupcake, quantity: number) {
     const cartItem: CartItem = {
-      cartItemId: uuidv4(), // Generate unique ID
-      cartId: this.activeCart?.cartId, //TODO Replace with logic to get the active cart ID
-      cupcakeId: cupcake.cupcakeId,
+      cartId: this.cartId ?? '',
+      cupcakeId: cupcake.cupcakeId ?? '',
       quantity,
       price: cupcake.price,
     };
 
-    this.cupcakeService.addToCart(cartItem).subscribe({
+    this.cartService.addCartItem(cartItem).subscribe({
       next: () => {
-        this.snackBar.open(`${cupcake.name} added to cart!`, 'Close', {
+        this.snackBar.open('Cupcake added to cart!', 'Close', {
           duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
         });
       },
-      error: (err) => {
-        console.error('Error adding to cart:', err);
-        this.snackBar.open(`Failed to add ${cupcake.name} to cart.`, 'Close', {
+      error: () => {
+        this.snackBar.open('Failed to add cupcake to cart.', 'Close', {
           duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
+        });
+      },
+      complete: () => {
+        this.snackBar.open('Cupcake added to cart!', 'Close', {
+          duration: 3000,
+          verticalPosition: 'top',
+          horizontalPosition: 'center',
         });
       },
     });
+  }
+
+  /**
+   * Get the cart ID for the current user (this should be implemented to fetch the active cart ID)
+   * @returns the cart ID
+   */
+  getCartId(): string {
+    return this.cartService.getCartIdLocalStorage(this.userId) ?? '';
   }
 }

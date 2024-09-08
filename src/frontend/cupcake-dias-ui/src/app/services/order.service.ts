@@ -2,28 +2,50 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Order } from '../models/order.model';
-import { environment } from '../../environments/environment';
+import { OrderDetail } from '../models/order-detail.model';
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderService {
-  private apiUrl = `${environment.apiUrl}/orders`;
+  private apiUrl = `${environment.apiUrl}`;
 
   constructor(private http: HttpClient) {}
 
-  // Fetch all orders for a user
-  getOrdersByUserId(userId: string): Observable<Order[]> {
-    return this.http.get<Order[]>(`${this.apiUrl}/user/${userId}`);
+  /**
+   * Fetches the orders for the given user ID
+   * @param userId The user ID to fetch orders for
+   * @returns An Observable of Order[]
+   */
+  getOrders(userId: string): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.apiUrl}/orders/${userId}`);
   }
 
-  // Fetch a specific order by ID
-  getOrderById(orderId: string): Observable<Order> {
-    return this.http.get<Order>(`${this.apiUrl}/${orderId}`);
+  /**
+   * Fetches the order details for the given order ID
+   * @param orderId The order ID to fetch order details for
+   * @returns An Observable of OrderDetail[]
+   */
+  getOrderDetails(orderId: string): Observable<OrderDetail[]> {
+    return this.http.get<OrderDetail[]>(
+      `${this.apiUrl}/orderdetails/order/${orderId}`
+    );
   }
 
-  // Create a new order
-  createOrder(order: Order): Observable<Order> {
-    return this.http.post<Order>(this.apiUrl, order);
+  /**
+   * Fetch all orders
+   */
+  getAllOrders(): Observable<Order[]> {
+    return this.http.get<Order[]>(`${this.apiUrl}/orders`);
+  }
+
+  /**
+   * Update order status
+   */
+  updateOrderStatus(orderId: string, status: string): Observable<undefined> {
+    return this.http.put<undefined>(`${this.apiUrl}/orders/${orderId}/status`, {
+      status,
+    });
   }
 }

@@ -33,6 +33,7 @@ public class OrderServiceTests
         var order = new Order
         {
             Status = OrderStatus.Pending,
+            Total = 10m,
             User = new User
             {
                 Email = "pP7rF@example.com",
@@ -69,8 +70,8 @@ public class OrderServiceTests
         var userId = Guid.NewGuid();
         var orders = new List<Order>
         {
-            new() {Status = OrderStatus.Pending, UserId = userId, OrderDetails = [] },
-            new() {Status = OrderStatus.Processing, UserId = userId, OrderDetails = [] }
+            new() {Status = OrderStatus.Pending, UserId = userId,Total = 0, OrderDetails = [] },
+            new() {Status = OrderStatus.Processing, UserId = userId,Total = 0, OrderDetails = [] }
         };
         _context.Orders.AddRange(orders);
         await _context.SaveChangesAsync();

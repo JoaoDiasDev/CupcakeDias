@@ -8,10 +8,12 @@ public class Cart
     [Key]
     public Guid CartId { get; set; }
     [StringLength(50)]
+    [JsonPropertyName("status")]
     public required string Status { get; set; }
     public Guid UserId { get; set; }
-    public User? User { get; set; }
     [JsonIgnore]
+    public User? User { get; set; }
+    public DateTime? CreatedAt { get; set; } = DateTime.Now;
 
     public ICollection<CartItem>? CartItems { get; set; }
 }

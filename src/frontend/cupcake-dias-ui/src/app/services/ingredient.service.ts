@@ -2,44 +2,55 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Ingredient } from '../models/ingredient.model';
-import { environment } from '../../environments/environment'; // Make sure you have this set up
+import { environment } from '../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class IngredientService {
-  private apiUrl = `${environment.apiUrl}/ingredients`; // API endpoint for ingredients
+  private apiUrl = `${environment.apiUrl}/ingredients`;
 
   constructor(private http: HttpClient) {}
 
-  // Fetch all ingredients
+  /**
+   * Fetches the list of available ingredients from the backend.
+   * @returns Observable of the ingredient list.
+   */
   getIngredients(): Observable<Ingredient[]> {
     return this.http.get<Ingredient[]>(this.apiUrl);
   }
 
-  // Fetch a single ingredient by ID
-  getIngredientById(ingredientId: string): Observable<Ingredient> {
-    return this.http.get<Ingredient>(`${this.apiUrl}/${ingredientId}`);
+  /**
+   * Creates a new ingredient.
+   * @param ingredientData Data for the new ingredient.
+   * @returns Observable indicating the success of the creation.
+   */
+  createIngredient(ingredientData: Ingredient): Observable<Ingredient> {
+    return this.http.post<Ingredient>(this.apiUrl, ingredientData);
   }
 
-  // Create a new ingredient
-  createIngredient(ingredient: Ingredient): Observable<Ingredient> {
-    return this.http.post<Ingredient>(this.apiUrl, ingredient);
-  }
-
-  // Update an existing ingredient
+  /**
+   * Updates an existing ingredient by its ID.
+   * @param ingredientId The ID of the ingredient to update.
+   * @param ingredientData The updated ingredient data.
+   * @returns Observable indicating the success of the update.
+   */
   updateIngredient(
     ingredientId: string,
-    ingredient: Ingredient
+    ingredientData: Ingredient
   ): Observable<Ingredient> {
     return this.http.put<Ingredient>(
       `${this.apiUrl}/${ingredientId}`,
-      ingredient
+      ingredientData
     );
   }
 
-  // Delete an ingredient by ID
-  deleteIngredient(ingredientId: string): Observable<undefined> {
-    return this.http.delete<undefined>(`${this.apiUrl}/${ingredientId}`);
+  /**
+   * Deletes an ingredient by its ID.
+   * @param ingredientId The ID of the ingredient to delete.
+   * @returns Observable indicating the success of the deletion.
+   */
+  deleteIngredient(ingredientId: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${ingredientId}`);
   }
 }

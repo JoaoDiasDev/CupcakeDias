@@ -28,6 +28,9 @@ namespace CupcakeDias.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(50)
@@ -40,7 +43,7 @@ namespace CupcakeDias.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Carts");
+                    b.ToTable("Carts", (string)null);
                 });
 
             modelBuilder.Entity("CupcakeDias.Data.Entities.CartItem", b =>
@@ -52,11 +55,11 @@ namespace CupcakeDias.Data.Migrations
                     b.Property<Guid>("CartId")
                         .HasColumnType("char(36)");
 
-                    b.Property<Guid?>("CupcakeId")
+                    b.Property<Guid>("CupcakeId")
                         .HasColumnType("char(36)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -67,7 +70,7 @@ namespace CupcakeDias.Data.Migrations
 
                     b.HasIndex("CupcakeId");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("CartItems", (string)null);
                 });
 
             modelBuilder.Entity("CupcakeDias.Data.Entities.Cupcake", b =>
@@ -83,11 +86,13 @@ namespace CupcakeDias.Data.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
 
                     b.Property<string>("ImageUrl")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(400)
+                        .HasColumnType("varchar(400)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -95,11 +100,11 @@ namespace CupcakeDias.Data.Migrations
                         .HasColumnType("varchar(100)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.HasKey("CupcakeId");
 
-                    b.ToTable("Cupcakes");
+                    b.ToTable("Cupcakes", (string)null);
                 });
 
             modelBuilder.Entity("CupcakeDias.Data.Entities.CupcakeIngredient", b =>
@@ -120,7 +125,7 @@ namespace CupcakeDias.Data.Migrations
 
                     b.HasIndex("IngredientId");
 
-                    b.ToTable("CupcakeIngredients");
+                    b.ToTable("CupcakeIngredients", (string)null);
                 });
 
             modelBuilder.Entity("CupcakeDias.Data.Entities.Ingredient", b =>
@@ -144,7 +149,7 @@ namespace CupcakeDias.Data.Migrations
 
                     b.HasKey("IngredientId");
 
-                    b.ToTable("Ingredients");
+                    b.ToTable("Ingredients", (string)null);
                 });
 
             modelBuilder.Entity("CupcakeDias.Data.Entities.Order", b =>
@@ -161,6 +166,9 @@ namespace CupcakeDias.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18, 2)");
+
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
@@ -168,7 +176,7 @@ namespace CupcakeDias.Data.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("CupcakeDias.Data.Entities.OrderDetail", b =>
@@ -184,7 +192,7 @@ namespace CupcakeDias.Data.Migrations
                         .HasColumnType("char(36)");
 
                     b.Property<decimal>("Price")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -195,7 +203,7 @@ namespace CupcakeDias.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderDetails");
+                    b.ToTable("OrderDetails", (string)null);
                 });
 
             modelBuilder.Entity("CupcakeDias.Data.Entities.Role", b =>
@@ -211,22 +219,22 @@ namespace CupcakeDias.Data.Migrations
 
                     b.HasKey("RoleId");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
 
                     b.HasData(
                         new
                         {
-                            RoleId = new Guid("99b68beb-591b-4fb9-bfce-8a5198a9a688"),
+                            RoleId = new Guid("cb4e3c76-d337-4f4b-82df-04e9acc4fb74"),
                             RoleName = "Admin"
                         },
                         new
                         {
-                            RoleId = new Guid("3cc92cd1-c165-4b8d-9538-6e905c91b8a8"),
+                            RoleId = new Guid("bcaa2fbe-9209-46a2-b41c-176815419ab5"),
                             RoleName = "Manager"
                         },
                         new
                         {
-                            RoleId = new Guid("2d276efa-4997-4c0d-8449-8cc5ba0c618e"),
+                            RoleId = new Guid("1ed998c4-137d-4bdd-9f34-f397bae620e9"),
                             RoleName = "Customer"
                         });
                 });
@@ -262,17 +270,22 @@ namespace CupcakeDias.Data.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
+                    b.Property<string>("RefreshToken")
+                        .HasMaxLength(355)
+                        .HasColumnType("varchar(355)");
+
                     b.Property<Guid>("RoleId")
                         .HasColumnType("char(36)");
 
                     b.Property<string>("Token")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(355)
+                        .HasColumnType("varchar(355)");
 
                     b.HasKey("UserId");
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("CupcakeDias.Data.Entities.Cart", b =>
@@ -296,7 +309,9 @@ namespace CupcakeDias.Data.Migrations
 
                     b.HasOne("CupcakeDias.Data.Entities.Cupcake", "Cupcake")
                         .WithMany("CartItems")
-                        .HasForeignKey("CupcakeId");
+                        .HasForeignKey("CupcakeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Cart");
 

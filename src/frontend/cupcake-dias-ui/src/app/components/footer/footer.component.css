@@ -1,21 +1,26 @@
-.footer {
-  background-color: #f8f9fa;
-  padding: 20px;
+.joaodiasdevlogo {
+  align-self: center;
+}
+
+mat-toolbar {
+  justify-content: end;
+  position: fixed;
+  bottom: 0;
+  font-size: var(--font-size-small);
+}
+
+footer {
   text-align: center;
-  position: relative;
+  padding: 20px;
+  position: fixed;
   bottom: 0;
   width: 100%;
-  border-top: 1px solid #ddd;
+  font-size: var(--font-size-small);
+  z-index: 1000;
 }
 
-.footer-content {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-}
-
-.footer-content p {
-  margin: 0;
-  color: #555;
+footer img {
+  margin-left: 10px;
+  vertical-align: middle;
+  width: 30px;
 }

@@ -39,21 +39,33 @@ public class CartsController(ICartService cartService) : ControllerBase
     {
         var carts = await cartService.GetCartsByUserIdAsync(userId);
         var cartsList = carts.ToList();
-        if (cartsList is null || !cartsList.Any())
+        if (!cartsList.Any())
         {
-            return NotFound();
+            var cart = new Cart
+            {
+                UserId = userId,
+                Status = CartStatus.Open,
+            };
+
+            var cartCreated = await cartService.CreateCartAsync(cart);
+            if (cartCreated is null) return BadRequest();
+
+            cartsList.Add(cartCreated);
+
         }
 
-        return Ok(cartsList.FirstOrDefault(c =>
+        var cartResponse = cartsList.OrderByDescending(c => c.CreatedAt).FirstOrDefault(c =>
             !c.Status.Equals(CartStatus.Canceled)
-            && !c.Status.Equals(CartStatus.Completed)
-        ));
+            && !c.Status.Equals(CartStatus.Completed));
+
+
+        return Ok(cartResponse);
     }
 
     [HttpPut("{cartId:guid}")]
     public async Task<IActionResult> UpdateCart(Guid cartId, [FromBody] Cart cart)
     {
-        if (cart is not null || !(cart!.CartId.Equals(cartId)))
+        if (cart is null || !(cart.CartId.Equals(cartId)))
         {
             return BadRequest("Cart is null or ID mismatch.");
         }
@@ -80,4 +92,23 @@ public class CartsController(ICartService cartService) : ControllerBase
         await cartService.DeleteCartAsync(cartId);
         return NoContent();
     }
+
+
+    [HttpPut("{cartId:guid}/status")]
+    public async Task<IActionResult> UpdateCart(Guid cartId, [FromBody] CartStatus status)
+    {
+        if (Guid.Empty.Equals(cartId)) return BadRequest("Cart is null or ID mismatch.");
+
+        var existingCart = await cartService.GetCartByIdAsync(cartId);
+        if (existingCart == null)
+        {
+            return NotFound($"No cart found with id {cartId}");
+        }
+
+        await cartService.UpdateCartStatusAsync(existingCart, status.ToString()!);
+        return NoContent();
+    }
+
+
+
 }

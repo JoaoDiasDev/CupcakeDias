@@ -1,0 +1,50 @@
+.order-management-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: 100vh;
+}
+
+.order-card {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-details {
+  flex-grow: 1;
+  margin-right: 20px;
+}
+
+.order-status {
+  width: 250px;
+}
+
+.no-orders {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.no-orders h2 {
+  font-size: 2rem;
+  margin-bottom: 10px;
+}
+
+.no-orders p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.no-orders-card {
+  padding: 20px;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 5px 9px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

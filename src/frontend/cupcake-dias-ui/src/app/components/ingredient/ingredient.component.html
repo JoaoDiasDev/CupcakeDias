@@ -1,0 +1,105 @@
+<div class="ingredient-container">
+  <!-- Error and Success Messages -->
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+
+  <!-- Form for Creating/Updating Ingredients -->
+  <div class="ingredient-form">
+    <mat-card class="ingredient-card">
+      <h3>{{ editingIngredient ? "Edit Ingredient" : "Create Ingredient" }}</h3>
+
+      <form
+        #ingredientNgForm="ngForm"
+        (ngSubmit)="saveIngredient(ingredientNgForm)"
+      >
+        <!-- Ingredient Name Field -->
+        <mat-form-field appearance="outline">
+          <mat-label>Ingredient Name</mat-label>
+          <input
+            matInput
+            name="name"
+            [(ngModel)]="ingredientForm.name"
+            #nameInput="ngModel"
+            required
+            minlength="3"
+            maxlength="40"
+            placeholder="Enter ingredient name"
+          />
+          <mat-error *ngIf="nameInput.invalid && nameInput.touched">
+            Ingredient name is required and must be > 3 < 40.
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Ingredient Type Field -->
+        <mat-form-field appearance="outline">
+          <mat-label>Type</mat-label>
+          <input
+            matInput
+            name="type"
+            [(ngModel)]="ingredientForm.type"
+            #typeInput="ngModel"
+            required
+            minlength="3"
+            maxlength="40"
+            placeholder="Enter ingredient type"
+          />
+          <mat-error *ngIf="typeInput.invalid && typeInput.touched">
+            Ingredient type is required and must be > 3 < 40.
+          </mat-error>
+        </mat-form-field>
+
+        <!-- Save and Cancel Buttons -->
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="ingredientNgForm.invalid"
+        >
+          {{ editingIngredient ? "Update Ingredient" : "Create Ingredient" }}
+        </button>
+
+        <button
+          *ngIf="editingIngredient"
+          mat-raised-button
+          color="warn"
+          type="button"
+          (click)="cancelEdit()"
+        >
+          Cancel Edit
+        </button>
+      </form>
+    </mat-card>
+  </div>
+
+  <!-- Ingredient List -->
+  <div class="ingredient-list">
+    <h3>Existing Ingredients</h3>
+
+    <div *ngFor="let ingredient of ingredients" class="ingredient-item">
+      <div class="ingredient-info">
+        <h4>{{ ingredient.name }}</h4>
+        <p><strong>Type:</strong> {{ ingredient.type }}</p>
+        <p>
+          <strong>Available:</strong>
+          {{ ingredient.availability ? "Yes" : "No" }}
+        </p>
+        <div class="ingredient-actions">
+          <button
+            mat-button
+            color="primary"
+            (click)="editIngredient(ingredient)"
+          >
+            Edit
+          </button>
+          <button
+            mat-button
+            color="warn"
+            (click)="deleteIngredient(ingredient.ingredientId)"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

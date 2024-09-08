@@ -1,12 +1,26 @@
-<mat-toolbar color="primary">
-  <span class="logo">Cupcake Dias</span>
+<mat-toolbar color="primary" class="navbar">
+  <a class="nav-title-link" href="/home"
+    ><span class="nav-title">🧁 Cupcake Dias</span></a
+  >
   <span class="spacer"></span>
 
-  <ng-container *ngIf="isLoggedIn(); else showLogin">
-    <button mat-button (click)="logout()">Logout</button>
-  </ng-container>
-
-  <ng-template #showLogin>
-    <button mat-button routerLink="/login">Login</button>
-  </ng-template>
+  <div class="nav-links">
+    <!-- Navigation Links -->
+    <button mat-raised-button routerLink="/home">Home</button>
+    <button mat-raised-button routerLink="/cupcakes-list">Cupcakes</button>
+    <button mat-raised-button routerLink="/cart">Cart</button>
+    <!-- Show Admin button only if the user is an admin or manager -->
+    <button mat-raised-button *ngIf="isAdminOrManager" routerLink="/admin">
+      Admin
+    </button>
+    <button mat-raised-button *ngIf="isLoggedIn" routerLink="/order">
+      Orders
+    </button>
+    <button mat-raised-button *ngIf="!isLoggedIn" routerLink="/login">
+      Login
+    </button>
+    <button mat-raised-button *ngIf="isLoggedIn" (click)="logout()">
+      Logout
+    </button>
+  </div>
 </mat-toolbar>

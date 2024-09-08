@@ -1,0 +1,56 @@
+/* General container styling */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Full-screen height */
+  padding: 20px;
+}
+
+/* Header */
+h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* Form */
+.login-form {
+  width: 100%;
+  max-width: 400px; /* Restrict form width */
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* Gap between form fields */
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* Button styling */
+.login-button {
+  width: 100%;
+  padding: 12px 0;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Error message styling */
+.error-message {
+  color: #e74c3c; /* Red for error */
+  margin-top: 10px;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+  .login-form {
+    padding: 0 15px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+}

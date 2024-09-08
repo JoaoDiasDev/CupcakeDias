@@ -54,4 +54,23 @@ public class UsersController(IUserService userService) : ControllerBase
 
         return Ok(new { Token = token });
     }
+
+    [HttpPost("refresh-token")]
+    [AllowAnonymous]
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestDto refreshRequest)
+    {
+        // Validate the refresh token
+        var user = await userService.GetUserByRefreshTokenAsync(refreshRequest.RefreshToken!);
+
+        if (user == null)
+        {
+            return Unauthorized("Invalid refresh token.");
+        }
+
+        // Generate a new JWT
+        var newToken = await userService.GenerateJwtAndRefreshTokens(user);
+
+        return Ok(new { Token = newToken });
+    }
+
 }

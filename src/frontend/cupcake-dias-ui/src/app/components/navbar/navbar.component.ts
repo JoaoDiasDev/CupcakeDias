@@ -1,10 +1,15 @@
-import { Component } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
+import {
+  MatButton,
+  MatIconAnchor,
+  MatIconButton,
+} from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -12,24 +17,40 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   styleUrls: ['./navbar.component.css'],
   standalone: true,
   imports: [
+    MatIconAnchor,
+    MatIconButton,
+    MatButton,
+    MatToolbarModule,
+    MatIconModule,
+    CommonModule,
     RouterModule,
-    MatToolbarModule, // Angular Material toolbar
-    MatButtonModule, // Angular Material buttons
-    MatIconModule, // Angular Material icons
-    CommonModule, // To use common directives
   ],
 })
 export class NavbarComponent {
-  constructor(public authService: AuthService, private router: Router) {}
+  isAdminOrManager = false;
+  private roleSubscription: Subscription | undefined;
 
-  // Logout the user
-  logout(): void {
-    this.authService.logout();
-    this.router.navigate(['/login']);
+  constructor(private authService: AuthService) {}
+
+  ngOnInit(): void {
+    this.roleSubscription = this.authService
+      .getRoleNameFromToken()
+      .subscribe((role) => {
+        this.isAdminOrManager = role === 'Admin' || role === 'Manager';
+      });
   }
 
-  // Check if user is logged in
-  isLoggedIn(): boolean {
+  ngOnDestroy(): void {
+    if (this.roleSubscription) {
+      this.roleSubscription.unsubscribe();
+    }
+  }
+
+  get isLoggedIn(): boolean {
     return Boolean(this.authService.getToken());
+  }
+
+  logout() {
+    this.authService.logout();
   }
 }

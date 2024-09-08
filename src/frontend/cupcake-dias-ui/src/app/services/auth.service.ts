@@ -1,69 +1,142 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { environment } from '../../environments/environment';
+import { Router } from '@angular/router';
+import { environment } from '../environments/environment'; // Use this import path
+import { BehaviorSubject, Observable } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { JwtToken } from '../models/jwt-token.model';
+import { User } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = `${environment.apiUrl}/users`;
-  private tokenKey = 'jwtToken';
+  private tokenKey = 'authToken';
+  private userRole = new BehaviorSubject<string | null>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {
+    const token = this.getToken();
+    if (token) {
+      this.decodeAndSetUserRole(token);
+    }
+  }
 
-  // Login method
-  login(email: string, password: string): Observable<{ token: string }> {
-    return this.http.post<{ token: string }>(`${this.apiUrl}/login`, {
+  /**
+   * Log in the user with email and password
+   * @param email User's email
+   * @param password User's password
+   * @returns Observable of the login request
+   */
+  login(email: string, password: string): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/users/login`, {
       email,
       password,
     });
   }
 
-  // Save token in localStorage
-  storeToken(token: string): void {
+  /**
+   * Store the JWT token in localStorage and decode user role
+   * @param token JWT token
+   */
+  setToken(token: string): void {
     localStorage.setItem(this.tokenKey, token);
   }
 
-  // Get the logged-in user's token
+  /**
+   * Retrieve the JWT token from localStorage
+   * @returns JWT token or null
+   */
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
   }
 
-  // Logout and remove token from localStorage
+  /**
+   * Return role name as an Observable
+   */
+  getRoleNameFromToken(): Observable<string | null> {
+    const token = this.getToken();
+    if (token) {
+      this.decodeAndSetUserRole(token);
+    }
+    return this.userRole.asObservable(); // Return the user role as an observable
+  }
+
+  /**
+   * Decode the token and set the role in the BehaviorSubject
+   * @param token JWT token
+   */
+  decodeAndSetUserRole(token: string): void {
+    try {
+      const decodedToken: any = this.decodeToken(token);
+      const role = decodedToken?.role || null;
+      this.userRole.next(role);
+    } catch (error) {
+      console.error('Error decoding token', error);
+      this.userRole.next(null);
+    }
+  }
+  /**
+   * Check if the user is authenticated (token exists)
+   * @returns True if the user is authenticated
+   */
+  isAuthenticated(): boolean {
+    const token = this.getToken();
+    if (!token) return false;
+
+    const decoded: JwtToken = jwtDecode<JwtToken>(token);
+    const now = Math.floor(new Date().getTime() / 1000); // Current time in seconds
+    if (decoded.exp < now) {
+      this.logout(); // Token has expired
+      return false;
+    }
+    return true;
+  }
+
+  /**
+   * Get the logged-in user's ID from the JWT token
+   * @returns The user ID or null if the token is invalid
+   */
+  getUserIdFromToken(): string {
+    const token = this.getToken();
+    if (!token) return '';
+
+    const decodedToken = this.decodeToken(token);
+    return decodedToken?.unique_name ?? '';
+  }
+
+  /**
+   * Decode token
+   * @returns Return valid jwt token to be manipulated
+   */
+  private decodeToken(token: string): JwtToken | undefined {
+    try {
+      return jwtDecode(token);
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      return undefined;
+    }
+  }
+
+  /**
+   * Log out the user and remove the token
+   */
   logout(): void {
+    this.userRole.next(null);
     localStorage.removeItem(this.tokenKey);
+    this.router.navigate(['/login']);
   }
 
-  // Decode the token and get the user role
-  getUserRole(): string | null {
-    const token = this.getToken();
-    if (!token) {
-      return null;
-    }
-    try {
-      const decodedToken: JwtToken = jwtDecode<JwtToken>(token); // Decode the token
-      return decodedToken.role; // Assuming the JWT contains the user's role
-    } catch (error) {
-      console.error('Error decoding token', error);
-      return null;
-    }
+  /**
+   * Refresh token by making a request to the backend.
+   * @param refreshToken The refresh token to be used for getting a new token.
+   */
+  refreshToken(refreshToken: string): Observable<string> {
+    return this.http.post<string>(`${environment.apiUrl}/users/refresh-token`, {
+      refreshToken,
+    });
   }
 
-  // Decode the token and get the user name
-  getUserId(): string | null {
-    const token = this.getToken();
-    if (!token) {
-      return null;
-    }
-    try {
-      const decodedToken: JwtToken = jwtDecode<JwtToken>(token);
-      return decodedToken.userId; // Access the 'userId' field (UserId)
-    } catch (error) {
-      console.error('Error decoding token', error);
-      return null;
-    }
+  getUserById(userId: string): Observable<User> {
+    return this.http.get<User>(`${environment.apiUrl}/users/${userId}`);
   }
 }
