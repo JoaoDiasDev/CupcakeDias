@@ -2,6 +2,7 @@ using CupcakeDias.Data;
 using CupcakeDias.Data.Entities;
 using CupcakeDias.Shared.Consts;
 using CupcakeDias.Shared.Services.Interfaces;
+using dotenv.net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -20,7 +21,7 @@ public class UserService(CupcakeDiasContext context) : IUserService
     /// <returns></returns>
     public async Task<User> CreateUserAsync(User user)
     {
-        var role = await context.Roles.FirstOrDefaultAsync(r => r.RoleName.Equals(RoleNames.User));
+        var role = await context.Roles.FirstOrDefaultAsync(r => r.RoleName.Equals(RoleNames.Customer));
         user.Role = role;
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
 
@@ -64,7 +65,7 @@ public class UserService(CupcakeDiasContext context) : IUserService
     public async Task<(string jwtToken, string refreshToken)> GenerateJwtAndRefreshTokens(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT__SECRET") ?? "NotSoSecret");
+        var key = Encoding.ASCII.GetBytes(DotEnv.Read()["JWT__SECRET"]);
 
         user.Role ??= await GetRoleAsync(user.RoleId);
 
@@ -114,7 +115,7 @@ public class UserService(CupcakeDiasContext context) : IUserService
 
     private async Task<Role> GetRoleAsync(Guid roleId)
     {
-        return await context.Roles.FindAsync(roleId) ?? new Role { RoleName = RoleNames.User };
+        return await context.Roles.FindAsync(roleId) ?? new Role { RoleName = RoleNames.Customer };
     }
 
 

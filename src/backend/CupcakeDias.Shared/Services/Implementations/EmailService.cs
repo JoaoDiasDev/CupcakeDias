@@ -1,4 +1,5 @@
 using CupcakeDias.Shared.Services.Interfaces;
+using dotenv.net;
 using MailKit.Net.Smtp;
 using MimeKit;
 
@@ -9,7 +10,8 @@ public class EmailService : IEmailService
     private const string SmtpServer = "smtp.gmail.com";
     private const int SmtpPort = 587;
     private const string SenderEmail = "joaodiasworking@gmail.com";
-    private readonly string _senderPassword = Environment.GetEnvironmentVariable("SMTP__PASSWORD") ?? "None";
+    //private readonly string _senderPassword = Environment.GetEnvironmentVariable("SMTP__PASSWORD") ?? "None";
+    private readonly string _senderPassword = DotEnv.Read()["SMTP__PASSWORD"];
 
     public async Task SendEmailAsync(string userEmail, string subject, string message)
     {

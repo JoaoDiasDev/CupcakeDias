@@ -48,5 +48,9 @@ public class CupcakeDiasContext(DbContextOptions<CupcakeDiasContext> options) : 
             .HasOne(ci => ci.Ingredient)
             .WithMany(i => i.CupcakeIngredients)
             .HasForeignKey(ci => ci.IngredientId);
+
+        modelBuilder.Entity<User>()
+          .HasIndex(e => e.Email)
+          .IsUnique();
     }
 }

@@ -69,7 +69,8 @@ export class RegisterComponent {
    */
   register(): void {
     if (this.registerForm.valid) {
-      this.authService.register(this.registerForm.value).subscribe({
+      const { confirmPassword, ...registerData } = this.registerForm.value;
+      this.authService.register(registerData).subscribe({
         next: () => {
           this.snackBar.open('Registration successful', 'Close', {
             duration: 3000,

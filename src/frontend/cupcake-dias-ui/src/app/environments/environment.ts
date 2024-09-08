@@ -1,4 +1,4 @@
 export const environment = {
   production: false,
-  apiUrl: 'https://apicupcake.joaodiasdev.com/api',
+  apiUrl: 'https://localhost:7230/api',
 };
