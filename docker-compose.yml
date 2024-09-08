@@ -16,6 +16,9 @@ services:
       - "7989:5000"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
+      - CONNECTIONSTRINGS__DEFAULTCONNECTION=${MYSQL_CONNECTION_STRING}
+      - SMTP__PASSWORD=${SMTP_PASSWORD}
+      - JWT__SECRET=${JWT_SECRET_KEY}
     networks:
       - app-network
 

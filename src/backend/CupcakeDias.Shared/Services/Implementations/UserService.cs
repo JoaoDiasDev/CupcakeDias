@@ -2,7 +2,6 @@ using CupcakeDias.Data;
 using CupcakeDias.Data.Entities;
 using CupcakeDias.Shared.Consts;
 using CupcakeDias.Shared.Services.Interfaces;
-using dotenv.net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -61,7 +60,7 @@ public class UserService(CupcakeDiasContext context) : IUserService
     public async Task<(string jwtToken, string refreshToken)> GenerateJwtAndRefreshTokens(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(DotEnv.Read()["JWT_SECRET_KEY"]);
+        var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT__SECRET") ?? "NotSoSecret");
 
         user.Role ??= await GetRoleAsync(user.RoleId);
 

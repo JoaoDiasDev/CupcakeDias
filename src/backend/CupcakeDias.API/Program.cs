@@ -1,7 +1,6 @@
 using CupcakeDias.Data;
 using CupcakeDias.Shared.Services.Implementations;
 using CupcakeDias.Shared.Services.Interfaces;
-using dotenv.net;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -10,9 +9,10 @@ using System.Text;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
-DotEnv.Load(options: new DotEnvOptions(ignoreExceptions: false, trimValues: true));
+//DotEnv.Load(options: new DotEnvOptions(ignoreExceptions: false, trimValues: true));
 
-var connectionString = DotEnv.Read()["DEFAULT_DATABASE_CONNECTION"];
+//var connectionString = DotEnv.Read()["DEFAULT_DATABASE_CONNECTION"];
+var connectionString = Environment.GetEnvironmentVariable("CONNECTIONSTRINGS__DEFAULTCONNECTION");
 
 if (string.IsNullOrEmpty(connectionString))
 {
