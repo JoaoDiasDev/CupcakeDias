@@ -1,96 +1,133 @@
 <div class="cupcake-container">
-  <h2>Cupcake Management</h2>
-
   <!-- Error and Success Messages -->
-  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+  <mat-hint class="error-message-container">
+    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+    <div *ngIf="successMessage" class="success-message">
+      {{ successMessage }}
+    </div>
+  </mat-hint>
 
   <!-- Form for Creating/Updating Cupcakes -->
   <div class="cupcake-form">
-    <h3>{{ editingCupcake ? "Edit Cupcake" : "Create Cupcake" }}</h3>
+    <mat-card class="cupcake-card">
+      <h3 class="cupcake-card-header">
+        {{ editingCupcake ? "Edit Cupcake" : "Create Cupcake" }}
+      </h3>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Cupcake Name</mat-label>
-      <input
-        matInput
-        [(ngModel)]="cupcakeForm.name"
-        placeholder="Enter cupcake name"
-      />
-    </mat-form-field>
+      <form #cupcakeNgForm="ngForm" (ngSubmit)="saveCupcake(cupcakeNgForm)">
+        <!-- Cupcake Name -->
+        <mat-form-field appearance="outline">
+          <mat-label>Cupcake Name</mat-label>
+          <input
+            matInput
+            [(ngModel)]="cupcakeForm.name"
+            placeholder="Enter cupcake name"
+            required
+            minlength="3"
+            maxlength="50"
+            #cupcakeName="ngModel"
+            name="name"
+          />
+          <mat-error *ngIf="cupcakeName.invalid && cupcakeName.touched">
+            <span *ngIf="cupcakeName.errors?.['required']"
+              >Cupcake name is required.</span
+            >
+            <span *ngIf="cupcakeName.errors?.['minlength']"
+              >Minimum length is 3 characters.</span
+            >
+            <span *ngIf="cupcakeName.errors?.['maxlength']"
+              >Maximum length is 50 characters.</span
+            >
+          </mat-error>
+        </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Base Flavor</mat-label>
-      <input
-        matInput
-        [(ngModel)]="cupcakeForm.baseFlavor"
-        placeholder="Enter base flavor"
-      />
-    </mat-form-field>
+        <!-- Base Flavor -->
+        <mat-form-field appearance="outline">
+          <mat-label>Base Flavor</mat-label>
+          <input
+            matInput
+            [(ngModel)]="cupcakeForm.baseFlavor"
+            placeholder="Enter base flavor"
+            required
+            minlength="3"
+            maxlength="50"
+            #baseFlavor="ngModel"
+            name="baseFlavor"
+          />
+          <mat-error *ngIf="baseFlavor.invalid && baseFlavor.touched">
+            <span *ngIf="baseFlavor.errors?.['required']"
+              >Base flavor is required.</span
+            >
+            <span *ngIf="baseFlavor.errors?.['minlength']"
+              >Minimum length is 3 characters.</span
+            >
+            <span *ngIf="baseFlavor.errors?.['maxlength']"
+              >Maximum length is 50 characters.</span
+            >
+          </mat-error>
+        </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Price</mat-label>
-      <input
-        matInput
-        type="text"
-        [(ngModel)]="cupcakeForm.price"
-        placeholder="Enter price"
-        [currencyMask]="{
-          prefix: 'R$ ',
-          thousands: '.',
-          decimal: ',',
-          align: 'left'
-        }"
-      />
-    </mat-form-field>
+        <!-- Price -->
+        <mat-form-field appearance="outline">
+          <mat-label>Price</mat-label>
+          <input
+            matInput
+            type="text"
+            [(ngModel)]="cupcakeForm.price"
+            required
+            placeholder="Enter price"
+            [currencyMask]="{
+              prefix: 'R$ ',
+              thousands: '.',
+              decimal: ',',
+              align: 'left'
+            }"
+            #price="ngModel"
+            name="price"
+          />
+          <mat-error *ngIf="price.invalid && price.touched">
+            <span *ngIf="price.errors?.['required']">Price is required.</span>
+          </mat-error>
+        </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Description</mat-label>
-      <textarea
-        matInput
-        [(ngModel)]="cupcakeForm.description"
-        placeholder="Enter description"
-      ></textarea>
-    </mat-form-field>
+        <!-- Image URL -->
+        <mat-form-field appearance="outline">
+          <mat-label>Image URL</mat-label>
+          <input
+            matInput
+            [(ngModel)]="cupcakeForm.imageUrl"
+            placeholder="Enter image URL"
+            required
+            #imageUrl="ngModel"
+            name="imageUrl"
+          />
+          <mat-error *ngIf="imageUrl.invalid && imageUrl.touched">
+            <span *ngIf="imageUrl.errors?.['required']"
+              >Image URL is required.</span
+            >
+          </mat-error>
+        </mat-form-field>
 
-    <!-- Multi-select for Ingredients -->
-    <mat-form-field appearance="outline">
-      <mat-label>Ingredients</mat-label>
-      <mat-select [(ngModel)]="selectedIngredients" multiple>
-        <mat-option
-          *ngFor="let ingredient of ingredients"
-          [value]="ingredient.ingredientId"
+        <!-- Submit and Cancel Buttons -->
+        <button mat-raised-button color="primary" type="submit">
+          {{ editingCupcake ? "Update Cupcake" : "Create Cupcake" }}
+        </button>
+
+        <button
+          *ngIf="editingCupcake"
+          mat-raised-button
+          color="warn"
+          (click)="cancelEdit()"
         >
-          {{ ingredient.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field appearance="outline">
-      <mat-label>Image URL</mat-label>
-      <input
-        matInput
-        [(ngModel)]="cupcakeForm.imageUrl"
-        placeholder="Enter image URL"
-      />
-    </mat-form-field>
-
-    <button mat-raised-button color="primary" (click)="saveCupcake()">
-      {{ editingCupcake ? "Update Cupcake" : "Create Cupcake" }}
-    </button>
-
-    <button
-      *ngIf="editingCupcake"
-      mat-raised-button
-      color="warn"
-      (click)="cancelEdit()"
-    >
-      Cancel Edit
-    </button>
+          Cancel Edit
+        </button>
+      </form>
+    </mat-card>
   </div>
 
   <!-- Cupcake List -->
   <div class="cupcake-list">
-    <h3>Existing Cupcakes</h3>
+    <h3 class="cupcake-list-header"><span>Existing Cupcakes</span></h3>
 
     <div class="cupcake-items-grid">
       <div *ngFor="let cupcake of cupcakes" class="cupcake-item">

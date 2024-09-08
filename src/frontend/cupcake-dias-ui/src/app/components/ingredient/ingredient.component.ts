@@ -10,9 +10,10 @@ import {
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
-import { MatInput, MatInputModule } from '@angular/material/input';
+import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule, MatLabel } from '@angular/material/form-field';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-ingredient',
@@ -31,12 +32,13 @@ import { FormsModule } from '@angular/forms';
     MatFormFieldModule,
     FormsModule,
     MatLabel,
+    MatCardModule,
   ],
 })
 export class IngredientComponent implements OnInit {
   ingredients: Ingredient[] = [];
   ingredientForm: Partial<Ingredient> = {}; // For creating/updating ingredients
-  editingIngredient: boolean = false;
+  editingIngredient = false;
   ingredientToEditId: string | undefined;
   errorMessage = '';
   successMessage = '';
@@ -64,7 +66,12 @@ export class IngredientComponent implements OnInit {
   /**
    * Saves a new or updated ingredient.
    */
-  saveIngredient(): void {
+  saveIngredient(ingredientForm: NgForm): void {
+    if (ingredientForm.invalid) {
+      this.errorMessage = 'Please fill all required fields correctly.';
+      return;
+    }
+
     if (this.editingIngredient) {
       // Update existing ingredient
       if (this.ingredientToEditId) {
@@ -79,7 +86,7 @@ export class IngredientComponent implements OnInit {
               this.getIngredients(); // Refresh the ingredient list
               this.cancelEdit(); // Reset form
             },
-            error: (error) => {
+            error: () => {
               this.errorMessage =
                 'Failed to update ingredient. Please try again.';
             },
@@ -95,7 +102,7 @@ export class IngredientComponent implements OnInit {
             this.getIngredients(); // Refresh the ingredient list
             this.ingredientForm = {}; // Reset form
           },
-          error: (error) => {
+          error: () => {
             this.errorMessage = `Failed to create ingredient. Please try again`;
           },
         });

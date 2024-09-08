@@ -1,44 +1,74 @@
 <div class="ingredient-container">
-  <h2>Ingredient Management</h2>
-
   <!-- Error and Success Messages -->
   <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
   <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
 
   <!-- Form for Creating/Updating Ingredients -->
   <div class="ingredient-form">
-    <h3>{{ editingIngredient ? "Edit Ingredient" : "Create Ingredient" }}</h3>
+    <mat-card class="ingredient-card">
+      <h3>{{ editingIngredient ? "Edit Ingredient" : "Create Ingredient" }}</h3>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Ingredient Name</mat-label>
-      <input
-        matInput
-        [(ngModel)]="ingredientForm.name"
-        placeholder="Enter ingredient name"
-      />
-    </mat-form-field>
+      <form
+        #ingredientNgForm="ngForm"
+        (ngSubmit)="saveIngredient(ingredientNgForm)"
+      >
+        <!-- Ingredient Name Field -->
+        <mat-form-field appearance="outline">
+          <mat-label>Ingredient Name</mat-label>
+          <input
+            matInput
+            name="name"
+            [(ngModel)]="ingredientForm.name"
+            #nameInput="ngModel"
+            required
+            minlength="3"
+            maxlength="40"
+            placeholder="Enter ingredient name"
+          />
+          <mat-error *ngIf="nameInput.invalid && nameInput.touched">
+            Ingredient name is required and must be > 3 < 40.
+          </mat-error>
+        </mat-form-field>
 
-    <mat-form-field appearance="outline">
-      <mat-label>Type</mat-label>
-      <input
-        matInput
-        [(ngModel)]="ingredientForm.type"
-        placeholder="Enter ingredient type"
-      />
-    </mat-form-field>
+        <!-- Ingredient Type Field -->
+        <mat-form-field appearance="outline">
+          <mat-label>Type</mat-label>
+          <input
+            matInput
+            name="type"
+            [(ngModel)]="ingredientForm.type"
+            #typeInput="ngModel"
+            required
+            minlength="3"
+            maxlength="40"
+            placeholder="Enter ingredient type"
+          />
+          <mat-error *ngIf="typeInput.invalid && typeInput.touched">
+            Ingredient type is required and must be > 3 < 40.
+          </mat-error>
+        </mat-form-field>
 
-    <button mat-raised-button color="primary" (click)="saveIngredient()">
-      {{ editingIngredient ? "Update Ingredient" : "Create Ingredient" }}
-    </button>
+        <!-- Save and Cancel Buttons -->
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="ingredientNgForm.invalid"
+        >
+          {{ editingIngredient ? "Update Ingredient" : "Create Ingredient" }}
+        </button>
 
-    <button
-      *ngIf="editingIngredient"
-      mat-raised-button
-      color="warn"
-      (click)="cancelEdit()"
-    >
-      Cancel Edit
-    </button>
+        <button
+          *ngIf="editingIngredient"
+          mat-raised-button
+          color="warn"
+          type="button"
+          (click)="cancelEdit()"
+        >
+          Cancel Edit
+        </button>
+      </form>
+    </mat-card>
   </div>
 
   <!-- Ingredient List -->

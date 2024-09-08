@@ -15,9 +15,10 @@ import { RouterModule } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select'; // Import for multi-select
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { CupcakeUpdateDto } from '../../models/cupcake-update-dto.model';
-import { NgxCurrencyDirective } from "ngx-currency";
+import { NgxCurrencyDirective } from 'ngx-currency';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-cupcake',
@@ -34,9 +35,10 @@ import { NgxCurrencyDirective } from "ngx-currency";
     MatIconButton,
     MatInputModule,
     MatFormFieldModule,
-    MatSelectModule, // Added MatSelectModule for multi-select dropdown
+    MatSelectModule,
     FormsModule,
-    NgxCurrencyDirective
+    NgxCurrencyDirective,
+    MatCardModule,
   ],
 })
 export class CupcakeComponent implements OnInit {
@@ -44,7 +46,7 @@ export class CupcakeComponent implements OnInit {
   ingredients: Ingredient[] = []; // List of all available ingredients
   cupcakeForm: Partial<Cupcake> = {}; // For creating/updating cupcakes
   selectedIngredients: string[] = []; // Holds selected ingredient IDs
-  editingCupcake: boolean = false;
+  editingCupcake = false;
   cupcakeToEditId: string | undefined;
   errorMessage = '';
   successMessage = '';
@@ -90,7 +92,13 @@ export class CupcakeComponent implements OnInit {
   /**
    * Saves a new or updated cupcake and assigns selected ingredients.
    */
-  saveCupcake(): void {
+  saveCupcake(cupcakeForm: NgForm): void {
+    // Check if the form is valid
+    if (cupcakeForm.invalid) {
+      this.errorMessage = 'Please fill all required fields correctly.';
+      return;
+    }
+
     const cupcakeUpdateDto: CupcakeUpdateDto = {
       cupcake: this.cupcakeForm as Cupcake, // Cupcake details
       ingredientIds: this.selectedIngredients, // Selected ingredient IDs

@@ -1,5 +1,12 @@
+<!-- Search bar -->
+<div class="search-bar-container">
+  <mat-form-field appearance="outline" class="search-bar">
+    <mat-label>Search by Cupcake Name</mat-label>
+    <input class="search-input" matInput [(ngModel)]="searchTerm" placeholder="Enter cupcake name" />
+  </mat-form-field>
+</div>
 <div class="cupcake-list-container">
-  <div class="cupcake-item" *ngFor="let cupcake of cupcakes">
+  <div class="cupcake-item" *ngFor="let cupcake of filteredCupcakes()">
     <mat-card class="cupcake-card">
       <div class="image-container">
         <img
@@ -11,10 +18,9 @@
       </div>
       <mat-card-header>
         <mat-card-title>{{ cupcake?.name?.toUpperCase() }}</mat-card-title>
-        <mat-card-subtitle
-          >Base Flavor:
-          {{ cupcake?.baseFlavor?.toUpperCase() }}</mat-card-subtitle
-        >
+        <mat-card-subtitle>
+          Base Flavor: {{ cupcake?.baseFlavor?.toUpperCase() }}
+        </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
         <p class="description">

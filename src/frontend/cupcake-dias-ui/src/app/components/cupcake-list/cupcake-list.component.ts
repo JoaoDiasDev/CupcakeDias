@@ -9,7 +9,6 @@ import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { AuthService } from '../../services/auth.service';
-import { Cart } from '../../models/cart.model';
 import { CartItem } from '../../models/cart-item.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -29,6 +28,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class CupcakeListComponent implements OnInit {
   cupcakes: Cupcake[] = [];
+  searchTerm = '';
   userId = '';
   cartId: string | null;
 
@@ -55,6 +55,20 @@ export class CupcakeListComponent implements OnInit {
     });
   }
 
+    /**
+   * Filters cupcakes based on the search term entered by the user.
+   * @returns Filtered list of cupcakes
+   */
+    filteredCupcakes(): Cupcake[] {
+      if (!this.searchTerm) {
+        return this.cupcakes;
+      }
+      const lowerCaseTerm = this.searchTerm.toLowerCase();
+      return this.cupcakes.filter((cupcake) =>
+        cupcake.name.toLowerCase().includes(lowerCaseTerm)
+      );
+    }
+
   /**
    * Add selected cupcake and quantity to the cart
    * @param cupcake The selected cupcake
@@ -64,7 +78,7 @@ export class CupcakeListComponent implements OnInit {
     const cartItem: CartItem = {
       cartId: this.cartId ?? '',
       cupcakeId: cupcake.cupcakeId ?? '',
-      quantity: quantity,
+      quantity,
       price: cupcake.price,
     };
 

@@ -23,7 +23,7 @@ public class OrdersController(ICartService cartService,
         {
             return NotFound();
         }
-        return Ok(order);
+        return Ok(order.OrderByDescending(o => o.OrderDate));
     }
 
     [HttpGet("{userId:guid}")]
