@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { CartComponent } from './components/cart/cart.component';
 import { LoginComponent } from './components/login/login.component';
-import { HomeComponent } from './components/home/home.component'; // Import HomeComponent
+import { HomeComponent } from './components/home/home.component';
 import { AuthGuard } from './guards/auth.guard';
 import { CupcakeListComponent } from './components/cupcake-list/cupcake-list.component';
 import { RoleGuard } from './guards/role-guard.guard';

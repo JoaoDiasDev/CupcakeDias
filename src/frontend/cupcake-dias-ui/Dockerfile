@@ -1,28 +1,23 @@
 # Step 1: Build the Angular app
-FROM node:20 AS build-stage
+FROM node:20-alpine AS build-stage
 
 # Set the working directory inside the container
 WORKDIR /app
 
+COPY . .
+
 # Install dependencies
-COPY package*.json ./
 RUN npm install
 
-# Copy the rest of the application files and build the Angular app
-COPY . .
+# Copy the source files and build the Angular app
 RUN npm run build --prod
 
-# Step 2: Serve the Angular app with Nginx
+# Step 2: Serve the Angular app using Nginx
 FROM nginx:alpine
 
-# Copy the built Angular files to Nginx's default serving directory
-COPY --from=build-stage /app/dist /usr/share/nginx/html
-
-# Copy a custom Nginx configuration file, if necessary
+# Copy built files to Nginx's default directory
+COPY --from=build-stage /app/dist/cupcake-dias-ui/browser /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Expose the default Nginx HTTP port
+# Expose port 80 to allow Nginx to serve the content
 EXPOSE 80
-
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
