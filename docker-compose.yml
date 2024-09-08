@@ -4,7 +4,7 @@ services:
       context: ./src/frontend/cupcake-dias-ui
       dockerfile: Dockerfile
     ports:
-      - "7988:4200"
+      - "7988:80"
     networks:
       - app-network
 
@@ -13,7 +13,7 @@ services:
       context: ./src/backend
       dockerfile: Dockerfile
     ports:
-      - "7989:5000"
+      - "7989:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
       - CONNECTIONSTRINGS__DEFAULTCONNECTION=${MYSQL_CONNECTION_STRING}
