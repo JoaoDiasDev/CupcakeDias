@@ -1,0 +1,24 @@
+services:
+  frontend:
+    build:
+      context: ./src/frontend/cupcake-dias-ui
+      dockerfile: Dockerfile
+    ports:
+      - "7988:4200"
+    networks:
+      - app-network
+
+  backend:
+    build:
+      context: ./src/backend
+      dockerfile: Dockerfile
+    ports:
+      - "7989:5000"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

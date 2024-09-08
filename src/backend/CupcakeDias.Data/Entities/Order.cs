@@ -8,7 +8,7 @@ public class Order
 {
     [Key]
     public Guid OrderId { get; set; }
-    public DateTime OrderDate { get; set; } = DateTime.Now;
+    public DateTime OrderDate { get; set; } = DateTime.UtcNow;
     [StringLength(50)]
     public required string Status { get; set; }
     [DataType(DataType.Currency)]
