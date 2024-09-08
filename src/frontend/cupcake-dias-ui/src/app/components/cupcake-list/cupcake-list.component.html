@@ -1,8 +1,13 @@
 <!-- Search bar -->
 <div class="search-bar-container">
-  <mat-form-field appearance="outline" class="search-bar">
-    <mat-label>Search by Cupcake Name</mat-label>
-    <input class="search-input" matInput [(ngModel)]="searchTerm" placeholder="Enter cupcake name" />
+  <mat-form-field appearance="fill" class="search-bar">
+    <mat-label class="search-label">Search by Cupcake Name</mat-label>
+    <input
+      class="search-input"
+      matInput
+      [(ngModel)]="searchTerm"
+      placeholder="Enter cupcake name"
+    />
   </mat-form-field>
 </div>
 <div class="cupcake-list-container">
