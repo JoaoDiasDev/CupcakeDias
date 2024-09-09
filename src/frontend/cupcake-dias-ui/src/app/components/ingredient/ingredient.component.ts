@@ -37,7 +37,7 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class IngredientComponent implements OnInit {
   ingredients: Ingredient[] = [];
-  ingredientForm: Partial<Ingredient> = {}; // For creating/updating ingredients
+  ingredientForm: Partial<Ingredient> = {};
   editingIngredient = false;
   ingredientToEditId: string | undefined;
   errorMessage = '';
@@ -83,8 +83,8 @@ export class IngredientComponent implements OnInit {
           .subscribe({
             next: () => {
               this.successMessage = 'Ingredient updated successfully!';
-              this.getIngredients(); // Refresh the ingredient list
-              this.cancelEdit(); // Reset form
+              this.getIngredients();
+              this.cancelEdit();
             },
             error: () => {
               this.errorMessage =
@@ -99,8 +99,8 @@ export class IngredientComponent implements OnInit {
         .subscribe({
           next: () => {
             this.successMessage = 'Ingredient created successfully!';
-            this.getIngredients(); // Refresh the ingredient list
-            this.ingredientForm = {}; // Reset form
+            this.getIngredients();
+            this.ingredientForm = {};
           },
           error: () => {
             this.errorMessage = `Failed to create ingredient. Please try again`;
@@ -139,9 +139,9 @@ export class IngredientComponent implements OnInit {
       this.ingredientService.deleteIngredient(ingredientId).subscribe({
         next: () => {
           this.successMessage = 'Ingredient deleted successfully!';
-          this.getIngredients(); // Refresh the list
+          this.getIngredients();
         },
-        error: (error) => {
+        error: () => {
           this.errorMessage = 'Failed to delete ingredient. Please try again.';
         },
       });

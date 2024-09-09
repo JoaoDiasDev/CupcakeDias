@@ -5,13 +5,13 @@
   padding: 40px;
   max-width: 1400px;
   margin: 0 auto;
-  min-height: 100vh; /* Full-screen height */
+  min-height: 100vh;
 }
 
 /* Main container for items and summary */
 .cart-container {
   display: flex;
-  justify-content: space-between; /* Space between cart items and summary */
+  justify-content: space-between;
   gap: 40px;
   width: 100%;
   height: auto;
@@ -19,7 +19,7 @@
 
 /* Cart Items Section (Left) */
 .cart-items-section {
-  flex: 2.5; /* Takes up more space than the summary panel */
+  flex: 2.5;
 }
 
 /* Cart Items Grid */
@@ -28,8 +28,8 @@
   grid-template-columns: repeat(
     auto-fit,
     minmax(220px, 1fr)
-  ); /* Smaller cards for more items per row */
-  grid-gap: 20px; /* Spacing between items */
+  );
+  grid-gap: 20px;
 }
 
 /* Cart item card */
@@ -46,7 +46,7 @@
 /* Image container */
 .cart-item-image {
   width: 100%;
-  height: 120px; /* Reduced height for a more compact layout */
+  height: 120px;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -89,10 +89,10 @@
 
 /* Cart Summary Panel (Right) */
 .cart-summary-panel {
-  flex: 1.2; /* Takes up less space compared to cart items */
+  flex: 1.2;
   position: sticky;
-  top: 100px; /* Sticks the summary panel to the top when scrolling */
-  max-width: 350px; /* Made it wider for a better look */
+  top: 100px;
+  max-width: 350px;
 }
 
 .cart-summary-card {

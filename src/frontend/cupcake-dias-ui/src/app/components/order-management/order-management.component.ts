@@ -30,8 +30,8 @@ import { MatSelectModule } from '@angular/material/select';
 export class OrderManagementComponent implements OnInit {
   orders: Order[] = [];
   filteredOrders: Order[] = [];
-  orderStatuses = Object.values(OrderStatus); // Enum values for the dropdown
-  searchTerm = ''; // Search term for filtering orders by user name
+  orderStatuses = Object.values(OrderStatus);
+  searchTerm = '';
 
   constructor(
     private orderService: OrderService,
@@ -107,7 +107,7 @@ export class OrderManagementComponent implements OnInit {
           verticalPosition: 'top',
           horizontalPosition: 'center',
         });
-        this.fetchOrders(); // Reload orders after status update
+        this.fetchOrders(); 
       },
       error: () => {
         this.snackBar.open('Failed to update order status', 'Close', {

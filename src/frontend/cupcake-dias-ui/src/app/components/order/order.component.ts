@@ -9,7 +9,7 @@ import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-order',
-  templateUrl: './order.component.html', // Use external HTML template
+  templateUrl: './order.component.html', 
   styleUrls: ['./order.component.css'],
   standalone: true,
   imports: [CommonModule, MatCardModule, RouterModule, MatButtonModule],

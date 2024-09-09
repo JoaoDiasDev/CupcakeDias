@@ -1,12 +1,12 @@
 :root {
-  --font-size: 1rem; /* Base Font Size */
-  --font-size-large: 1.25rem; /* Large Font Size */
-  --font-size-small: 0.85rem; /* Small Font Size */
-  --line-height: 1.6; /* Line Height for Readability */
-  --card-padding: 20px; /* Padding for cards and containers */
-  --card-border-radius: 12px; /* Larger rounded corners for modern look */
-  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Slightly heavier shadow */
-  --button-radius: 6px; /* Slightly rounded buttons */
+  --font-size: 1rem;
+  --font-size-large: 1.25rem;
+  --font-size-small: 0.85rem;
+  --line-height: 1.6;
+  --card-padding: 20px;
+  --card-border-radius: 12px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --button-radius: 6px;
 }
 
 html,
@@ -30,19 +30,19 @@ body {
     center/cover;
   height: auto;
   padding: var(--card-padding);
-  margin-bottom: 50px; /* Adjusting for footer space */
+  margin-bottom: 50px;
 }
 
 .mat-card {
   border-radius: var(--card-border-radius);
   box-shadow: var(--box-shadow);
   padding: var(--card-padding);
-  transition: transform 0.2s, box-shadow 0.2s; /* Add hover transition */
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .mat-card:hover {
-  transform: translateY(-5px); /* Slight lift on hover */
-  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15); /* Heavier shadow on hover */
+  transform: translateY(-5px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
 }
 
 .mat-form-field {
@@ -75,7 +75,7 @@ img {
 }
 
 img:hover {
-  transform: scale(1.05); /* Slight zoom on hover */
+  transform: scale(1.05); 
 }
 
 .footer {

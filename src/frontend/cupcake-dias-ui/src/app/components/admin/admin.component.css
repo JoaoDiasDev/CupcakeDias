@@ -5,7 +5,7 @@
   align-items: center;
   min-height: 100vh;
   padding: 20px;
-  background-color: transparent; /* Let the background image show */
+  background-color: transparent; 
 }
 
 /* Material card for the admin dashboard */

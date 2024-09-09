@@ -5,7 +5,6 @@ import { AuthService } from '../../services/auth.service';
 import { CartService } from '../../services/cart.service';
 import { JwtToken } from '../../models/jwt-token.model';
 import { NavigationEnd, Router, RouterModule } from '@angular/router';
-import { CartStatus } from '../../enums/cart-status.enum';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';

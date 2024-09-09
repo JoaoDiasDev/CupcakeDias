@@ -9,7 +9,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-order-details',
-  templateUrl: './order-details.component.html', // Use external HTML template
+  templateUrl: './order-details.component.html',
   styleUrls: ['./order-details.component.css'],
   standalone: true,
   imports: [
@@ -37,7 +37,7 @@ export class OrderDetailsComponent implements OnInit {
         .getOrderDetails(this.orderId)
         .subscribe((data: OrderDetail[]) => {
           this.orderDetails = data;
-          this.calculateTotalAmount(); // Calculate the total amount of the order
+          this.calculateTotalAmount();
         });
     }
   }

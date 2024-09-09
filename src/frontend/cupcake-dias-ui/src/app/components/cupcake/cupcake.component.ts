@@ -14,7 +14,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatSelectModule } from '@angular/material/select'; // Import for multi-select
+import { MatSelectModule } from '@angular/material/select'; 
 import { FormsModule, NgForm } from '@angular/forms';
 import { CupcakeUpdateDto } from '../../models/cupcake-update-dto.model';
 import { NgxCurrencyDirective } from 'ngx-currency';
@@ -43,9 +43,9 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class CupcakeComponent implements OnInit {
   cupcakes: Cupcake[] = [];
-  ingredients: Ingredient[] = []; // List of all available ingredients
-  cupcakeForm: Partial<Cupcake> = {}; // For creating/updating cupcakes
-  selectedIngredients: string[] = []; // Holds selected ingredient IDs
+  ingredients: Ingredient[] = [];
+  cupcakeForm: Partial<Cupcake> = {};
+  selectedIngredients: string[] = [];
   editingCupcake = false;
   cupcakeToEditId: string | undefined;
   errorMessage = '';
@@ -53,12 +53,12 @@ export class CupcakeComponent implements OnInit {
 
   constructor(
     private cupcakeService: CupcakeService,
-    private ingredientService: IngredientService // Inject ingredient service
+    private ingredientService: IngredientService
   ) {}
 
   ngOnInit(): void {
     this.getCupcakes();
-    this.getIngredients(); // Fetch available ingredients on load
+    this.getIngredients();
   }
 
   /**

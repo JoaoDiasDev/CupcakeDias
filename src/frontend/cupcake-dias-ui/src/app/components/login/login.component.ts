@@ -41,7 +41,7 @@ export class LoginComponent {
         const token = response.token;
         this.authService.decodeAndSetUserRole(token);
         this.authService.setToken(token);
-        this.router.navigate(['/']); // Navigate to home or dashboard after login
+        this.router.navigate(['/']);
       },
       error: (err) => {
         this.errorMessage = 'Invalid email or password';

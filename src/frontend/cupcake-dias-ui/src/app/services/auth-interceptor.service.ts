@@ -27,7 +27,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       catchError((error) => {
         // If the token is expired (401 Unauthorized), try to refresh the token
         if (error.status === 401) {
-          const userId = authService.getUserIdFromToken(); // Assuming you have a method to get userId from token
+          const userId = authService.getUserIdFromToken();
 
           if (userId) {
             return authService.getUserById(userId).pipe(
@@ -71,18 +71,17 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       }),
       // Clear the spinner timeout if the request completes before 2 seconds
       finalize(() => {
-        clearTimeout(showSpinnerTimeout); // Prevent showing the spinner if the request finishes early
-        loadingService.hide(); // Hide the spinner if it was shown
+        clearTimeout(showSpinnerTimeout);
+        loadingService.hide();
       })
     );
   }
 
   // If there's no token, proceed without modifying the request
   return next(req).pipe(
-    // Clear the spinner timeout if the request completes before 2 seconds
     finalize(() => {
-      clearTimeout(showSpinnerTimeout); // Prevent showing the spinner if the request finishes early
-      loadingService.hide(); // Hide the spinner if it was shown
+      clearTimeout(showSpinnerTimeout);
+      loadingService.hide();
     })
   );
 };
