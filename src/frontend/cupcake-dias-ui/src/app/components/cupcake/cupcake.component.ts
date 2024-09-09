@@ -149,7 +149,7 @@ export class CupcakeComponent implements OnInit {
     this.selectedIngredients =
       cupcake.cupcakeIngredients
         ?.map((i) => i.ingredientId)
-        .filter((id): id is string => !!id) || [];
+        .filter((id): id is string => Boolean(id)) || [];
 
     this.successMessage = '';
     this.errorMessage = '';

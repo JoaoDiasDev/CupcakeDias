@@ -5,11 +5,22 @@
   min-height: 100vh;
 }
 
-.order-card {
+.search-field {
   margin-bottom: 20px;
+  width: 100%;
+}
+
+.orders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.order-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 15px;
 }
 
 .order-details {
@@ -18,7 +29,7 @@
 }
 
 .order-status {
-  width: 250px;
+  width: 150px;
 }
 
 .no-orders {

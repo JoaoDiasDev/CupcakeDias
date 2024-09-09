@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { OrderService } from '../../services/order.service'; // Assume you have an OrderService to fetch/update orders
+import { OrderService } from '../../services/order.service';
 import { Order } from '../../models/order.model';
-import { OrderStatus } from '../../enums/order-status.enum'; // Assume you have an enum for OrderStatus
+import { OrderStatus } from '../../enums/order-status.enum';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatSelectModule } from '@angular/material/select';
-import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
+import { forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { FormsModule } from '@angular/forms';
+import { MatCardModule } from '@angular/material/card';
+import { MatInputModule } from '@angular/material/input';
+import { CommonModule } from '@angular/common';
+import { MatOptionModule } from '@angular/material/core';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-order-management',
@@ -16,16 +19,19 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./order-management.component.css'],
   standalone: true,
   imports: [
-    CommonModule,
-    MatCardModule,
-    MatButtonModule,
-    MatSelectModule,
     FormsModule,
+    MatCardModule,
+    MatInputModule,
+    CommonModule,
+    MatOptionModule,
+    MatSelectModule,
   ],
 })
 export class OrderManagementComponent implements OnInit {
   orders: Order[] = [];
+  filteredOrders: Order[] = [];
   orderStatuses = Object.values(OrderStatus); // Enum values for the dropdown
+  searchTerm = ''; // Search term for filtering orders by user name
 
   constructor(
     private orderService: OrderService,
@@ -38,21 +44,56 @@ export class OrderManagementComponent implements OnInit {
   }
 
   /**
-   * Fetches all orders from the server.
+   * Fetches all orders from the server and loads user details for each order.
    */
   fetchOrders(): void {
     this.orderService.getAllOrders().subscribe({
-      next: (data) => {
-        this.orders = data.filter(
+      next: (orders) => {
+        // Filter out completed and cancelled orders
+        this.orders = orders.filter(
           (order) =>
             order.status !== OrderStatus.Completed &&
             order.status !== OrderStatus.Cancelled
         );
+
+        // Fetch user details for each order and store it in the order.user field
+        const userRequests = this.orders.map((order) =>
+          this.authService.getUserById(order.userId).pipe(
+            map((user) => {
+              order.user = user;
+              return order;
+            })
+          )
+        );
+
+        // Wait for all user requests to complete
+        forkJoin(userRequests).subscribe({
+          next: (ordersWithUsers) => {
+            this.orders = ordersWithUsers;
+            this.filterOrders(); // Filter orders initially
+          },
+          error: (err) => {
+            console.error('Error fetching users', err);
+          },
+        });
       },
       error: (err) => {
         console.error('Error fetching orders', err);
       },
     });
+  }
+
+  /**
+   * Filters orders based on the search term.
+   */
+  filterOrders(): void {
+    if (this.searchTerm.trim()) {
+      this.filteredOrders = this.orders.filter((order) =>
+        order.user?.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    } else {
+      this.filteredOrders = [...this.orders];
+    }
   }
 
   /**
@@ -66,7 +107,7 @@ export class OrderManagementComponent implements OnInit {
           verticalPosition: 'top',
           horizontalPosition: 'center',
         });
-        this.fetchOrders();
+        this.fetchOrders(); // Reload orders after status update
       },
       error: () => {
         this.snackBar.open('Failed to update order status', 'Close', {

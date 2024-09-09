@@ -17,14 +17,25 @@
       />
     </mat-form-field>
 
-    <button
-      mat-raised-button
-      color="primary"
-      type="submit"
-      class="login-button"
-    >
-      Login
-    </button>
+    <div class="button-container">
+      <button
+        class="register-button"
+        mat-raised-button
+        color="accent"
+        type="button"
+        routerLink="/register"
+      >
+        Register here
+      </button>
+      <button
+        mat-raised-button
+        color="primary"
+        type="submit"
+        class="login-button"
+      >
+        Login
+      </button>
+    </div>
 
     <p *ngIf="errorMessage" class="error-message">{{ errorMessage }}</p>
   </form>

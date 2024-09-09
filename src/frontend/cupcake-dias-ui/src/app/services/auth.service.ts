@@ -139,4 +139,14 @@ export class AuthService {
   getUserById(userId: string): Observable<User> {
     return this.http.get<User>(`${environment.apiUrl}/users/${userId}`);
   }
+
+  /**
+   * Register a new user
+   * @param email User's email
+   * @param password User's password
+   * @returns Observable of the register request
+   */
+  register(user: User): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/users`, user);
+  }
 }

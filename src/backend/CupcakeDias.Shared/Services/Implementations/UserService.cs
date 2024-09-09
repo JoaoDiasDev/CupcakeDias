@@ -2,7 +2,6 @@ using CupcakeDias.Data;
 using CupcakeDias.Data.Entities;
 using CupcakeDias.Shared.Consts;
 using CupcakeDias.Shared.Services.Interfaces;
-using dotenv.net;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -14,11 +13,15 @@ namespace CupcakeDias.Shared.Services.Implementations;
 
 public class UserService(CupcakeDiasContext context) : IUserService
 {
-
+    /// <summary>
+    /// All new users are created with the User role and password is hashed
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns></returns>
     public async Task<User> CreateUserAsync(User user)
     {
-        // Ensure the role exists
-        var role = await context.Roles.FindAsync(user.RoleId) ?? throw new Exception("Invalid role specified");
+        var role = await context.Roles.FirstOrDefaultAsync(r => r.RoleName.Equals(RoleNames.Customer));
+        user.Role = role;
         user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(user.PasswordHash);
 
         context.Users.Add(user);
@@ -61,7 +64,7 @@ public class UserService(CupcakeDiasContext context) : IUserService
     public async Task<(string jwtToken, string refreshToken)> GenerateJwtAndRefreshTokens(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(DotEnv.Read()["JWT_SECRET_KEY"]);
+        var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("JWT__SECRET") ?? "NotSoSecret");
 
         user.Role ??= await GetRoleAsync(user.RoleId);
 
@@ -111,7 +114,7 @@ public class UserService(CupcakeDiasContext context) : IUserService
 
     private async Task<Role> GetRoleAsync(Guid roleId)
     {
-        return await context.Roles.FindAsync(roleId) ?? new Role { RoleName = RoleNames.User };
+        return await context.Roles.FindAsync(roleId) ?? new Role { RoleName = RoleNames.Customer };
     }
 
 

@@ -8,6 +8,7 @@ import { authInterceptor } from './app/services/auth-interceptor.service';
 import { registerLocaleData } from '@angular/common';
 import localePt from '@angular/common/locales/pt';
 import { LOCALE_ID } from '@angular/core';
+import { provideEnvironmentNgxMask } from 'ngx-mask';
 
 registerLocaleData(localePt, 'pt-BR');
 
@@ -17,5 +18,6 @@ bootstrapApplication(AppComponent, {
     provideHttpClient(withInterceptors([authInterceptor])),
     provideAnimations(),
     { provide: LOCALE_ID, useValue: 'pt-BR' },
+    provideEnvironmentNgxMask(),
   ],
 }).catch((err) => console.error(err));

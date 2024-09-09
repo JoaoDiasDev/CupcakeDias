@@ -13,7 +13,7 @@ public class Cart
     public Guid UserId { get; set; }
     [JsonIgnore]
     public User? User { get; set; }
-    public DateTime? CreatedAt { get; set; } = DateTime.Now;
+    public DateTime? CreatedAt { get; set; } = DateTime.UtcNow;
 
     public ICollection<CartItem>? CartItems { get; set; }
 }

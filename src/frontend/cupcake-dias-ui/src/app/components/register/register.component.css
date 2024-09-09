@@ -1,0 +1,29 @@
+.register-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.register-form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.error-message {
+  color: #e74c3c;
+  text-align: center;
+  margin-top: 10px;
+}
+
+button {
+  margin-top: 20px;
+}

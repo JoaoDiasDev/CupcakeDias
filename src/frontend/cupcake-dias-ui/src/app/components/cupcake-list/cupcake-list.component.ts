@@ -55,19 +55,19 @@ export class CupcakeListComponent implements OnInit {
     });
   }
 
-    /**
+  /**
    * Filters cupcakes based on the search term entered by the user.
    * @returns Filtered list of cupcakes
    */
-    filteredCupcakes(): Cupcake[] {
-      if (!this.searchTerm) {
-        return this.cupcakes;
-      }
-      const lowerCaseTerm = this.searchTerm.toLowerCase();
-      return this.cupcakes.filter((cupcake) =>
-        cupcake.name.toLowerCase().includes(lowerCaseTerm)
-      );
+  filteredCupcakes(): Cupcake[] {
+    if (!this.searchTerm) {
+      return this.cupcakes;
     }
+    const lowerCaseTerm = this.searchTerm.toLowerCase();
+    return this.cupcakes.filter((cupcake) =>
+      cupcake.name.toLowerCase().includes(lowerCaseTerm)
+    );
+  }
 
   /**
    * Add selected cupcake and quantity to the cart
@@ -75,6 +75,10 @@ export class CupcakeListComponent implements OnInit {
    * @param quantity The quantity to be added
    */
   addToCart(cupcake: Cupcake, quantity: number) {
+    if (!this.cartId) {
+      this.cartId = this.getCartId();
+    }
+
     const cartItem: CartItem = {
       cartId: this.cartId ?? '',
       cupcakeId: cupcake.cupcakeId ?? '',

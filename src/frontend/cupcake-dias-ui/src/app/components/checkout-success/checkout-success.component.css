@@ -1,6 +1,9 @@
 .success-message {
+  display: flex;
   text-align: center;
   padding: 40px;
+  min-height: 100vh;
+  justify-content: center;
 }
 
 .action-buttons {
@@ -13,4 +16,14 @@
 a[mat-raised-button] {
   text-decoration: none;
   padding: 10px 20px;
+}
+
+.success-card {
+  align-items: center;
+  height: 100%;
+  width: 30%;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 20px;
 }

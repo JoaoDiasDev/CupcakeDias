@@ -16,17 +16,11 @@ public class CupcakeDiasContext(DbContextOptions<CupcakeDiasContext> options) : 
     public DbSet<Cart> Carts { get; set; }
     public DbSet<CartItem> CartItems { get; set; }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseMySql("Server=localhost;Port=3306;Database=cupcake-dias;Uid=developer;Pwd=Matheus321*;",
-            ServerVersion.AutoDetect("Server=localhost;Port=3306;Database=cupcake-dias;Uid=developer;Pwd=Matheus321*;"));
-    }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Seed();
         base.OnModelCreating(modelBuilder);
-        
+
         modelBuilder.Entity<Cart>()
             .HasOne(c => c.User)
             .WithMany(u => u.Carts)
@@ -54,5 +48,9 @@ public class CupcakeDiasContext(DbContextOptions<CupcakeDiasContext> options) : 
             .HasOne(ci => ci.Ingredient)
             .WithMany(i => i.CupcakeIngredients)
             .HasForeignKey(ci => ci.IngredientId);
+
+        modelBuilder.Entity<User>()
+          .HasIndex(e => e.Email)
+          .IsUnique();
     }
 }
