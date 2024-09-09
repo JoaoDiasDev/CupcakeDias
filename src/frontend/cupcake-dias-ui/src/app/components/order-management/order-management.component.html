@@ -1,6 +1,6 @@
 <div class="order-management-container">
   <!-- Search Field -->
-  <!-- <mat-form-field appearance="fill" class="search-field">
+  <mat-form-field appearance="fill" class="search-field">
     <mat-label>Search by User Name</mat-label>
     <input
       matInput
@@ -8,7 +8,7 @@
       (ngModelChange)="filterOrders()"
       placeholder="Enter user name"
     />
-  </mat-form-field> -->
+  </mat-form-field>
 
   <ng-container *ngIf="filteredOrders.length > 0; else noOrdersTemplate">
     <div class="orders-grid">
