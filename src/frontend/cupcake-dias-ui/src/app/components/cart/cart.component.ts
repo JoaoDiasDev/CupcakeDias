@@ -155,6 +155,7 @@ export class CartComponent implements OnInit {
           verticalPosition: 'top',
           horizontalPosition: 'center',
         });
+        this.calculateCartSummary();
       },
       error: () => {
         this.snackBar.open('Failed to update quantity', 'Close', {
